@@ -206,7 +206,12 @@ export function AIAssistantInterface() {
                 placeholder="Ask me anything about your studies..."
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSendMessage(inputValue)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSendMessage(inputValue);
+                  }
+                }}
                 className="pr-12 bg-muted/30 border-border/50 focus:border-primary/50"
               />
               <Button
