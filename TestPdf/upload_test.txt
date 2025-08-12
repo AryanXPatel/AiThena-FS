@@ -1,0 +1,7 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+ 77 1409k  100    89   77 1088k    400  4891k --:--:-- --:--:-- --:--:-- 4879k
+{"message":"Route POST:/documents/upload not found","error":"Not Found","statusCode":404}

@@ -1,0 +1,119 @@
+
+> aithena-docintel-backend@0.1.0 dev
+> tsx watch src/server.ts
+
+{"level":30,"time":1754989439825,"pid":17536,"hostname":"DESKTOP-77Q3HSK","msg":"Server listening at http://0.0.0.0:4101"}
+Warning: Indexing all PDF objects
+{"level":30,"time":1754989439825,"pid":17536,"hostname":"DESKTOP-77Q3HSK","msg":"DocIntel Backend listening on http://localhost:4101"}
+{"level":30,"time":1754989463093,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-1","req":{"method":"GET","url":"/health","hostname":"localhost:4101","remoteAddress":"127.0.0.1","remotePort":53861},"msg":"incoming request"}
+{"level":30,"time":1754989463103,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-1","res":{"statusCode":200},"responseTime":8.412800000980496,"msg":"request completed"}
+{"level":30,"time":1754989481314,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-2","req":{"method":"POST","url":"/documents/upload","hostname":"localhost:4101","remoteAddress":"127.0.0.1","remotePort":53874},"msg":"incoming request"}
+{"level":30,"time":1754989481316,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-2","msg":"Route POST:/documents/upload not found"}
+{"level":30,"time":1754989481317,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-2","res":{"statusCode":404},"responseTime":2.032700000330806,"msg":"request completed"}
+{"level":30,"time":1754989506390,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-3","req":{"method":"POST","url":"/upload","hostname":"localhost:4101","remoteAddress":"127.0.0.1","remotePort":53902},"msg":"incoming request"}
+Created a chunk of size 1026, +
+which is longer than the specified 1000
+Created a chunk of size 1804, +
+which is longer than the specified 1000
+Created a chunk of size 2511, +
+which is longer than the specified 1000
+Created a chunk of size 2421, +
+which is longer than the specified 1000
+Created a chunk of size 2123, +
+which is longer than the specified 1000
+Created a chunk of size 2243, +
+which is longer than the specified 1000
+Created a chunk of size 2272, +
+which is longer than the specified 1000
+Created a chunk of size 2107, +
+which is longer than the specified 1000
+Created a chunk of size 1792, +
+which is longer than the specified 1000
+Created a chunk of size 1789, +
+which is longer than the specified 1000
+{"level":30,"time":1754989511621,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-3","res":{"statusCode":200},"responseTime":5230.228400001302,"msg":"request completed"}
+{"level":30,"time":1754989537304,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-4","req":{"method":"POST","url":"/upload","hostname":"localhost:4101","remoteAddress":"127.0.0.1","remotePort":53916},"msg":"incoming request"}
+Created a chunk of size 1026, +
+which is longer than the specified 1000
+Created a chunk of size 1804, +
+which is longer than the specified 1000
+Created a chunk of size 2511, +
+which is longer than the specified 1000
+Created a chunk of size 2421, +
+which is longer than the specified 1000
+Created a chunk of size 2123, +
+which is longer than the specified 1000
+Created a chunk of size 2243, +
+which is longer than the specified 1000
+Created a chunk of size 2272, +
+which is longer than the specified 1000
+Created a chunk of size 2107, +
+which is longer than the specified 1000
+Created a chunk of size 1792, +
+which is longer than the specified 1000
+Created a chunk of size 1789, +
+which is longer than the specified 1000
+{"level":30,"time":1754989541295,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-4","res":{"statusCode":200},"responseTime":3989.7415000014007,"msg":"request completed"}
+{"level":30,"time":1754989558574,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-5","req":{"method":"GET","url":"/documents","hostname":"localhost:4101","remoteAddress":"127.0.0.1","remotePort":53926},"msg":"incoming request"}
+{"level":30,"time":1754989558577,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-5","res":{"statusCode":200},"responseTime":2.644600000232458,"msg":"request completed"}
+{"level":30,"time":1754989577209,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-6","req":{"method":"GET","url":"/documents/1754989537308/chunks","hostname":"localhost:4101","remoteAddress":"127.0.0.1","remotePort":53934},"msg":"incoming request"}
+Created a chunk of size 1026, +
+which is longer than the specified 1000
+Created a chunk of size 1804, +
+which is longer than the specified 1000
+Created a chunk of size 2511, +
+which is longer than the specified 1000
+Created a chunk of size 2421, +
+which is longer than the specified 1000
+Created a chunk of size 2123, +
+which is longer than the specified 1000
+Created a chunk of size 2243, +
+which is longer than the specified 1000
+Created a chunk of size 2272, +
+which is longer than the specified 1000
+Created a chunk of size 2107, +
+which is longer than the specified 1000
+Created a chunk of size 1792, +
+which is longer than the specified 1000
+Created a chunk of size 1789, +
+which is longer than the specified 1000
+{"level":30,"time":1754989577213,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-6","res":{"statusCode":200},"responseTime":3.740199999883771,"msg":"request completed"}
+{"level":30,"time":1754989622321,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-7","req":{"method":"POST","url":"/ask","hostname":"localhost:4101","remoteAddress":"127.0.0.1","remotePort":53986},"msg":"incoming request"}
+{"level":30,"time":1754989622333,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-7","res":{"statusCode":400},"err":{"type":"SyntaxError","message":"Expected property name or '}' in JSON at position 1 (line 1 column 2)","stack":"SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)","statusCode":400},"msg":"Expected property name or '}' in JSON at position 1 (line 1 column 2)"}
+{"level":30,"time":1754989622335,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-7","res":{"statusCode":400},"responseTime":13.130899999290705,"msg":"request completed"}
+{"level":30,"time":1754989639689,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-8","req":{"method":"POST","url":"/ask","hostname":"localhost:4101","remoteAddress":"127.0.0.1","remotePort":53993},"msg":"incoming request"}
+{"level":30,"time":1754989639689,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-8","res":{"statusCode":400},"err":{"type":"SyntaxError","message":"Expected property name or '}' in JSON at position 1 (line 1 column 2)","stack":"SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)","statusCode":400},"msg":"Expected property name or '}' in JSON at position 1 (line 1 column 2)"}
+{"level":30,"time":1754989639690,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-8","res":{"statusCode":400},"responseTime":1.650399999693036,"msg":"request completed"}
+{"level":30,"time":1754989679714,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-9","req":{"method":"POST","url":"/ask","hostname":"localhost:4101","remoteAddress":"127.0.0.1","remotePort":54012},"msg":"incoming request"}
+{"level":30,"time":1754989679717,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-9","res":{"statusCode":400},"responseTime":2.927699999883771,"msg":"request completed"}
+{"level":30,"time":1754989717865,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-a","req":{"method":"POST","url":"/ask","hostname":"localhost:4101","remoteAddress":"127.0.0.1","remotePort":54026},"msg":"incoming request"}
+{"level":30,"time":1754989720996,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-a","res":{"statusCode":200},"responseTime":3130.311099998653,"msg":"request completed"}
+{"level":30,"time":1754989768552,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-b","req":{"method":"POST","url":"/upload","hostname":"localhost:4101","remoteAddress":"127.0.0.1","remotePort":54071},"msg":"incoming request"}
+{"level":30,"time":1754989769155,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-b","res":{"statusCode":200},"responseTime":602.964999999851,"msg":"request completed"}
+{"level":30,"time":1754989788136,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-c","req":{"method":"GET","url":"/documents","hostname":"localhost:4101","remoteAddress":"127.0.0.1","remotePort":54081},"msg":"incoming request"}
+{"level":30,"time":1754989788138,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-c","res":{"statusCode":200},"responseTime":2.171000000089407,"msg":"request completed"}
+{"level":30,"time":1754989819147,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-d","req":{"method":"POST","url":"/ask","hostname":"localhost:4101","remoteAddress":"127.0.0.1","remotePort":54094},"msg":"incoming request"}
+{"level":30,"time":1754989821031,"pid":17536,"hostname":"DESKTOP-77Q3HSK","reqId":"req-d","res":{"statusCode":200},"responseTime":1882.8766999989748,"msg":"request completed"}
+2:45:56 pm [tsx] change in ./src\server.ts Restarting...
+node:net:1940
+    const ex = new UVExceptionWithHostPort(err, 'listen', address, port);
+               ^
+
+Error: listen EADDRINUSE: address already in use 0.0.0.0:4101
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at node:net:2206:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 4101
+}
+
+Node.js v24.5.0
+c2:53:54 pm [tsx] change in ./src\server.ts Rerunning...
+c2:54:05 pm [tsx] change in ./src\server.ts Restarting...
+c{"level":30,"time":1754990656447,"pid":12460,"hostname":"DESKTOP-77Q3HSK","msg":"Server listening at http://0.0.0.0:4101"}
+Warning: Indexing all PDF objects
+{"level":30,"time":1754990656448,"pid":12460,"hostname":"DESKTOP-77Q3HSK","msg":"DocIntel Backend listening on http://localhost:4101"}

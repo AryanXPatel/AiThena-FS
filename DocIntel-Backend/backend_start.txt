@@ -1,0 +1,22 @@
+
+> aithena-docintel-backend@0.1.0 dev
+> tsx watch src/server.ts
+
+node:net:1940
+    const ex = new UVExceptionWithHostPort(err, 'listen', address, port);
+               ^
+
+Error: listen EADDRINUSE: address already in use 0.0.0.0:4101
+    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
+    at listenInCluster (node:net:1997:12)
+    at node:net:2206:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+  code: 'EADDRINUSE',
+  errno: -4091,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 4101
+}
+
+Node.js v24.5.0
+^Cnpm error A complete log of this run can be found in: C:\Users\HP\AppData\Local\npm-cache\_logs\2025-08-12T10_15_27_036Z-debug-0.log
