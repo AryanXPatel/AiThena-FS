@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AiThena Platform - The Complete Bible</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>🧠 AiThena</h2>
+                <p>The Complete Bible</p>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Overview</h3>
+                <ul>
+                    <li><a href="#overview" class="nav-link active">Platform Overview</a></li>
+                    <li><a href="#architecture" class="nav-link">System Architecture</a></li>
+                    <li><a href="#tech-stack" class="nav-link">Technology Stack</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Frontend</h3>
+                <ul>
+                    <li><a href="frontend.html">Frontend Architecture</a></li>
+                    <li><a href="frontend.html#components">Components</a></li>
+                    <li><a href="frontend.html#features">Features & Tools</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Backend Services</h3>
+                <ul>
+                    <li><a href="backend.html">AiThena Backend</a></li>
+                    <li><a href="docintel.html">DocIntel Backend</a></li>
+                    <li><a href="flashcard.html">FlashcardStudio Backend</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>APIs & Endpoints</h3>
+                <ul>
+                    <li><a href="api.html">API Reference</a></li>
+                    <li><a href="api.html#authentication">Authentication</a></li>
+                    <li><a href="api.html#examples">Code Examples</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Setup & Deployment</h3>
+                <ul>
+                    <li><a href="setup.html">Installation Guide</a></li>
+                    <li><a href="setup.html#docker">Docker Setup</a></li>
+                    <li><a href="setup.html#environment">Environment Config</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Development</h3>
+                <ul>
+                    <li><a href="development.html">Development Guide</a></li>
+                    <li><a href="development.html#debugging">Debugging</a></li>
+                    <li><a href="development.html#testing">Testing</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header class="header">
+                <h1>AiThena Platform - Complete Documentation</h1>
+                <div class="header-meta">
+                    <span class="version">Version 1.0.0</span>
+                    <span class="updated">Last Updated: January 2025</span>
+                </div>
+            </header>
+
+            <!-- Platform Overview -->
+            <section id="overview" class="section">
+                <h2>🌟 Platform Overview</h2>
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <h3>🧠 AI-Powered Learning</h3>
+                        <p>Comprehensive study platform with Google Gemini AI integration for intelligent tutoring, document analysis, and personalized learning experiences.</p>
+                    </div>
+                    <div class="overview-card">
+                        <h3>📚 Document Intelligence</h3>
+                        <p>Advanced RAG (Retrieval-Augmented Generation) system with Qdrant vector database for multi-document chat and intelligent content extraction.</p>
+                    </div>
+                    <div class="overview-card">
+                        <h3>🎯 Flashcard Studio</h3>
+                        <p>AI-generated flashcards with spaced repetition algorithms, deck management, and collaborative learning features.</p>
+                    </div>
+                    <div class="overview-card">
+                        <h3>🔧 Modular Architecture</h3>
+                        <p>Microservices-based design with Next.js frontend and multiple specialized Node.js/Fastify backends for scalability.</p>
+                    </div>
+                </div>
+
+                <div class="feature-highlight">
+                    <h3>🚀 Key Features</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <strong>AI Study Assistant:</strong> Intelligent tutoring with context-aware responses
+                        </div>
+                        <div class="feature-item">
+                            <strong>Document Processing:</strong> PDF upload, OCR, chunking, and vector embedding
+                        </div>
+                        <div class="feature-item">
+                            <strong>Multi-Document Chat:</strong> Query across multiple documents with citations
+                        </div>
+                        <div class="feature-item">
+                            <strong>Smart Flashcards:</strong> AI-generated cards from document content
+                        </div>
+                        <div class="feature-item">
+                            <strong>Progress Tracking:</strong> Spaced repetition and learning analytics
+                        </div>
+                        <div class="feature-item">
+                            <strong>Real-time Chat:</strong> Session management and conversation history
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Architecture -->
+            <section id="architecture" class="section">
+                <h2>🏗️ System Architecture</h2>
+                
+                <div class="architecture-diagram">
+                    <h3>Service Architecture</h3>
+                    <div class="service-grid">
+                        <div class="service-box frontend">
+                            <h4>Frontend (Port 3000)</h4>
+                            <p>Next.js + TypeScript</p>
+                            <ul>
+                                <li>React Components</li>
+                                <li>Tailwind CSS</li>
+                                <li>Radix UI</li>
+                                <li>Dashboard Interface</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-box backend">
+                            <h4>AiThena Backend (Port 4001)</h4>
+                            <p>Express.js + Google Gemini</p>
+                            <ul>
+                                <li>AI Assistant API</li>
+                                <li>Flashcard Management</li>
+                                <li>Chat Interface</li>
+                                <li>Study Sessions</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-box backend">
+                            <h4>DocIntel Backend (Port 4101)</h4>
+                            <p>Fastify + Qdrant + RAG</p>
+                            <ul>
+                                <li>Document Processing</li>
+                                <li>Vector Search</li>
+                                <li>Multi-Doc Chat</li>
+                                <li>PDF Analysis</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-box backend">
+                            <h4>FlashcardStudio Backend (Port 4201)</h4>
+                            <p>Fastify + Spaced Repetition</p>
+                            <ul>
+                                <li>Deck Management</li>
+                                <li>Study Analytics</li>
+                                <li>Progress Tracking</li>
+                                <li>Public Deck Sharing</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="service-box database">
+                            <h4>Qdrant Vector DB (Ports 6333-6334)</h4>
+                            <p>Docker Container</p>
+                            <ul>
+                                <li>Vector Storage</li>
+                                <li>Similarity Search</li>
+                                <li>Document Embeddings</li>
+                                <li>RAG Support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="data-flow">
+                    <h3>Data Flow Architecture</h3>
+                    <div class="flow-diagram">
+                        <div class="flow-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Document Upload</h4>
+                                <p>PDF → DocIntel → Processing & Chunking</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Vector Embedding</h4>
+                                <p>Google Gemini → Vector Generation → Qdrant Storage</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Query Processing</h4>
+                                <p>User Query → Vector Search → Context Retrieval</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>AI Response</h4>
+                                <p>Context + Query → Gemini AI → Intelligent Answer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technology Stack -->
+            <section id="tech-stack" class="section">
+                <h2>⚡ Technology Stack</h2>
+                
+                <div class="tech-grid">
+                    <div class="tech-category">
+                        <h3>Frontend Technologies</h3>
+                        <div class="tech-list">
+                            <div class="tech-item">
+                                <strong>Next.js 14</strong>
+                                <p>React framework with app router, server components, and TypeScript support</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>TypeScript</strong>
+                                <p>Static typing for enhanced development experience and error prevention</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>Tailwind CSS</strong>
+                                <p>Utility-first CSS framework for rapid UI development</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>Radix UI</strong>
+                                <p>Headless UI components for accessibility and customization</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>React Markdown</strong>
+                                <p>Markdown rendering with syntax highlighting support</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-category">
+                        <h3>Backend Technologies</h3>
+                        <div class="tech-list">
+                            <div class="tech-item">
+                                <strong>Node.js</strong>
+                                <p>JavaScript runtime for server-side applications</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>Express.js</strong>
+                                <p>Web framework for AiThena Backend (AI Assistant & Flashcards)</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>Fastify</strong>
+                                <p>High-performance web framework for DocIntel and FlashcardStudio</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>TypeScript</strong>
+                                <p>Type-safe backend development with enhanced tooling</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-category">
+                        <h3>AI & ML Stack</h3>
+                        <div class="tech-list">
+                            <div class="tech-item">
+                                <strong>Google Gemini 2.5 Pro</strong>
+                                <p>Advanced language model for chat, document analysis, and content generation</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>Qdrant Vector Database</strong>
+                                <p>High-performance vector search engine for RAG implementation</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>LangChain</strong>
+                                <p>Text splitting and document processing utilities</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>PDF-Parse</strong>
+                                <p>PDF text extraction and content processing</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-category">
+                        <h3>Infrastructure & DevOps</h3>
+                        <div class="tech-list">
+                            <div class="tech-item">
+                                <strong>Docker & Docker Compose</strong>
+                                <p>Containerization for Qdrant database and service orchestration</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>CORS & Security</strong>
+                                <p>Cross-origin resource sharing and API security implementations</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>Environment Configuration</strong>
+                                <p>Secure API key management and environment-specific settings</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>File System Management</strong>
+                                <p>Document storage, processing, and retrieval systems</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tech-versions">
+                    <h3>Version Information</h3>
+                    <div class="versions-grid">
+                        <div class="version-item">
+                            <strong>Node.js:</strong> v18+ (recommended v20+)
+                        </div>
+                        <div class="version-item">
+                            <strong>Next.js:</strong> v14.2.13
+                        </div>
+                        <div class="version-item">
+                            <strong>TypeScript:</strong> v5+
+                        </div>
+                        <div class="version-item">
+                            <strong>Qdrant:</strong> Latest Docker image
+                        </div>
+                        <div class="version-item">
+                            <strong>Google Gemini:</strong> 2.5 Pro & Flash models
+                        </div>
+                        <div class="version-item">
+                            <strong>Docker:</strong> v20+ with Compose v2
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Start -->
+            <section class="section">
+                <h2>🚀 Quick Start Guide</h2>
+                <div class="quick-start">
+                    <div class="step">
+                        <h3>1. Clone & Install</h3>
+                        <pre><code class="language-bash">git clone &lt;repository-url&gt;
+cd AiThena-FS
+npm install  # In each service directory</code></pre>
+                    </div>
+                    
+                    <div class="step">
+                        <h3>2. Environment Setup</h3>
+                        <pre><code class="language-bash"># Create .env files in each backend
+GEMINI_API_KEY=your_google_gemini_api_key
+QDRANT_URL=http://localhost:6333
+PORT=4001/4101/4201</code></pre>
+                    </div>
+                    
+                    <div class="step">
+                        <h3>3. Start Services</h3>
+                        <pre><code class="language-bash"># Start Qdrant (DocIntel-Backend directory)
+docker-compose up -d
+
+# Start each backend service
+npm run dev
+
+# Start frontend
+cd AiThena-FrontEnd && npm run dev</code></pre>
+                    </div>
+                    
+                    <div class="step">
+                        <h3>4. Access Application</h3>
+                        <ul>
+                            <li><strong>Frontend:</strong> http://localhost:3000</li>
+                            <li><strong>AiThena API:</strong> http://localhost:4001</li>
+                            <li><strong>DocIntel API:</strong> http://localhost:4101</li>
+                            <li><strong>FlashcardStudio API:</strong> http://localhost:4201</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation Footer -->
+            <div class="nav-footer">
+                <a href="frontend.html" class="nav-btn">Frontend Architecture →</a>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

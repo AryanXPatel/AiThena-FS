@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Development Guide - AiThena Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>🧠 AiThena</h2>
+                <p>Development Guide</p>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Overview</h3>
+                <ul>
+                    <li><a href="index.html" class="nav-link">← Back to Main</a></li>
+                    <li><a href="#development-workflow" class="nav-link active">Development Workflow</a></li>
+                    <li><a href="#coding-standards" class="nav-link">Coding Standards</a></li>
+                    <li><a href="#testing" class="nav-link">Testing</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Architecture</h3>
+                <ul>
+                    <li><a href="#project-structure" class="nav-link">Project Structure</a></li>
+                    <li><a href="#component-patterns" class="nav-link">Component Patterns</a></li>
+                    <li><a href="#api-design" class="nav-link">API Design</a></li>
+                    <li><a href="#data-flow" class="nav-link">Data Flow</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Best Practices</h3>
+                <ul>
+                    <li><a href="#performance" class="nav-link">Performance</a></li>
+                    <li><a href="#security" class="nav-link">Security</a></li>
+                    <li><a href="#accessibility" class="nav-link">Accessibility</a></li>
+                    <li><a href="#deployment" class="nav-link">Deployment</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Contributing</h3>
+                <ul>
+                    <li><a href="#git-workflow" class="nav-link">Git Workflow</a></li>
+                    <li><a href="#pull-requests" class="nav-link">Pull Requests</a></li>
+                    <li><a href="#code-review" class="nav-link">Code Review</a></li>
+                    <li><a href="#troubleshooting" class="nav-link">Troubleshooting</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header class="header">
+                <h1>Development Guide</h1>
+                <div class="header-meta">
+                    <span class="version">Best Practices & Workflows</span>
+                    <span class="updated">Contributing Guidelines</span>
+                </div>
+            </header>
+
+            <!-- Development Workflow -->
+            <section id="development-workflow" class="section">
+                <h2>🔄 Development Workflow</h2>
+                
+                <div class="workflow-overview">
+                    <p>AiThena follows modern development practices with automated testing, code quality checks, and streamlined deployment processes.</p>
+                </div>
+
+                <div class="daily-workflow">
+                    <h3>Daily Development Workflow</h3>
+                    
+                    <div class="workflow-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <strong>Start Development Environment</strong>
+                                <pre><code class="language-bash"># Quick start all services
+./scripts/dev-start.sh
+
+# Or manually start each service
+cd AiThena-FrontEnd && pnpm dev &
+cd AiThena-Backend && npm run dev &
+cd DocIntel-Backend && npm run dev &
+cd FlashcardStudio-Backend && npm run dev &</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <strong>Create Feature Branch</strong>
+                                <pre><code class="language-bash"># Pull latest changes
+git checkout main
+git pull origin main
+
+# Create feature branch
+git checkout -b feature/new-ai-tool
+git push -u origin feature/new-ai-tool</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <strong>Develop & Test</strong>
+                                <pre><code class="language-bash"># Make changes and test locally
+# Frontend changes - hot reload at localhost:3000
+# Backend changes - automatic restart with tsx watch
+
+# Run tests frequently
+pnpm test
+
+# Check code quality
+pnpm lint
+pnpm type-check</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <strong>Commit & Push</strong>
+                                <pre><code class="language-bash"># Stage changes
+git add .
+
+# Commit with descriptive message
+git commit -m "feat: add new AI-powered study recommendation tool"
+
+# Push to feature branch
+git push origin feature/new-ai-tool</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <strong>Create Pull Request</strong>
+                                <p>Open a pull request on GitHub with detailed description, screenshots, and testing notes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="development-scripts">
+                    <h3>Development Scripts</h3>
+                    
+                    <div class="script-category">
+                        <h4>Quick Start Scripts</h4>
+                        <pre><code class="language-bash">#!/bin/bash
+# scripts/dev-start.sh - Start all development services
+
+echo "🚀 Starting AiThena Development Environment..."
+
+# Start Qdrant database
+cd DocIntel-Backend
+docker compose up -d qdrant
+cd ..
+
+# Start all services in parallel
+echo "Starting Frontend (pnpm)..."
+cd AiThena-FrontEnd && pnpm dev &
+FRONTEND_PID=$!
+
+echo "Starting AiThena Backend (npm)..."
+cd ../AiThena-Backend && npm run dev &
+AITHENA_PID=$!
+
+echo "Starting DocIntel Backend (npm)..."
+cd ../DocIntel-Backend && npm run dev &
+DOCINTEL_PID=$!
+
+echo "Starting FlashcardStudio Backend (npm)..."
+cd ../FlashcardStudio-Backend && npm run dev &
+FLASHCARD_PID=$!
+
+echo "✅ All services started!"
+echo "Frontend: http://localhost:3000"
+echo "AiThena API: http://localhost:4001"
+echo "DocIntel API: http://localhost:4101"
+echo "FlashcardStudio API: http://localhost:4201"
+
+# Wait for user to stop
+read -p "Press Enter to stop all services..."
+
+# Kill all background processes
+kill $FRONTEND_PID $AITHENA_PID $DOCINTEL_PID $FLASHCARD_PID
+docker compose -f DocIntel-Backend/docker-compose.yml down</code></pre>
+                    </div>
+
+                    <div class="script-category">
+                        <h4>Testing Scripts</h4>
+                        <pre><code class="language-bash">#!/bin/bash
+# scripts/test-all.sh - Run all tests across services
+
+echo "🧪 Running AiThena Test Suite..."
+
+# Frontend (uses pnpm)
+echo "Testing AiThena-FrontEnd..."
+cd AiThena-FrontEnd
+if [ ! -d "node_modules" ]; then
+    pnpm install
+fi
+pnpm test
+if [ $? -ne 0 ]; then
+    echo "❌ Tests failed in AiThena-FrontEnd"
+    exit 1
+fi
+cd ..
+
+# Backend services (use npm)
+services=("AiThena-Backend" "DocIntel-Backend" "FlashcardStudio-Backend")
+
+for service in "${services[@]}"; do
+    echo "Testing $service..."
+    cd $service
+    
+    # Install dependencies if needed
+    if [ ! -d "node_modules" ]; then
+        npm install
+    fi
+    
+    # Run tests
+    npm test
+    
+    if [ $? -ne 0 ]; then
+        echo "❌ Tests failed in $service"
+        exit 1
+    fi
+    
+    cd ..
+done
+
+echo "✅ All tests passed!"</code></pre>
+                    </div>
+
+                    <div class="script-category">
+                        <h4>Code Quality Scripts</h4>
+                        <pre><code class="language-bash">#!/bin/bash
+# scripts/quality-check.sh - Run linting and type checking
+
+echo "🔍 Running Code Quality Checks..."
+
+services=("AiThena-FrontEnd" "AiThena-Backend" "DocIntel-Backend" "FlashcardStudio-Backend")
+
+for service in "${services[@]}"; do
+    echo "Checking $service..."
+    cd $service
+    
+    # Lint check
+    echo "  Running ESLint..."
+    pnpm lint
+    
+    # Type check
+    echo "  Running TypeScript check..."
+    pnpm type-check
+    
+    cd ..
+done
+
+echo "✅ Code quality checks completed!"</code></pre>
+                    </div>
+                </div>
+
+                <div class="hot-reload">
+                    <h3>Hot Reload & Development Experience</h3>
+                    
+                    <div class="hot-reload-config">
+                        <h4>Frontend Hot Reload (Next.js)</h4>
+                        <ul>
+                            <li>✅ Automatic page refresh on file changes</li>
+                            <li>✅ Fast Refresh for React components</li>
+                            <li>✅ CSS hot reload with Tailwind</li>
+                            <li>✅ TypeScript error overlay</li>
+                        </ul>
+                    </div>
+
+                    <div class="hot-reload-config">
+                        <h4>Backend Hot Reload (tsx watch)</h4>
+                        <ul>
+                            <li>✅ Automatic server restart on TypeScript changes</li>
+                            <li>✅ Preserves uploaded files and database state</li>
+                            <li>✅ Fast compilation with tsx</li>
+                            <li>✅ Error reporting in terminal</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Coding Standards -->
+            <section id="coding-standards" class="section">
+                <h2>📝 Coding Standards</h2>
+                
+                <div class="standards-overview">
+                    <p>Consistent coding standards ensure maintainable, readable, and collaborative code across the AiThena platform.</p>
+                </div>
+
+                <div class="typescript-standards">
+                    <h3>TypeScript Standards</h3>
+                    
+                    <div class="standard-section">
+                        <h4>Type Definitions</h4>
+                        <pre><code class="language-typescript">// ✅ Good: Explicit interface definitions
+interface FlashcardDeck {
+  id: string;
+  name: string;
+  subject: string;
+  cardCount: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// ✅ Good: Generic type for API responses
+interface APIResponse<T> {
+  data: T;
+  success: boolean;
+  message?: string;
+  error?: string;
+}
+
+// ✅ Good: Union types for specific values
+type DifficultyLevel = 'easy' | 'medium' | 'hard';
+type CardStatus = 'new' | 'learning' | 'review' | 'mastered';
+
+// ❌ Avoid: Using 'any' type
+// const data: any = response;
+
+// ✅ Better: Use proper typing
+const data: APIResponse<FlashcardDeck[]> = response;</code></pre>
+                    </div>
+
+                    <div class="standard-section">
+                        <h4>Function Signatures</h4>
+                        <pre><code class="language-typescript">// ✅ Good: Clear function signatures with return types
+async function createFlashcardDeck(
+  deckData: Partial<FlashcardDeck>
+): Promise<APIResponse<FlashcardDeck>> {
+  // Implementation
+}
+
+// ✅ Good: Optional parameters with defaults
+function generateCards(
+  content: string,
+  options: {
+    count?: number;
+    difficulty?: DifficultyLevel;
+    subject?: string;
+  } = {}
+): Promise<Flashcard[]> {
+  const { count = 10, difficulty = 'medium', subject } = options;
+  // Implementation
+}
+
+// ✅ Good: Error handling with custom types
+class APIError extends Error {
+  constructor(
+    message: string,
+    public statusCode: number,
+    public details?: unknown
+  ) {
+    super(message);
+    this.name = 'APIError';
+  }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="react-standards">
+                    <h3>React Component Standards</h3>
+                    
+                    <div class="standard-section">
+                        <h4>Component Structure</h4>
+                        <pre><code class="language-typescript">// ✅ Good: Functional component with proper typing
+interface FlashcardProps {
+  card: Flashcard;
+  onAnswer: (difficulty: DifficultyLevel) => void;
+  isFlipped: boolean;
+  onFlip: () => void;
+}
+
+export default function FlashcardComponent({
+  card,
+  onAnswer,
+  isFlipped,
+  onFlip
+}: FlashcardProps) {
+  // Component logic here
+  
+  return (
+    <div className="flashcard-container">
+      {/* JSX here */}
+    </div>
+  );
+}
+
+// ✅ Good: Custom hooks for reusable logic
+function useFlashcardStudy(deckId: string) {
+  const [cards, setCards] = useState<Flashcard[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
+  
+  // Hook logic
+  
+  return {
+    currentCard: cards[currentIndex],
+    isFlipped,
+    nextCard: () => setCurrentIndex(prev => prev + 1),
+    flipCard: () => setIsFlipped(prev => !prev),
+    answerCard: (difficulty: DifficultyLevel) => {
+      // Answer logic
+    }
+  };
+}</code></pre>
+                    </div>
+
+                    <div class="standard-section">
+                        <h4>State Management Patterns</h4>
+                        <pre><code class="language-typescript">// ✅ Good: Context for global state
+interface AppContextType {
+  user: User | null;
+  theme: 'light' | 'dark';
+  setUser: (user: User | null) => void;
+  setTheme: (theme: 'light' | 'dark') => void;
+}
+
+const AppContext = createContext<AppContextType | null>(null);
+
+// ✅ Good: Custom hook for context
+function useAppContext() {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error('useAppContext must be used within AppProvider');
+  }
+  return context;
+}
+
+// ✅ Good: Reducer for complex state
+interface StudySessionState {
+  cards: Flashcard[];
+  currentIndex: number;
+  isFlipped: boolean;
+  stats: StudyStats;
+}
+
+type StudySessionAction =
+  | { type: 'FLIP_CARD' }
+  | { type: 'NEXT_CARD' }
+  | { type: 'ANSWER_CARD'; payload: { difficulty: DifficultyLevel } }
+  | { type: 'RESET_SESSION'; payload: { cards: Flashcard[] } };
+
+function studySessionReducer(
+  state: StudySessionState,
+  action: StudySessionAction
+): StudySessionState {
+  switch (action.type) {
+    case 'FLIP_CARD':
+      return { ...state, isFlipped: !state.isFlipped };
+    // Other cases
+    default:
+      return state;
+  }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="api-standards">
+                    <h3>API Design Standards</h3>
+                    
+                    <div class="standard-section">
+                        <h4>Route Handlers</h4>
+                        <pre><code class="language-typescript">// ✅ Good: Express.js route handler with proper error handling
+import { Request, Response, NextFunction } from 'express';
+
+interface CreateDeckRequest extends Request {
+  body: {
+    name: string;
+    subject: string;
+    description?: string;
+  };
+}
+
+export async function createDeck(
+  req: CreateDeckRequest,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    // Validate input
+    const { name, subject, description } = req.body;
+    
+    if (!name || !subject) {
+      return res.status(400).json({
+        error: 'Validation Error',
+        message: 'Name and subject are required'
+      });
+    }
+    
+    // Business logic
+    const deck = await deckService.create({
+      name,
+      subject,
+      description,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+    
+    // Success response
+    res.status(201).json({
+      success: true,
+      data: deck
+    });
+    
+  } catch (error) {
+    next(error); // Pass to error middleware
+  }
+}</code></pre>
+                    </div>
+
+                    <div class="standard-section">
+                        <h4>Fastify Route Handlers</h4>
+                        <pre><code class="language-typescript">// ✅ Good: Fastify route with schema validation
+import { FastifyRequest, FastifyReply } from 'fastify';
+
+const createDeckSchema = {
+  body: {
+    type: 'object',
+    required: ['name', 'subject'],
+    properties: {
+      name: { type: 'string', minLength: 1, maxLength: 100 },
+      subject: { type: 'string', minLength: 1, maxLength: 50 },
+      description: { type: 'string', maxLength: 500 }
+    }
+  }
+};
+
+interface CreateDeckBody {
+  name: string;
+  subject: string;
+  description?: string;
+}
+
+export async function createDeckHandler(
+  request: FastifyRequest<{ Body: CreateDeckBody }>,
+  reply: FastifyReply
+) {
+  try {
+    const { name, subject, description } = request.body;
+    
+    const deck = await deckService.create({
+      name,
+      subject,
+      description
+    });
+    
+    return reply.status(201).send({
+      success: true,
+      data: deck
+    });
+    
+  } catch (error) {
+    request.log.error(error);
+    return reply.status(500).send({
+      error: 'Internal Server Error',
+      message: 'Failed to create deck'
+    });
+  }
+}
+
+// Register route with schema
+fastify.post('/decks', {
+  schema: createDeckSchema,
+  handler: createDeckHandler
+});</code></pre>
+                    </div>
+                </div>
+
+                <div class="naming-conventions">
+                    <h3>Naming Conventions</h3>
+                    
+                    <div class="naming-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Convention</th>
+                                    <th>Example</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Components</td>
+                                    <td>PascalCase</td>
+                                    <td><code>FlashcardDeck</code>, <code>AIAssistant</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Files</td>
+                                    <td>kebab-case</td>
+                                    <td><code>flashcard-deck.tsx</code>, <code>ai-assistant.ts</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Variables/Functions</td>
+                                    <td>camelCase</td>
+                                    <td><code>currentCard</code>, <code>generateFlashcards</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Constants</td>
+                                    <td>SCREAMING_SNAKE_CASE</td>
+                                    <td><code>DEFAULT_CARD_COUNT</code>, <code>API_BASE_URL</code></td>
+                                </tr>
+                                <tr>
+                                    <td>Interfaces/Types</td>
+                                    <td>PascalCase</td>
+                                    <td><code>FlashcardDeck</code>, <code>APIResponse</code></td>
+                                </tr>
+                                <tr>
+                                    <td>API Routes</td>
+                                    <td>kebab-case</td>
+                                    <td><code>/api/flashcard-decks</code>, <code>/chat-sessions</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="linting-config">
+                    <h3>ESLint & Prettier Configuration</h3>
+                    
+                    <div class="config-file">
+                        <h4>.eslintrc.json</h4>
+                        <pre><code class="language-json">{
+  "extends": [
+    "next/core-web-vitals",
+    "@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/prefer-const": "error",
+    "prefer-const": "off",
+    "no-var": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  }
+}</code></pre>
+                    </div>
+
+                    <div class="config-file">
+                        <h4>.prettierrc</h4>
+                        <pre><code class="language-json">{
+  "semi": true,
+  "trailingComma": "es5",
+  "singleQuote": true,
+  "printWidth": 80,
+  "tabWidth": 2,
+  "useTabs": false
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testing -->
+            <section id="testing" class="section">
+                <h2>🧪 Testing Strategy</h2>
+                
+                <div class="testing-overview">
+                    <p>Comprehensive testing ensures reliability and maintainability of the AiThena platform across all components and services.</p>
+                </div>
+
+                <div class="testing-pyramid">
+                    <h3>Testing Pyramid</h3>
+                    <div class="pyramid-levels">
+                        <div class="pyramid-level unit">
+                            <h4>Unit Tests (70%)</h4>
+                            <ul>
+                                <li>Individual functions and components</li>
+                                <li>Fast execution and isolated testing</li>
+                                <li>Jest + React Testing Library</li>
+                            </ul>
+                        </div>
+                        <div class="pyramid-level integration">
+                            <h4>Integration Tests (20%)</h4>
+                            <ul>
+                                <li>API endpoints and database interactions</li>
+                                <li>Component integration testing</li>
+                                <li>Supertest for API testing</li>
+                            </ul>
+                        </div>
+                        <div class="pyramid-level e2e">
+                            <h4>E2E Tests (10%)</h4>
+                            <ul>
+                                <li>Complete user workflows</li>
+                                <li>Cross-service integration</li>
+                                <li>Playwright for browser testing</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="frontend-testing">
+                    <h3>Frontend Testing</h3>
+                    
+                    <div class="test-example">
+                        <h4>Component Testing Example</h4>
+                        <pre><code class="language-typescript">// FlashcardDeck.test.tsx
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { FlashcardDeck } from '@/components/dashboard/FlashcardDeck';
+import { mockDeck, mockCards } from '@/lib/test-utils';
+
+// Mock the API hook
+jest.mock('@/hooks/useFlashcards', () => ({
+  useFlashcards: () => ({
+    decks: [mockDeck],
+    isLoading: false,
+    error: null,
+    createDeck: jest.fn(),
+    updateDeck: jest.fn(),
+    deleteDeck: jest.fn()
+  })
+}));
+
+describe('FlashcardDeck Component', () => {
+  it('renders deck information correctly', () => {
+    render(<FlashcardDeck deck={mockDeck} />);
+    
+    expect(screen.getByText(mockDeck.name)).toBeInTheDocument();
+    expect(screen.getByText(mockDeck.subject)).toBeInTheDocument();
+    expect(screen.getByText(`${mockDeck.cardCount} cards`)).toBeInTheDocument();
+  });
+
+  it('handles deck deletion', async () => {
+    const mockDeleteDeck = jest.fn();
+    const { useFlashcards } = require('@/hooks/useFlashcards');
+    useFlashcards.mockReturnValue({
+      ...useFlashcards(),
+      deleteDeck: mockDeleteDeck
+    });
+
+    render(<FlashcardDeck deck={mockDeck} />);
+    
+    // Open delete modal
+    fireEvent.click(screen.getByRole('button', { name: /delete/i }));
+    
+    // Confirm deletion
+    fireEvent.click(screen.getByRole('button', { name: /confirm/i }));
+    
+    await waitFor(() => {
+      expect(mockDeleteDeck).toHaveBeenCalledWith(mockDeck.id);
+    });
+  });
+
+  it('shows loading state during operations', () => {
+    const { useFlashcards } = require('@/hooks/useFlashcards');
+    useFlashcards.mockReturnValue({
+      ...useFlashcards(),
+      isLoading: true
+    });
+
+    render(<FlashcardDeck deck={mockDeck} />);
+    
+    expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
+  });
+});</code></pre>
+                    </div>
+
+                    <div class="test-example">
+                        <h4>Custom Hook Testing</h4>
+                        <pre><code class="language-typescript">// useFlashcardStudy.test.ts
+import { renderHook, act } from '@testing-library/react';
+import { useFlashcardStudy } from '@/hooks/useFlashcardStudy';
+import { mockCards } from '@/lib/test-utils';
+
+// Mock the API
+jest.mock('@/lib/api', () => ({
+  flashcardAPI: {
+    getDeckCards: jest.fn(() => Promise.resolve(mockCards)),
+    updateCardProgress: jest.fn(() => Promise.resolve())
+  }
+}));
+
+describe('useFlashcardStudy hook', () => {
+  it('initializes with first card', async () => {
+    const { result } = renderHook(() => useFlashcardStudy('deck-1'));
+    
+    await act(async () => {
+      await result.current.loadCards();
+    });
+    
+    expect(result.current.currentCard).toEqual(mockCards[0]);
+    expect(result.current.currentIndex).toBe(0);
+    expect(result.current.isFlipped).toBe(false);
+  });
+
+  it('advances to next card', async () => {
+    const { result } = renderHook(() => useFlashcardStudy('deck-1'));
+    
+    await act(async () => {
+      await result.current.loadCards();
+    });
+
+    act(() => {
+      result.current.nextCard();
+    });
+    
+    expect(result.current.currentIndex).toBe(1);
+    expect(result.current.currentCard).toEqual(mockCards[1]);
+  });
+
+  it('handles card answers correctly', async () => {
+    const { result } = renderHook(() => useFlashcardStudy('deck-1'));
+    
+    await act(async () => {
+      await result.current.loadCards();
+    });
+
+    await act(async () => {
+      await result.current.answerCard('easy');
+    });
+    
+    // Should advance to next card and update progress
+    expect(result.current.currentIndex).toBe(1);
+    expect(result.current.stats.totalAnswered).toBe(1);
+  });
+});</code></pre>
+                    </div>
+                </div>
+
+                <div class="backend-testing">
+                    <h3>Backend Testing</h3>
+                    
+                    <div class="test-example">
+                        <h4>API Route Testing</h4>
+                        <pre><code class="language-typescript">// flashcard-routes.test.ts
+import request from 'supertest';
+import { app } from '../src/server';
+import { FlashcardService } from '../src/services/flashcard-service';
+
+// Mock the service
+jest.mock('../src/services/flashcard-service');
+const mockFlashcardService = FlashcardService as jest.Mocked<typeof FlashcardService>;
+
+describe('Flashcard Routes', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('POST /api/flashcards/decks', () => {
+    it('creates a new deck successfully', async () => {
+      const mockDeck = {
+        id: 'deck-1',
+        name: 'Test Deck',
+        subject: 'Science',
+        cardCount: 0
+      };
+
+      mockFlashcardService.createDeck.mockResolvedValue(mockDeck);
+
+      const response = await request(app)
+        .post('/api/flashcards/decks')
+        .send({
+          name: 'Test Deck',
+          subject: 'Science',
+          description: 'A test deck'
+        })
+        .expect(201);
+
+      expect(response.body.success).toBe(true);
+      expect(response.body.data).toEqual(mockDeck);
+      expect(mockFlashcardService.createDeck).toHaveBeenCalledWith({
+        name: 'Test Deck',
+        subject: 'Science',
+        description: 'A test deck'
+      });
+    });
+
+    it('validates required fields', async () => {
+      const response = await request(app)
+        .post('/api/flashcards/decks')
+        .send({
+          name: '', // Invalid: empty name
+          subject: 'Science'
+        })
+        .expect(400);
+
+      expect(response.body.error).toBe('Validation Error');
+      expect(response.body.message).toContain('name');
+    });
+
+    it('handles service errors', async () => {
+      mockFlashcardService.createDeck.mockRejectedValue(
+        new Error('Database connection failed')
+      );
+
+      const response = await request(app)
+        .post('/api/flashcards/decks')
+        .send({
+          name: 'Test Deck',
+          subject: 'Science'
+        })
+        .expect(500);
+
+      expect(response.body.error).toBe('Internal Server Error');
+    });
+  });
+
+  describe('GET /api/flashcards/decks', () => {
+    it('returns all decks', async () => {
+      const mockDecks = [
+        { id: 'deck-1', name: 'Deck 1', subject: 'Science' },
+        { id: 'deck-2', name: 'Deck 2', subject: 'Math' }
+      ];
+
+      mockFlashcardService.getAllDecks.mockResolvedValue(mockDecks);
+
+      const response = await request(app)
+        .get('/api/flashcards/decks')
+        .expect(200);
+
+      expect(response.body).toEqual(mockDecks);
+      expect(mockFlashcardService.getAllDecks).toHaveBeenCalled();
+    });
+  });
+});</code></pre>
+                    </div>
+
+                    <div class="test-example">
+                        <h4>Service Layer Testing</h4>
+                        <pre><code class="language-typescript">// flashcard-service.test.ts
+import { FlashcardService } from '../src/services/flashcard-service';
+import { FileSystemStorage } from '../src/storage/file-system-storage';
+
+// Mock the storage layer
+jest.mock('../src/storage/file-system-storage');
+const mockStorage = FileSystemStorage as jest.Mocked<typeof FileSystemStorage>;
+
+describe('FlashcardService', () => {
+  let service: FlashcardService;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    service = new FlashcardService(new mockStorage());
+  });
+
+  describe('createDeck', () => {
+    it('creates deck with proper defaults', async () => {
+      const deckData = {
+        name: 'Test Deck',
+        subject: 'Science',
+        description: 'Test description'
+      };
+
+      mockStorage.prototype.saveDeck.mockResolvedValue(undefined);
+
+      const result = await service.createDeck(deckData);
+
+      expect(result.id).toBeDefined();
+      expect(result.name).toBe(deckData.name);
+      expect(result.cardCount).toBe(0);
+      expect(result.createdAt).toBeInstanceOf(Date);
+      expect(mockStorage.prototype.saveDeck).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: deckData.name,
+          subject: deckData.subject,
+          description: deckData.description
+        })
+      );
+    });
+
+    it('validates deck name uniqueness', async () => {
+      mockStorage.prototype.getDeckByName.mockResolvedValue({
+        id: 'existing-deck',
+        name: 'Test Deck'
+      });
+
+      await expect(
+        service.createDeck({ name: 'Test Deck', subject: 'Science' })
+      ).rejects.toThrow('Deck with this name already exists');
+    });
+  });
+
+  describe('generateCardsFromContent', () => {
+    it('generates cards using AI service', async () => {
+      const mockCards = [
+        { front: 'Question 1', back: 'Answer 1' },
+        { front: 'Question 2', back: 'Answer 2' }
+      ];
+
+      // Mock AI service
+      const mockAIService = {
+        generateFlashcards: jest.fn().mockResolvedValue(mockCards)
+      };
+
+      service.setAIService(mockAIService);
+
+      const result = await service.generateCardsFromContent(
+        'Test content',
+        { cardCount: 2, difficulty: 'medium' }
+      );
+
+      expect(result).toHaveLength(2);
+      expect(mockAIService.generateFlashcards).toHaveBeenCalledWith(
+        'Test content',
+        { cardCount: 2, difficulty: 'medium' }
+      );
+    });
+  });
+});</code></pre>
+                    </div>
+                </div>
+
+                <div class="e2e-testing">
+                    <h3>End-to-End Testing</h3>
+                    
+                    <div class="test-example">
+                        <h4>Complete User Workflow</h4>
+                        <pre><code class="language-typescript">// e2e/flashcard-workflow.spec.ts
+import { test, expect } from '@playwright/test';
+
+test.describe('Flashcard Study Workflow', () => {
+  test.beforeEach(async ({ page }) => {
+    // Start with clean state
+    await page.goto('http://localhost:3000');
+    await page.waitForLoadState('networkidle');
+  });
+
+  test('complete study session workflow', async ({ page }) => {
+    // Navigate to flashcards
+    await page.click('[data-testid="nav-flashcards"]');
+    await page.waitForURL('**/dashboard/flashcards');
+
+    // Create a new deck
+    await page.click('[data-testid="create-deck-button"]');
+    await page.fill('[data-testid="deck-name-input"]', 'E2E Test Deck');
+    await page.fill('[data-testid="deck-subject-input"]', 'Testing');
+    await page.click('[data-testid="create-deck-submit"]');
+
+    // Verify deck was created
+    await expect(page.locator('[data-testid="deck-card"]')).toContainText('E2E Test Deck');
+
+    // Add cards to the deck
+    await page.click('[data-testid="deck-card"]:has-text("E2E Test Deck")');
+    await page.click('[data-testid="add-card-button"]');
+    
+    await page.fill('[data-testid="card-front-input"]', 'What is E2E testing?');
+    await page.fill('[data-testid="card-back-input"]', 'End-to-end testing of complete user workflows');
+    await page.click('[data-testid="save-card-button"]');
+
+    // Start study session
+    await page.click('[data-testid="start-study-button"]');
+    
+    // Study the card
+    await expect(page.locator('[data-testid="card-front"]')).toContainText('What is E2E testing?');
+    await page.click('[data-testid="flip-card-button"]');
+    await expect(page.locator('[data-testid="card-back"]')).toContainText('End-to-end testing');
+    
+    // Answer the card
+    await page.click('[data-testid="answer-easy"]');
+    
+    // Verify session completion
+    await expect(page.locator('[data-testid="session-complete"]')).toBeVisible();
+    await expect(page.locator('[data-testid="session-stats"]')).toContainText('1 card studied');
+  });
+
+  test('AI card generation workflow', async ({ page }) => {
+    // Navigate to AI generation
+    await page.click('[data-testid="nav-ai-tools"]');
+    await page.click('[data-testid="flashcard-generator"]');
+
+    // Input content for generation
+    const testContent = `
+      Photosynthesis is the process by which plants convert light energy into chemical energy.
+      It occurs in the chloroplasts and involves carbon dioxide and water.
+    `;
+    
+    await page.fill('[data-testid="content-input"]', testContent);
+    await page.selectOption('[data-testid="card-count-select"]', '3');
+    await page.selectOption('[data-testid="difficulty-select"]', 'medium');
+    
+    // Generate cards
+    await page.click('[data-testid="generate-cards-button"]');
+    
+    // Wait for generation to complete
+    await page.waitForSelector('[data-testid="generated-cards"]');
+    
+    // Verify cards were generated
+    const cardElements = page.locator('[data-testid="generated-card"]');
+    await expect(cardElements).toHaveCount(3);
+    
+    // Save to new deck
+    await page.fill('[data-testid="new-deck-name"]', 'AI Generated Photosynthesis');
+    await page.click('[data-testid="save-to-new-deck"]');
+    
+    // Verify deck was created with cards
+    await page.goto('/dashboard/flashcards');
+    await expect(page.locator('[data-testid="deck-card"]')).toContainText('AI Generated Photosynthesis');
+    await expect(page.locator('[data-testid="deck-card"]')).toContainText('3 cards');
+  });
+
+  test('document chat integration', async ({ page }) => {
+    // Navigate to document intelligence
+    await page.click('[data-testid="nav-document-intelligence"]');
+    
+    // Upload a test document
+    const fileInput = page.locator('[data-testid="file-upload-input"]');
+    await fileInput.setInputFiles('tests/fixtures/test-document.pdf');
+    
+    // Wait for upload to complete
+    await page.waitForSelector('[data-testid="upload-success"]');
+    
+    // Start chat with document
+    await page.fill('[data-testid="chat-input"]', 'What are the main topics in this document?');
+    await page.click('[data-testid="send-message"]');
+    
+    // Wait for AI response
+    await page.waitForSelector('[data-testid="ai-response"]');
+    
+    // Verify response contains relevant information
+    const response = page.locator('[data-testid="ai-response"]').last();
+    await expect(response).toContainText('topics');
+    
+    // Verify citations are shown
+    await expect(page.locator('[data-testid="citation"]')).toBeVisible();
+  });
+});</code></pre>
+                    </div>
+                </div>
+
+                <div class="test-configuration">
+                    <h3>Test Configuration</h3>
+                    
+                    <div class="config-file">
+                        <h4>Jest Configuration (jest.config.js)</h4>
+                        <pre><code class="language-javascript">const nextJest = require('next/jest');
+
+const createJestConfig = nextJest({
+  dir: './',
+});
+
+const customJestConfig = {
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  moduleNameMapping: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
+  testEnvironment: 'jest-environment-jsdom',
+  collectCoverageFrom: [
+    'src/**/*.{js,jsx,ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/pages/_app.tsx',
+    '!src/pages/_document.tsx',
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 70,
+      functions: 70,
+      lines: 70,
+      statements: 70,
+    },
+  },
+};
+
+module.exports = createJestConfig(customJestConfig);</code></pre>
+                    </div>
+
+                    <div class="config-file">
+                        <h4>Playwright Configuration (playwright.config.ts)</h4>
+                        <pre><code class="language-typescript">import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './e2e',
+  fullyParallel: true,
+  forbidOnly: !!process.env.CI,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : undefined,
+  reporter: 'html',
+  use: {
+    baseURL: 'http://localhost:3000',
+    trace: 'on-first-retry',
+  },
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+  ],
+  webServer: {
+    command: 'pnpm dev',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !process.env.CI,
+  },
+});</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation Footer -->
+            <div class="nav-footer">
+                <a href="setup.html" class="nav-btn">← Setup & Deployment</a>
+                <a href="index.html" class="nav-btn">Back to Overview →</a>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

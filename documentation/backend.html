@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Services - AiThena Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>🧠 AiThena</h2>
+                <p>Backend Services</p>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Overview</h3>
+                <ul>
+                    <li><a href="index.html" class="nav-link">← Back to Main</a></li>
+                    <li><a href="#overview" class="nav-link active">Services Overview</a></li>
+                    <li><a href="#architecture" class="nav-link">Service Architecture</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>AiThena Backend</h3>
+                <ul>
+                    <li><a href="#aithena-backend" class="nav-link">Service Overview</a></li>
+                    <li><a href="#ai-assistant" class="nav-link">AI Assistant API</a></li>
+                    <li><a href="#flashcard-api" class="nav-link">Flashcard API</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>DocIntel Backend</h3>
+                <ul>
+                    <li><a href="docintel.html">Document Intelligence</a></li>
+                    <li><a href="docintel.html#rag-system">RAG System</a></li>
+                    <li><a href="docintel.html#vector-db">Vector Database</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>FlashcardStudio Backend</h3>
+                <ul>
+                    <li><a href="flashcard.html">Flashcard Service</a></li>
+                    <li><a href="flashcard.html#spaced-repetition">Spaced Repetition</a></li>
+                    <li><a href="flashcard.html#deck-management">Deck Management</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>API Reference</h3>
+                <ul>
+                    <li><a href="api.html">Complete API Docs</a></li>
+                    <li><a href="api.html#authentication">Authentication</a></li>
+                    <li><a href="api.html#examples">Code Examples</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header class="header">
+                <h1>Backend Services Architecture</h1>
+                <div class="header-meta">
+                    <span class="version">Microservices</span>
+                    <span class="updated">Node.js + TypeScript</span>
+                </div>
+            </header>
+
+            <!-- Services Overview -->
+            <section id="overview" class="section">
+                <h2>🏗️ Backend Services Overview</h2>
+                
+                <div class="services-intro">
+                    <p>AiThena's backend is built as a microservices architecture with three specialized services, each handling distinct aspects of the AI-powered learning platform.</p>
+                </div>
+
+                <div class="services-grid">
+                    <div class="service-card aithena">
+                        <div class="service-icon">🧠</div>
+                        <h3>AiThena Backend</h3>
+                        <div class="service-details">
+                            <p><strong>Port:</strong> 4001</p>
+                            <p><strong>Framework:</strong> Express.js</p>
+                            <p><strong>Purpose:</strong> AI Assistant & Flashcard Management</p>
+                        </div>
+                        <div class="service-features">
+                            <ul>
+                                <li>Google Gemini AI Integration</li>
+                                <li>Chat Interface & History</li>
+                                <li>Flashcard CRUD Operations</li>
+                                <li>Study Session Management</li>
+                                <li>AI-Powered Card Generation</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="service-card docintel">
+                        <div class="service-icon">📄</div>
+                        <h3>DocIntel Backend</h3>
+                        <div class="service-details">
+                            <p><strong>Port:</strong> 4101</p>
+                            <p><strong>Framework:</strong> Fastify</p>
+                            <p><strong>Purpose:</strong> Document Intelligence & RAG</p>
+                        </div>
+                        <div class="service-features">
+                            <ul>
+                                <li>PDF Processing & OCR</li>
+                                <li>Vector Embedding Generation</li>
+                                <li>Qdrant Vector Database</li>
+                                <li>Multi-Document Chat</li>
+                                <li>Semantic Search</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="service-card flashcard">
+                        <div class="service-icon">🎯</div>
+                        <h3>FlashcardStudio Backend</h3>
+                        <div class="service-details">
+                            <p><strong>Port:</strong> 4201</p>
+                            <p><strong>Framework:</strong> Fastify</p>
+                            <p><strong>Purpose:</strong> Advanced Flashcard Features</p>
+                        </div>
+                        <div class="service-features">
+                            <ul>
+                                <li>Spaced Repetition Algorithms</li>
+                                <li>Study Analytics & Progress</li>
+                                <li>Deck Sharing & Collaboration</li>
+                                <li>Performance Tracking</li>
+                                <li>Advanced Study Modes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tech-comparison">
+                    <h3>Technology Comparison</h3>
+                    <div class="comparison-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Framework</th>
+                                    <th>Primary Use Case</th>
+                                    <th>Key Dependencies</th>
+                                    <th>Data Storage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>AiThena Backend</strong></td>
+                                    <td>Express.js</td>
+                                    <td>AI Chat & Basic Flashcards</td>
+                                    <td>Google Gemini AI, Zod</td>
+                                    <td>File System (JSON)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DocIntel Backend</strong></td>
+                                    <td>Fastify</td>
+                                    <td>Document Processing & RAG</td>
+                                    <td>Qdrant, PDF-Parse, LangChain</td>
+                                    <td>Qdrant Vector DB + Files</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>FlashcardStudio Backend</strong></td>
+                                    <td>Fastify</td>
+                                    <td>Advanced Learning Features</td>
+                                    <td>Spaced Repetition, Analytics</td>
+                                    <td>File System (JSON)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Service Architecture -->
+            <section id="architecture" class="section">
+                <h2>🔧 Service Architecture</h2>
+                
+                <div class="architecture-overview">
+                    <p>The backend follows a microservices pattern with clear separation of concerns, allowing for independent scaling and development of different platform features.</p>
+                </div>
+
+                <div class="communication-flow">
+                    <h3>Inter-Service Communication</h3>
+                    <div class="flow-diagram">
+                        <div class="flow-layer">
+                            <div class="layer-title">Frontend Layer</div>
+                            <div class="layer-box frontend">
+                                <strong>Next.js Frontend</strong>
+                                <p>Port 3000</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flow-arrows">
+                            <div class="arrow">HTTP/REST APIs</div>
+                            <div class="arrow">WebSocket (Future)</div>
+                        </div>
+                        
+                        <div class="flow-layer">
+                            <div class="layer-title">API Gateway Layer</div>
+                            <div class="layer-services">
+                                <div class="layer-box service1">
+                                    <strong>AiThena API</strong>
+                                    <p>:4001</p>
+                                </div>
+                                <div class="layer-box service2">
+                                    <strong>DocIntel API</strong>
+                                    <p>:4101</p>
+                                </div>
+                                <div class="layer-box service3">
+                                    <strong>FlashcardStudio API</strong>
+                                    <p>:4201</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flow-arrows">
+                            <div class="arrow">Direct Integration</div>
+                            <div class="arrow">Cross-Service Calls</div>
+                        </div>
+                        
+                        <div class="flow-layer">
+                            <div class="layer-title">External Services</div>
+                            <div class="layer-services">
+                                <div class="layer-box external">
+                                    <strong>Google Gemini</strong>
+                                    <p>AI Processing</p>
+                                </div>
+                                <div class="layer-box external">
+                                    <strong>Qdrant DB</strong>
+                                    <p>Vector Storage</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="shared-patterns">
+                    <h3>Shared Architecture Patterns</h3>
+                    <div class="patterns-grid">
+                        <div class="pattern-item">
+                            <h4>🔐 CORS Configuration</h4>
+                            <pre><code class="language-typescript">// Shared CORS setup across services
+app.register(cors, {
+  origin: ['http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+})</code></pre>
+                        </div>
+                        
+                        <div class="pattern-item">
+                            <h4>🛡️ Error Handling</h4>
+                            <pre><code class="language-typescript">// Standardized error responses
+app.setErrorHandler((error, request, reply) => {
+  request.log.error(error)
+  reply.status(500).send({ 
+    error: 'Internal Server Error', 
+    message: error.message,
+    statusCode: 500 
+  })
+})</code></pre>
+                        </div>
+                        
+                        <div class="pattern-item">
+                            <h4>📝 Request Logging</h4>
+                            <pre><code class="language-typescript">// Consistent logging across services
+app.addHook('onRequest', async (request, reply) => {
+  request.log.info({
+    method: request.method,
+    url: request.url
+  }, 'incoming request')
+})</code></pre>
+                        </div>
+                        
+                        <div class="pattern-item">
+                            <h4>🚀 Health Checks</h4>
+                            <pre><code class="language-typescript">// Standard health endpoint
+app.get('/health', async (request, reply) => {
+  return { 
+    ok: true, 
+    service: 'Service Name',
+    timestamp: new Date().toISOString(),
+    version: '1.0.0'
+  }
+})</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AiThena Backend Details -->
+            <section id="aithena-backend" class="section">
+                <h2>🧠 AiThena Backend Service</h2>
+                
+                <div class="service-overview">
+                    <p>The main AiThena backend handles core AI functionality and basic flashcard operations, serving as the primary interface for AI-powered learning features.</p>
+                </div>
+
+                <div class="service-structure">
+                    <h3>Service Structure</h3>
+                    <pre><code class="language-bash">AiThena-Backend/
+├── src/
+│   ├── server.ts              # Main Express server
+│   └── flashcard-routes.ts    # Flashcard API routes
+├── data/
+│   └── flashcards/           # JSON file storage
+│       ├── decks.json        # Deck metadata
+│       └── cards/            # Individual card files
+│           └── [deckId].json
+├── package.json              # Dependencies & scripts
+├── tsconfig.json            # TypeScript configuration
+└── .env                     # Environment variables</code></pre>
+                </div>
+
+                <div class="dependencies">
+                    <h3>Key Dependencies</h3>
+                    <div class="deps-grid">
+                        <div class="dep-item">
+                            <strong>Express.js</strong>
+                            <p>Web framework for handling HTTP requests and routing</p>
+                        </div>
+                        <div class="dep-item">
+                            <strong>@google/generative-ai</strong>
+                            <p>Official Google Gemini AI SDK for chat and content generation</p>
+                        </div>
+                        <div class="dep-item">
+                            <strong>Zod</strong>
+                            <p>TypeScript-first schema validation for request/response validation</p>
+                        </div>
+                        <div class="dep-item">
+                            <strong>UUID</strong>
+                            <p>Unique identifier generation for decks and cards</p>
+                        </div>
+                        <div class="dep-item">
+                            <strong>CORS</strong>
+                            <p>Cross-origin resource sharing for frontend integration</p>
+                        </div>
+                        <div class="dep-item">
+                            <strong>Dotenv</strong>
+                            <p>Environment variable management for configuration</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="environment-config">
+                    <h3>Environment Configuration</h3>
+                    <pre><code class="language-bash"># AiThena-Backend/.env
+GEMINI_API_KEY=your_google_gemini_api_key_here
+GEMINI_MODEL=gemini-2.5-flash
+PORT=4001</code></pre>
+                </div>
+            </section>
+
+            <!-- AI Assistant API -->
+            <section id="ai-assistant" class="section">
+                <h2>🤖 AI Assistant API</h2>
+                
+                <div class="api-overview">
+                    <p>The AI Assistant API provides intelligent tutoring capabilities using Google Gemini 2.5 Pro, with context-aware responses and conversation history management.</p>
+                </div>
+
+                <div class="api-features">
+                    <h3>API Features</h3>
+                    <div class="features-grid">
+                        <div class="feature-box">
+                            <h4>💬 Chat Interface</h4>
+                            <p>Natural language conversation with AI tutor</p>
+                        </div>
+                        <div class="feature-box">
+                            <h4>📚 Context Awareness</h4>
+                            <p>Maintains conversation history for contextual responses</p>
+                        </div>
+                        <div class="feature-box">
+                            <h4>⚙️ Configurable Parameters</h4>
+                            <p>Adjustable temperature, top-P, and output tokens</p>
+                        </div>
+                        <div class="feature-box">
+                            <h4>🎯 System Instructions</h4>
+                            <p>Custom system prompts for specialized tutoring</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="api-implementation">
+                    <h3>Implementation Details</h3>
+                    <pre><code class="language-typescript">// AI Assistant Chat Endpoint
+app.post('/api/assistant/chat', async (req: Request, res: Response) => {
+  try {
+    const { 
+      message, 
+      history, 
+      systemInstruction, 
+      temperature, 
+      topP, 
+      maxOutputTokens 
+    } = ChatSchema.parse(req.body)
+
+    // Process conversation history
+    const rawHistory = history || []
+    const firstUserIdx = rawHistory.findIndex((h) => h.role === 'user')
+    const slicedHistory = firstUserIdx >= 0 ? rawHistory.slice(firstUserIdx) : []
+
+    // Configure AI model
+    const generationConfig: any = {}
+    if (temperature !== undefined) generationConfig.temperature = temperature
+    if (topP !== undefined) generationConfig.topP = topP
+    if (maxOutputTokens !== undefined) generationConfig.maxOutputTokens = maxOutputTokens
+
+    const model = genAI.getGenerativeModel({ 
+      model: GEMINI_MODEL,
+      generationConfig,
+      systemInstruction: systemInstruction || `You are an AI study assistant helping students learn effectively. Provide clear, educational responses that encourage learning and understanding.`
+    })
+
+    // Create chat session with history
+    const chat = model.startChat({
+      history: slicedHistory.map((h) => ({
+        role: h.role === 'user' ? 'user' : 'model',
+        parts: [{ text: h.text }],
+      })),
+    })
+
+    // Generate response
+    const result = await chat.sendMessage(message)
+    const response = result.response.text()
+
+    res.json({ 
+      response,
+      model: GEMINI_MODEL,
+      usage: {
+        promptTokens: 0, // Gemini doesn't provide token counts
+        completionTokens: 0,
+        totalTokens: 0
+      }
+    })
+
+  } catch (error) {
+    console.error('AI Assistant error:', error)
+    res.status(500).json({ 
+      error: 'Failed to process chat request',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    })
+  }
+})</code></pre>
+                </div>
+
+                <div class="validation-schema">
+                    <h3>Request Validation</h3>
+                    <pre><code class="language-typescript">// Zod schema for chat requests
+const ChatSchema = z.object({
+  message: z.string().min(1),
+  history: z.array(
+    z.object({
+      role: z.enum(['user', 'model']),
+      text: z.string(),
+    })
+  ).optional(),
+  systemInstruction: z.string().optional(),
+  temperature: z.number().min(0).max(2).optional(),
+  topP: z.number().min(0).max(1).optional(),
+  maxOutputTokens: z.number().int().positive().optional(),
+})
+
+// Usage in endpoint
+const validatedData = ChatSchema.parse(req.body)</code></pre>
+                </div>
+            </section>
+
+            <!-- Flashcard API -->
+            <section id="flashcard-api" class="section">
+                <h2>🎯 Flashcard Management API</h2>
+                
+                <div class="flashcard-overview">
+                    <p>The flashcard API provides comprehensive deck and card management functionality, including AI-powered card generation from document content.</p>
+                </div>
+
+                <div class="data-models">
+                    <h3>Data Models</h3>
+                    <div class="models-grid">
+                        <div class="model-box">
+                            <h4>FlashcardDeck</h4>
+                            <pre><code class="language-typescript">interface FlashcardDeck {
+  id: string
+  name: string
+  subject: string
+  description: string
+  cardCount: number
+  studiedCount: number
+  masteredCount: number
+  lastStudied: string
+  difficulty: 'easy' | 'medium' | 'hard'
+  progress: number
+  color: string
+  isPublic: boolean
+  tags: string[]
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+}</code></pre>
+                        </div>
+                        
+                        <div class="model-box">
+                            <h4>Flashcard</h4>
+                            <pre><code class="language-typescript">interface Flashcard {
+  id: string
+  front: string
+  back: string
+  difficulty: 'easy' | 'medium' | 'hard'
+  mastered: boolean
+  lastReviewed: string
+  reviewCount: number
+  easeFactor: number
+  interval: number
+  nextReview: string
+  createdAt: string
+  updatedAt: string
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-endpoints">
+                    <h3>Key API Endpoints</h3>
+                    <div class="endpoints-list">
+                        <div class="endpoint-item">
+                            <div class="endpoint-method get">GET</div>
+                            <div class="endpoint-path">/api/flashcards/decks</div>
+                            <div class="endpoint-desc">Retrieve all flashcard decks</div>
+                        </div>
+                        <div class="endpoint-item">
+                            <div class="endpoint-method post">POST</div>
+                            <div class="endpoint-path">/api/flashcards/decks</div>
+                            <div class="endpoint-desc">Create a new flashcard deck</div>
+                        </div>
+                        <div class="endpoint-item">
+                            <div class="endpoint-method get">GET</div>
+                            <div class="endpoint-path">/api/flashcards/decks/:id/cards</div>
+                            <div class="endpoint-desc">Get all cards in a deck</div>
+                        </div>
+                        <div class="endpoint-item">
+                            <div class="endpoint-method post">POST</div>
+                            <div class="endpoint-path">/api/flashcards/decks/:id/cards</div>
+                            <div class="endpoint-desc">Add a new card to a deck</div>
+                        </div>
+                        <div class="endpoint-item">
+                            <div class="endpoint-method post">POST</div>
+                            <div class="endpoint-path">/api/flashcards/generate/cards</div>
+                            <div class="endpoint-desc">AI-generate cards from content</div>
+                        </div>
+                        <div class="endpoint-item">
+                            <div class="endpoint-method post">POST</div>
+                            <div class="endpoint-path">/api/flashcards/study/session</div>
+                            <div class="endpoint-desc">Start a study session</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ai-generation">
+                    <h3>AI Card Generation</h3>
+                    <p>One of the most powerful features is AI-powered flashcard generation from document content:</p>
+                    <pre><code class="language-typescript">// AI Card Generation Endpoint
+router.post('/generate/cards', async (req: Request, res: Response) => {
+  try {
+    const {
+      content,
+      cardCount = 10,
+      difficulty = 'medium',
+      subject,
+      createDeck = false,
+      deckName,
+      deckDescription
+    } = GenerateCardsSchema.parse(req.body)
+
+    // Prepare AI prompt for card generation
+    const prompt = `Generate ${cardCount} flashcards from the following content.
+    
+Subject: ${subject}
+Difficulty: ${difficulty}
+
+Content:
+${content}
+
+Requirements:
+- Create clear, concise questions and answers
+- Focus on key concepts and important information  
+- Ensure questions test understanding, not just memorization
+- Use varied question types (definitions, explanations, applications)
+- Format as JSON array with "front" and "back" properties
+
+Example format:
+[
+  {"front": "What is photosynthesis?", "back": "The process by which plants convert light energy into chemical energy"},
+  {"front": "Name the main components needed for photosynthesis", "back": "Carbon dioxide, water, and sunlight"}
+]
+
+Generate exactly ${cardCount} flashcards:`
+
+    // Call Google Gemini AI
+    const model = genAI.getGenerativeModel({ model: GEMINI_MODEL })
+    const result = await model.generateContent(prompt)
+    const aiResponse = result.response.text()
+
+    // Parse AI response
+    const jsonMatch = aiResponse.match(/\[[\s\S]*\]/)
+    if (!jsonMatch) {
+      throw new Error('Could not extract valid JSON from AI response')
+    }
+
+    const generatedCards = JSON.parse(jsonMatch[0])
+    
+    // Create flashcard objects
+    const flashcards: Flashcard[] = generatedCards.map((card: any) => ({
+      id: uuidv4(),
+      front: card.front,
+      back: card.back,
+      difficulty,
+      mastered: false,
+      lastReviewed: '',
+      reviewCount: 0,
+      easeFactor: 2.5,
+      interval: 1,
+      nextReview: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }))
+
+    // Optionally create a new deck
+    if (createDeck && deckName) {
+      const newDeck: FlashcardDeck = {
+        id: uuidv4(),
+        name: deckName,
+        subject: subject || 'Generated',
+        description: deckDescription || `AI-generated deck with ${cardCount} cards`,
+        cardCount: flashcards.length,
+        studiedCount: 0,
+        masteredCount: 0,
+        lastStudied: '',
+        difficulty,
+        progress: 0,
+        color: 'bg-blue-500',
+        isPublic: false,
+        tags: ['ai-generated'],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        createdBy: 'ai-system'
+      }
+
+      // Save deck and cards
+      const decks = await loadDecks()
+      decks.push(newDeck)
+      await saveDecks(decks)
+      await saveCards(newDeck.id, flashcards)
+
+      res.json({ cards: flashcards, addedToDeck: newDeck.id, deck: newDeck })
+    } else {
+      res.json({ cards: flashcards })
+    }
+
+  } catch (error) {
+    console.error('Error generating cards:', error)
+    res.status(500).json({ error: 'Failed to generate cards' })
+  }
+})</code></pre>
+                </div>
+
+                <div class="file-storage">
+                    <h3>File-Based Storage</h3>
+                    <p>The service uses JSON files for data persistence:</p>
+                    <div class="storage-structure">
+                        <pre><code class="language-bash">data/flashcards/
+├── decks.json                 # All deck metadata
+└── cards/                     # Individual card files
+    ├── deck-uuid-1.json      # Cards for deck 1
+    ├── deck-uuid-2.json      # Cards for deck 2
+    └── deck-uuid-n.json      # Cards for deck n</code></pre>
+                    </div>
+                    
+                    <div class="storage-functions">
+                        <pre><code class="language-typescript">// Storage utility functions
+const DATA_DIR = path.resolve(process.cwd(), 'data/flashcards')
+
+async function loadDecks(): Promise<FlashcardDeck[]> {
+  try {
+    const decksPath = path.join(DATA_DIR, 'decks.json')
+    const data = await fs.readFile(decksPath, 'utf8')
+    return JSON.parse(data)
+  } catch {
+    return []
+  }
+}
+
+async function saveDecks(decks: FlashcardDeck[]): Promise<void> {
+  const decksPath = path.join(DATA_DIR, 'decks.json')
+  await fs.writeFile(decksPath, JSON.stringify(decks, null, 2))
+}
+
+async function loadCards(deckId: string): Promise<Flashcard[]> {
+  try {
+    const cardsPath = path.join(DATA_DIR, 'cards', `${deckId}.json`)
+    const data = await fs.readFile(cardsPath, 'utf8')
+    return JSON.parse(data)
+  } catch {
+    return []
+  }
+}
+
+async function saveCards(deckId: string, cards: Flashcard[]): Promise<void> {
+  const cardsDir = path.join(DATA_DIR, 'cards')
+  await fs.mkdir(cardsDir, { recursive: true })
+  const cardsPath = path.join(cardsDir, `${deckId}.json`)
+  await fs.writeFile(cardsPath, JSON.stringify(cards, null, 2))
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation Footer -->
+            <div class="nav-footer">
+                <a href="frontend.html" class="nav-btn">← Frontend Architecture</a>
+                <a href="docintel.html" class="nav-btn">DocIntel Backend →</a>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

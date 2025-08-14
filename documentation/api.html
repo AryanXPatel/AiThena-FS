@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference - AiThena Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>🧠 AiThena</h2>
+                <p>API Reference</p>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Overview</h3>
+                <ul>
+                    <li><a href="index.html" class="nav-link">← Back to Main</a></li>
+                    <li><a href="#overview" class="nav-link active">API Overview</a></li>
+                    <li><a href="#authentication" class="nav-link">Authentication</a></li>
+                    <li><a href="#error-handling" class="nav-link">Error Handling</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>AiThena API (4001)</h3>
+                <ul>
+                    <li><a href="#ai-assistant-api" class="nav-link">AI Assistant</a></li>
+                    <li><a href="#flashcard-api" class="nav-link">Flashcard Management</a></li>
+                    <li><a href="#ai-generation" class="nav-link">AI Card Generation</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>DocIntel API (4101)</h3>
+                <ul>
+                    <li><a href="#document-api" class="nav-link">Document Management</a></li>
+                    <li><a href="#upload-api" class="nav-link">File Upload</a></li>
+                    <li><a href="#chat-api" class="nav-link">Document Chat</a></li>
+                    <li><a href="#search-api" class="nav-link">Search & RAG</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>FlashcardStudio API (4201)</h3>
+                <ul>
+                    <li><a href="#advanced-flashcard" class="nav-link">Advanced Features</a></li>
+                    <li><a href="#study-sessions" class="nav-link">Study Sessions</a></li>
+                    <li><a href="#analytics" class="nav-link">Analytics & Progress</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Examples & Testing</h3>
+                <ul>
+                    <li><a href="#examples" class="nav-link">Code Examples</a></li>
+                    <li><a href="#postman" class="nav-link">Postman Collection</a></li>
+                    <li><a href="#testing" class="nav-link">Testing Guide</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header class="header">
+                <h1>Complete API Reference</h1>
+                <div class="header-meta">
+                    <span class="version">REST APIs</span>
+                    <span class="updated">JSON Request/Response</span>
+                </div>
+            </header>
+
+            <!-- API Overview -->
+            <section id="overview" class="section">
+                <h2>🌐 API Overview</h2>
+                
+                <div class="api-intro">
+                    <p>AiThena provides three main REST APIs that power the AI learning platform. All APIs use JSON for request/response bodies and follow RESTful conventions.</p>
+                </div>
+
+                <div class="api-endpoints">
+                    <h3>Service Endpoints</h3>
+                    <div class="endpoints-grid">
+                        <div class="endpoint-card aithena">
+                            <h4>🧠 AiThena API</h4>
+                            <div class="endpoint-url">http://localhost:4001</div>
+                            <div class="endpoint-features">
+                                <ul>
+                                    <li>AI Assistant Chat</li>
+                                    <li>Flashcard CRUD</li>
+                                    <li>AI Card Generation</li>
+                                    <li>Study Sessions</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="endpoint-card docintel">
+                            <h4>📄 DocIntel API</h4>
+                            <div class="endpoint-url">http://localhost:4101</div>
+                            <div class="endpoint-features">
+                                <ul>
+                                    <li>Document Upload & Processing</li>
+                                    <li>Multi-Document Chat</li>
+                                    <li>Vector Search</li>
+                                    <li>RAG Implementation</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="endpoint-card flashcard">
+                            <h4>🎯 FlashcardStudio API</h4>
+                            <div class="endpoint-url">http://localhost:4201</div>
+                            <div class="endpoint-features">
+                                <ul>
+                                    <li>Advanced Deck Management</li>
+                                    <li>Spaced Repetition</li>
+                                    <li>Study Analytics</li>
+                                    <li>Collaborative Features</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="common-headers">
+                    <h3>Common Request Headers</h3>
+                    <pre><code class="language-http">Content-Type: application/json
+Accept: application/json
+Origin: http://localhost:3000</code></pre>
+                </div>
+
+                <div class="rate-limits">
+                    <h3>Rate Limiting & Quotas</h3>
+                    <div class="limits-grid">
+                        <div class="limit-item">
+                            <strong>AI Assistant:</strong> 100 requests/minute
+                        </div>
+                        <div class="limit-item">
+                            <strong>Document Upload:</strong> 10 files/minute
+                        </div>
+                        <div class="limit-item">
+                            <strong>General APIs:</strong> 1000 requests/minute
+                        </div>
+                        <div class="limit-item">
+                            <strong>File Size Limit:</strong> 10MB per file
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Authentication -->
+            <section id="authentication" class="section">
+                <h2>🔐 Authentication & Security</h2>
+                
+                <div class="auth-overview">
+                    <p>Currently, the APIs operate in development mode without authentication. In production, implement JWT-based authentication or API key authentication.</p>
+                </div>
+
+                <div class="security-headers">
+                    <h3>Security Headers</h3>
+                    <pre><code class="language-http">Access-Control-Allow-Origin: http://localhost:3000
+Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
+Access-Control-Allow-Headers: Content-Type, Authorization
+Access-Control-Allow-Credentials: true</code></pre>
+                </div>
+
+                <div class="future-auth">
+                    <h3>Future Authentication Implementation</h3>
+                    <pre><code class="language-javascript">// Example: JWT Authentication Middleware
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+
+  if (!token) {
+    return res.sendStatus(401)
+  }
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403)
+    req.user = user
+    next()
+  })
+}
+
+// Usage
+app.post('/api/protected-endpoint', authenticateToken, (req, res) => {
+  // Protected route logic
+})</code></pre>
+                </div>
+            </section>
+
+            <!-- Error Handling -->
+            <section id="error-handling" class="section">
+                <h2>⚠️ Error Handling</h2>
+                
+                <div class="error-overview">
+                    <p>All APIs use consistent error response formats with appropriate HTTP status codes and detailed error messages.</p>
+                </div>
+
+                <div class="error-format">
+                    <h3>Standard Error Response Format</h3>
+                    <pre><code class="language-json">{
+  "error": "Error Type",
+  "message": "Detailed error description",
+  "statusCode": 400,
+  "timestamp": "2025-01-14T10:30:00.000Z",
+  "path": "/api/endpoint",
+  "details": {
+    "field": "Additional error context"
+  }
+}</code></pre>
+                </div>
+
+                <div class="status-codes">
+                    <h3>HTTP Status Codes</h3>
+                    <div class="status-grid">
+                        <div class="status-item success">
+                            <strong>200 OK</strong>
+                            <p>Request successful</p>
+                        </div>
+                        <div class="status-item success">
+                            <strong>201 Created</strong>
+                            <p>Resource created successfully</p>
+                        </div>
+                        <div class="status-item client-error">
+                            <strong>400 Bad Request</strong>
+                            <p>Invalid request data</p>
+                        </div>
+                        <div class="status-item client-error">
+                            <strong>401 Unauthorized</strong>
+                            <p>Authentication required</p>
+                        </div>
+                        <div class="status-item client-error">
+                            <strong>404 Not Found</strong>
+                            <p>Resource not found</p>
+                        </div>
+                        <div class="status-item server-error">
+                            <strong>500 Internal Server Error</strong>
+                            <p>Server-side error</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="validation-errors">
+                    <h3>Validation Error Example</h3>
+                    <pre><code class="language-json">{
+  "error": "Validation Error",
+  "message": "Invalid input data",
+  "statusCode": 400,
+  "details": {
+    "errors": [
+      {
+        "field": "email",
+        "message": "Invalid email format"
+      },
+      {
+        "field": "password", 
+        "message": "Password must be at least 8 characters"
+      }
+    ]
+  }
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- AI Assistant API -->
+            <section id="ai-assistant-api" class="section">
+                <h2>🤖 AI Assistant API</h2>
+                
+                <div class="api-description">
+                    <p>The AI Assistant API provides intelligent tutoring capabilities using Google Gemini 2.5 Pro with conversation history and configurable parameters.</p>
+                </div>
+
+                <div class="endpoint-detail">
+                    <h3>POST /api/assistant/chat</h3>
+                    <div class="endpoint-info">
+                        <div class="endpoint-badge post">POST</div>
+                        <code>http://localhost:4001/api/assistant/chat</code>
+                    </div>
+                    
+                    <h4>Request Body</h4>
+                    <pre><code class="language-json">{
+  "message": "Explain photosynthesis in simple terms",
+  "history": [
+    {
+      "role": "user",
+      "text": "What is biology?"
+    },
+    {
+      "role": "model", 
+      "text": "Biology is the scientific study of life and living organisms..."
+    }
+  ],
+  "systemInstruction": "You are a helpful biology tutor",
+  "temperature": 0.7,
+  "topP": 0.9,
+  "maxOutputTokens": 1000
+}</code></pre>
+
+                    <h4>Response</h4>
+                    <pre><code class="language-json">{
+  "response": "Photosynthesis is the process by which plants convert sunlight into energy...",
+  "model": "gemini-2.5-flash",
+  "usage": {
+    "promptTokens": 0,
+    "completionTokens": 0,
+    "totalTokens": 0
+  }
+}</code></pre>
+
+                    <h4>Parameters</h4>
+                    <div class="params-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>message</code></td>
+                                    <td>string</td>
+                                    <td>✅</td>
+                                    <td>User's message to the AI assistant</td>
+                                </tr>
+                                <tr>
+                                    <td><code>history</code></td>
+                                    <td>array</td>
+                                    <td>❌</td>
+                                    <td>Previous conversation history</td>
+                                </tr>
+                                <tr>
+                                    <td><code>systemInstruction</code></td>
+                                    <td>string</td>
+                                    <td>❌</td>
+                                    <td>Custom system prompt for AI behavior</td>
+                                </tr>
+                                <tr>
+                                    <td><code>temperature</code></td>
+                                    <td>number (0-2)</td>
+                                    <td>❌</td>
+                                    <td>Creativity level (default: 0.7)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>topP</code></td>
+                                    <td>number (0-1)</td>
+                                    <td>❌</td>
+                                    <td>Nucleus sampling parameter</td>
+                                </tr>
+                                <tr>
+                                    <td><code>maxOutputTokens</code></td>
+                                    <td>number</td>
+                                    <td>❌</td>
+                                    <td>Maximum response length</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="health-check">
+                    <h3>GET /health</h3>
+                    <div class="endpoint-info">
+                        <div class="endpoint-badge get">GET</div>
+                        <code>http://localhost:4001/health</code>
+                    </div>
+                    
+                    <h4>Response</h4>
+                    <pre><code class="language-json">{
+  "ok": true,
+  "model": "gemini-2.5-flash"
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Flashcard API -->
+            <section id="flashcard-api" class="section">
+                <h2>🎯 Flashcard Management API</h2>
+                
+                <div class="flashcard-endpoints">
+                    <h3>Deck Management Endpoints</h3>
+                    
+                    <div class="endpoint-group">
+                        <h4>GET /api/flashcards/decks</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge get">GET</div>
+                            <code>http://localhost:4001/api/flashcards/decks</code>
+                        </div>
+                        <p>Retrieve all flashcard decks with metadata and statistics.</p>
+                        
+                        <h5>Response</h5>
+                        <pre><code class="language-json">[
+  {
+    "id": "deck-uuid-1",
+    "name": "Biology Fundamentals",
+    "subject": "Biology",
+    "description": "Basic biology concepts and terminology",
+    "cardCount": 25,
+    "studiedCount": 15,
+    "masteredCount": 8,
+    "lastStudied": "2025-01-13T14:30:00.000Z",
+    "difficulty": "medium",
+    "progress": 32,
+    "color": "bg-green-500",
+    "isPublic": false,
+    "tags": ["biology", "fundamentals"],
+    "createdAt": "2025-01-10T10:00:00.000Z",
+    "updatedAt": "2025-01-13T14:30:00.000Z",
+    "createdBy": "user_1"
+  }
+]</code></pre>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>POST /api/flashcards/decks</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge post">POST</div>
+                            <code>http://localhost:4001/api/flashcards/decks</code>
+                        </div>
+                        <p>Create a new flashcard deck.</p>
+                        
+                        <h5>Request Body</h5>
+                        <pre><code class="language-json">{
+  "name": "Chemistry Basics",
+  "subject": "Chemistry",
+  "description": "Introduction to chemical principles",
+  "color": "bg-blue-500",
+  "tags": ["chemistry", "basics"]
+}</code></pre>
+
+                        <h5>Response</h5>
+                        <pre><code class="language-json">{
+  "id": "deck-uuid-2",
+  "name": "Chemistry Basics",
+  "subject": "Chemistry",
+  "description": "Introduction to chemical principles",
+  "cardCount": 0,
+  "studiedCount": 0,
+  "masteredCount": 0,
+  "lastStudied": "",
+  "difficulty": "medium",
+  "progress": 0,
+  "color": "bg-blue-500",
+  "isPublic": false,
+  "tags": ["chemistry", "basics"],
+  "createdAt": "2025-01-14T10:00:00.000Z",
+  "updatedAt": "2025-01-14T10:00:00.000Z",
+  "createdBy": "user_1"
+}</code></pre>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>PUT /api/flashcards/decks/:id</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge put">PUT</div>
+                            <code>http://localhost:4001/api/flashcards/decks/{deckId}</code>
+                        </div>
+                        <p>Update an existing flashcard deck.</p>
+                        
+                        <h5>Request Body</h5>
+                        <pre><code class="language-json">{
+  "name": "Advanced Chemistry",
+  "description": "Advanced chemical principles and reactions",
+  "tags": ["chemistry", "advanced", "reactions"]
+}</code></pre>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>DELETE /api/flashcards/decks/:id</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge delete">DELETE</div>
+                            <code>http://localhost:4001/api/flashcards/decks/{deckId}</code>
+                        </div>
+                        <p>Delete a flashcard deck and all associated cards.</p>
+                        
+                        <h5>Response</h5>
+                        <pre><code class="language-json">{
+  "success": true
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="card-endpoints">
+                    <h3>Card Management Endpoints</h3>
+                    
+                    <div class="endpoint-group">
+                        <h4>GET /api/flashcards/decks/:id/cards</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge get">GET</div>
+                            <code>http://localhost:4001/api/flashcards/decks/{deckId}/cards</code>
+                        </div>
+                        <p>Retrieve all cards in a specific deck.</p>
+                        
+                        <h5>Response</h5>
+                        <pre><code class="language-json">[
+  {
+    "id": "card-uuid-1",
+    "front": "What is the chemical formula for water?",
+    "back": "H2O (two hydrogen atoms bonded to one oxygen atom)",
+    "difficulty": "easy",
+    "mastered": false,
+    "lastReviewed": "",
+    "reviewCount": 0,
+    "easeFactor": 2.5,
+    "interval": 1,
+    "nextReview": "2025-01-14T10:00:00.000Z",
+    "createdAt": "2025-01-14T10:00:00.000Z",
+    "updatedAt": "2025-01-14T10:00:00.000Z"
+  }
+]</code></pre>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>POST /api/flashcards/decks/:id/cards</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge post">POST</div>
+                            <code>http://localhost:4001/api/flashcards/decks/{deckId}/cards</code>
+                        </div>
+                        <p>Add a new card to a deck.</p>
+                        
+                        <h5>Request Body</h5>
+                        <pre><code class="language-json">{
+  "front": "What is photosynthesis?",
+  "back": "The process by which plants convert light energy into chemical energy",
+  "difficulty": "medium"
+}</code></pre>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>PUT /api/flashcards/cards/:id</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge put">PUT</div>
+                            <code>http://localhost:4001/api/flashcards/cards/{cardId}</code>
+                        </div>
+                        <p>Update an existing flashcard.</p>
+                        
+                        <h5>Query Parameters</h5>
+                        <ul>
+                            <li><code>deckId</code> (required): ID of the deck containing the card</li>
+                        </ul>
+                        
+                        <h5>Request Body</h5>
+                        <pre><code class="language-json">{
+  "deckId": "deck-uuid-1",
+  "front": "What is cellular respiration?",
+  "back": "The process by which cells break down glucose to produce ATP energy",
+  "difficulty": "medium"
+}</code></pre>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>DELETE /api/flashcards/cards/:id</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge delete">DELETE</div>
+                            <code>http://localhost:4001/api/flashcards/cards/{cardId}</code>
+                        </div>
+                        <p>Delete a flashcard from a deck.</p>
+                        
+                        <h5>Query Parameters</h5>
+                        <ul>
+                            <li><code>deckId</code> (required): ID of the deck containing the card</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Generation API -->
+            <section id="ai-generation" class="section">
+                <h2>🧠 AI Card Generation API</h2>
+                
+                <div class="generation-overview">
+                    <p>Generate flashcards automatically from text content using Google Gemini AI.</p>
+                </div>
+
+                <div class="endpoint-detail">
+                    <h3>POST /api/flashcards/generate/cards</h3>
+                    <div class="endpoint-info">
+                        <div class="endpoint-badge post">POST</div>
+                        <code>http://localhost:4001/api/flashcards/generate/cards</code>
+                    </div>
+                    
+                    <p>Generate flashcards from provided content using AI.</p>
+                    
+                    <h4>Request Body</h4>
+                    <pre><code class="language-json">{
+  "content": "Photosynthesis is the process by which plants and some bacteria convert light energy into chemical energy. It occurs in the chloroplasts of plant cells and involves the conversion of carbon dioxide and water into glucose and oxygen using sunlight.",
+  "cardCount": 5,
+  "difficulty": "medium",
+  "subject": "Biology",
+  "createDeck": true,
+  "deckName": "Photosynthesis Basics",
+  "deckDescription": "Flashcards covering the fundamentals of photosynthesis"
+}</code></pre>
+
+                    <h4>Response (with deck creation)</h4>
+                    <pre><code class="language-json">{
+  "cards": [
+    {
+      "id": "card-uuid-1",
+      "front": "What is photosynthesis?",
+      "back": "The process by which plants convert light energy into chemical energy",
+      "difficulty": "medium",
+      "mastered": false,
+      "lastReviewed": "",
+      "reviewCount": 0,
+      "easeFactor": 2.5,
+      "interval": 1,
+      "nextReview": "2025-01-14T10:00:00.000Z",
+      "createdAt": "2025-01-14T10:00:00.000Z",
+      "updatedAt": "2025-01-14T10:00:00.000Z"
+    }
+  ],
+  "addedToDeck": "deck-uuid-3",
+  "deck": {
+    "id": "deck-uuid-3",
+    "name": "Photosynthesis Basics",
+    "subject": "Biology",
+    "description": "Flashcards covering the fundamentals of photosynthesis",
+    "cardCount": 5,
+    "studiedCount": 0,
+    "masteredCount": 0,
+    "lastStudied": "",
+    "difficulty": "medium",
+    "progress": 0,
+    "color": "bg-blue-500",
+    "isPublic": false,
+    "tags": ["ai-generated"],
+    "createdAt": "2025-01-14T10:00:00.000Z",
+    "updatedAt": "2025-01-14T10:00:00.000Z",
+    "createdBy": "ai-system"
+  }
+}</code></pre>
+
+                    <h4>Parameters</h4>
+                    <div class="params-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>content</code></td>
+                                    <td>string</td>
+                                    <td>✅</td>
+                                    <td>Text content to generate cards from</td>
+                                </tr>
+                                <tr>
+                                    <td><code>cardCount</code></td>
+                                    <td>number</td>
+                                    <td>❌</td>
+                                    <td>Number of cards to generate (default: 10)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>difficulty</code></td>
+                                    <td>string</td>
+                                    <td>❌</td>
+                                    <td>Card difficulty: easy, medium, hard</td>
+                                </tr>
+                                <tr>
+                                    <td><code>subject</code></td>
+                                    <td>string</td>
+                                    <td>❌</td>
+                                    <td>Subject area for context</td>
+                                </tr>
+                                <tr>
+                                    <td><code>createDeck</code></td>
+                                    <td>boolean</td>
+                                    <td>❌</td>
+                                    <td>Whether to create a new deck</td>
+                                </tr>
+                                <tr>
+                                    <td><code>deckName</code></td>
+                                    <td>string</td>
+                                    <td>❌</td>
+                                    <td>Name for the new deck (if createDeck is true)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>deckDescription</code></td>
+                                    <td>string</td>
+                                    <td>❌</td>
+                                    <td>Description for the new deck</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="public-decks">
+                    <h3>Public Deck Management</h3>
+                    
+                    <div class="endpoint-group">
+                        <h4>GET /api/flashcards/public/decks</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge get">GET</div>
+                            <code>http://localhost:4001/api/flashcards/public/decks</code>
+                        </div>
+                        <p>Retrieve all public flashcard decks.</p>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>POST /api/flashcards/decks/:id/publish</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge post">POST</div>
+                            <code>http://localhost:4001/api/flashcards/decks/{deckId}/publish</code>
+                        </div>
+                        <p>Make a deck public for sharing.</p>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>POST /api/flashcards/decks/:id/clone</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge post">POST</div>
+                            <code>http://localhost:4001/api/flashcards/decks/{deckId}/clone</code>
+                        </div>
+                        <p>Clone a public deck to your collection.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Document API -->
+            <section id="document-api" class="section">
+                <h2>📄 Document Management API</h2>
+                
+                <div class="document-overview">
+                    <p>The DocIntel API provides comprehensive document processing, storage, and intelligent querying capabilities using RAG technology.</p>
+                </div>
+
+                <div class="document-endpoints">
+                    <div class="endpoint-group">
+                        <h4>GET /documents</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge get">GET</div>
+                            <code>http://localhost:4101/documents</code>
+                        </div>
+                        <p>Retrieve all uploaded documents with metadata.</p>
+                        
+                        <h5>Response</h5>
+                        <pre><code class="language-json">[
+  {
+    "id": "1705234567890",
+    "name": "Biology Textbook Chapter 5",
+    "pages": 15,
+    "uploadDate": "2025-01-14T10:30:00.000Z",
+    "size": "2.5 MB",
+    "status": "processed"
+  }
+]</code></pre>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>GET /documents/:id/metadata</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge get">GET</div>
+                            <code>http://localhost:4101/documents/{documentId}/metadata</code>
+                        </div>
+                        <p>Get detailed metadata for a specific document.</p>
+                        
+                        <h5>Response</h5>
+                        <pre><code class="language-json">{
+  "id": "1705234567890",
+  "name": "Biology Textbook Chapter 5",
+  "pages": 15,
+  "wordCount": 4567,
+  "chunkCount": 23,
+  "uploadDate": "2025-01-14T10:30:00.000Z",
+  "processedDate": "2025-01-14T10:32:15.000Z",
+  "size": "2.5 MB",
+  "status": "processed",
+  "contentPreview": "This chapter covers the fundamental principles of cellular biology..."
+}</code></pre>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>GET /documents/:id/chunks</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge get">GET</div>
+                            <code>http://localhost:4101/documents/{documentId}/chunks</code>
+                        </div>
+                        <p>Get document content split into searchable chunks.</p>
+                        
+                        <h5>Response</h5>
+                        <pre><code class="language-json">{
+  "id": "1705234567890",
+  "chunks": [
+    "Cellular biology is the study of cell structure and function...",
+    "The cell membrane is a phospholipid bilayer that controls...",
+    "Mitochondria are the powerhouses of the cell..."
+  ]
+}</code></pre>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>GET /documents/:id/download</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge get">GET</div>
+                            <code>http://localhost:4101/documents/{documentId}/download</code>
+                        </div>
+                        <p>Download the original PDF file.</p>
+                        
+                        <h5>Response Headers</h5>
+                        <pre><code class="language-http">Content-Type: application/pdf
+Content-Disposition: attachment; filename="Document-{id}.pdf"</code></pre>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>DELETE /documents/:id</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge delete">DELETE</div>
+                            <code>http://localhost:4101/documents/{documentId}</code>
+                        </div>
+                        <p>Delete a document and all associated data.</p>
+                        
+                        <h5>Response</h5>
+                        <pre><code class="language-json">{
+  "success": true,
+  "message": "Document deleted successfully"
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Upload API -->
+            <section id="upload-api" class="section">
+                <h2>📤 File Upload API</h2>
+                
+                <div class="upload-overview">
+                    <p>Upload PDF documents for processing and analysis. Files are automatically processed, chunked, and vectorized for intelligent search.</p>
+                </div>
+
+                <div class="endpoint-detail">
+                    <h3>POST /upload</h3>
+                    <div class="endpoint-info">
+                        <div class="endpoint-badge post">POST</div>
+                        <code>http://localhost:4101/upload</code>
+                    </div>
+                    
+                    <p>Upload a PDF file for processing and vectorization.</p>
+                    
+                    <h4>Request</h4>
+                    <pre><code class="language-http">POST /upload HTTP/1.1
+Host: localhost:4101
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary...
+
+------WebKitFormBoundary...
+Content-Disposition: form-data; name="file"; filename="document.pdf"
+Content-Type: application/pdf
+
+[PDF file contents]
+------WebKitFormBoundary...--</code></pre>
+
+                    <h4>Response</h4>
+                    <pre><code class="language-json">{
+  "id": "1705234567890",
+  "name": "Advanced Biology Concepts"
+}</code></pre>
+
+                    <h4>Upload Constraints</h4>
+                    <div class="constraints-grid">
+                        <div class="constraint-item">
+                            <strong>File Types:</strong> PDF only
+                        </div>
+                        <div class="constraint-item">
+                            <strong>File Size:</strong> Maximum 10MB
+                        </div>
+                        <div class="constraint-item">
+                            <strong>Rate Limit:</strong> 10 uploads/minute
+                        </div>
+                        <div class="constraint-item">
+                            <strong>Processing:</strong> Automatic after upload
+                        </div>
+                    </div>
+
+                    <h4>Processing Pipeline</h4>
+                    <div class="pipeline-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <strong>File Validation</strong>
+                                <p>Verify PDF format and size constraints</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <strong>Text Extraction</strong>
+                                <p>Extract text content using pdf-parse library</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <strong>Content Chunking</strong>
+                                <p>Split text into 1000-character chunks with 150-character overlap</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <strong>Vector Generation</strong>
+                                <p>Generate embeddings using Google Gemini AI</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <strong>Storage</strong>
+                                <p>Store vectors in Qdrant database with metadata</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="upload-example">
+                    <h3>JavaScript Upload Example</h3>
+                    <pre><code class="language-javascript">// Upload a PDF file
+const uploadFile = async (file) => {
+  const formData = new FormData()
+  formData.append('file', file)
+
+  try {
+    const response = await fetch('http://localhost:4101/upload', {
+      method: 'POST',
+      body: formData
+    })
+
+    if (response.ok) {
+      const result = await response.json()
+      console.log('File uploaded:', result)
+      return result
+    } else {
+      const error = await response.json()
+      throw new Error(error.error)
+    }
+  } catch (error) {
+    console.error('Upload failed:', error)
+    throw error
+  }
+}
+
+// Usage
+const fileInput = document.getElementById('fileInput')
+fileInput.addEventListener('change', async (e) => {
+  const file = e.target.files[0]
+  if (file && file.type === 'application/pdf') {
+    try {
+      const result = await uploadFile(file)
+      console.log('Document ID:', result.id)
+    } catch (error) {
+      alert('Upload failed: ' + error.message)
+    }
+  }
+})</code></pre>
+                </div>
+            </section>
+
+            <!-- Chat API -->
+            <section id="chat-api" class="section">
+                <h2>💬 Document Chat API</h2>
+                
+                <div class="chat-overview">
+                    <p>Intelligent chat interface for querying documents using RAG (Retrieval-Augmented Generation) technology. Chat with single or multiple documents simultaneously.</p>
+                </div>
+
+                <div class="endpoint-detail">
+                    <h3>POST /chat</h3>
+                    <div class="endpoint-info">
+                        <div class="endpoint-badge post">POST</div>
+                        <code>http://localhost:4101/chat</code>
+                    </div>
+                    
+                    <p>Query documents using natural language with context-aware responses.</p>
+                    
+                    <h4>Request Body</h4>
+                    <pre><code class="language-json">{
+  "query": "What are the main functions of mitochondria?",
+  "sessionId": "session_1705234567890",
+  "targetDocuments": ["1705234567890", "1705234567891"]
+}</code></pre>
+
+                    <h4>Response</h4>
+                    <pre><code class="language-json">{
+  "sessionId": "session_1705234567890",
+  "answer": "Mitochondria serve several crucial functions in cells: 1) ATP production through cellular respiration, 2) Regulation of cellular metabolism, 3) Calcium storage and signaling, 4) Apoptosis (programmed cell death) regulation...",
+  "citations": [
+    {
+      "docId": "1705234567890",
+      "chunkId": 5,
+      "content": "Mitochondria are often called the powerhouses of the cell because they generate most of the cell's ATP...",
+      "relevance": 0.95
+    }
+  ],
+  "chatHistory": [
+    {
+      "id": "msg_1705234567890",
+      "role": "user", 
+      "content": "What are the main functions of mitochondria?",
+      "timestamp": "2025-01-14T10:30:00.000Z"
+    },
+    {
+      "id": "msg_1705234567891",
+      "role": "assistant",
+      "content": "Mitochondria serve several crucial functions...",
+      "timestamp": "2025-01-14T10:30:05.000Z",
+      "documentIds": ["1705234567890"],
+      "citations": [...]
+    }
+  ],
+  "documentIds": ["1705234567890"],
+  "usage": {}
+}</code></pre>
+
+                    <h4>Parameters</h4>
+                    <div class="params-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>query</code></td>
+                                    <td>string</td>
+                                    <td>✅</td>
+                                    <td>Natural language question about documents</td>
+                                </tr>
+                                <tr>
+                                    <td><code>sessionId</code></td>
+                                    <td>string</td>
+                                    <td>❌</td>
+                                    <td>Session ID for conversation continuity</td>
+                                </tr>
+                                <tr>
+                                    <td><code>targetDocuments</code></td>
+                                    <td>string[]</td>
+                                    <td>❌</td>
+                                    <td>Specific document IDs to search (null = all documents)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="session-management">
+                    <h3>Session Management</h3>
+                    
+                    <div class="endpoint-group">
+                        <h4>GET /chat/sessions</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge get">GET</div>
+                            <code>http://localhost:4101/chat/sessions</code>
+                        </div>
+                        <p>Retrieve all active chat sessions.</p>
+                        
+                        <h5>Response</h5>
+                        <pre><code class="language-json">{
+  "sessions": [
+    {
+      "id": "session_1705234567890",
+      "messageCount": 6,
+      "createdAt": "2025-01-14T10:00:00.000Z",
+      "updatedAt": "2025-01-14T10:30:00.000Z",
+      "targetDocuments": ["1705234567890"],
+      "lastMessage": "What are the main functions of mitochondria?"
+    }
+  ]
+}</code></pre>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>GET /chat/sessions/:sessionId</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge get">GET</div>
+                            <code>http://localhost:4101/chat/sessions/{sessionId}</code>
+                        </div>
+                        <p>Get full conversation history for a session.</p>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>DELETE /chat/sessions/:sessionId</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge delete">DELETE</div>
+                            <code>http://localhost:4101/chat/sessions/{sessionId}</code>
+                        </div>
+                        <p>Delete a chat session and its history.</p>
+                    </div>
+
+                    <div class="endpoint-group">
+                        <h4>POST /chat/sessions/:sessionId/target</h4>
+                        <div class="endpoint-info">
+                            <div class="endpoint-badge post">POST</div>
+                            <code>http://localhost:4101/chat/sessions/{sessionId}/target</code>
+                        </div>
+                        <p>Set target documents for a session.</p>
+                        
+                        <h5>Request Body</h5>
+                        <pre><code class="language-json">{
+  "targetDocuments": ["1705234567890", "1705234567891"]
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Code Examples -->
+            <section id="examples" class="section">
+                <h2>💻 Code Examples</h2>
+                
+                <div class="examples-overview">
+                    <p>Practical examples for integrating with AiThena APIs using JavaScript/TypeScript.</p>
+                </div>
+
+                <div class="example-group">
+                    <h3>Complete AI Assistant Integration</h3>
+                    <pre><code class="language-typescript">// AI Assistant Chat Implementation
+class AIAssistantClient {
+  private baseUrl = 'http://localhost:4001'
+  private conversation: Message[] = []
+
+  async sendMessage(message: string, options?: ChatOptions): Promise<string> {
+    const requestBody = {
+      message,
+      history: this.conversation.map(msg => ({
+        role: msg.role,
+        text: msg.content
+      })),
+      ...options
+    }
+
+    try {
+      const response = await fetch(`${this.baseUrl}/api/assistant/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      
+      // Update conversation history
+      this.conversation.push(
+        { role: 'user', content: message, timestamp: new Date() },
+        { role: 'assistant', content: data.response, timestamp: new Date() }
+      )
+
+      return data.response
+    } catch (error) {
+      console.error('AI Assistant error:', error)
+      throw error
+    }
+  }
+
+  clearHistory() {
+    this.conversation = []
+  }
+
+  getHistory() {
+    return this.conversation
+  }
+}
+
+// Usage
+const aiAssistant = new AIAssistantClient()
+
+const answer = await aiAssistant.sendMessage(
+  "Explain photosynthesis in simple terms",
+  {
+    temperature: 0.7,
+    systemInstruction: "You are a helpful biology tutor"
+  }
+)
+
+console.log('AI Response:', answer)</code></pre>
+                </div>
+
+                <div class="example-group">
+                    <h3>Document Intelligence Integration</h3>
+                    <pre><code class="language-typescript">// Document Intelligence Client
+class DocumentIntelligenceClient {
+  private baseUrl = 'http://localhost:4101'
+  
+  async uploadDocument(file: File): Promise<{ id: string, name: string }> {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    const response = await fetch(`${this.baseUrl}/upload`, {
+      method: 'POST',
+      body: formData
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || 'Upload failed')
+    }
+
+    return response.json()
+  }
+
+  async getDocuments(): Promise<Document[]> {
+    const response = await fetch(`${this.baseUrl}/documents`)
+    return response.json()
+  }
+
+  async chatWithDocuments(
+    query: string, 
+    sessionId?: string,
+    targetDocuments?: string[]
+  ): Promise<ChatResponse> {
+    const requestBody = {
+      query,
+      sessionId: sessionId || `session_${Date.now()}`,
+      targetDocuments
+    }
+
+    const response = await fetch(`${this.baseUrl}/chat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody)
+    })
+
+    if (!response.ok) {
+      throw new Error(`Chat failed: ${response.status}`)
+    }
+
+    return response.json()
+  }
+
+  async deleteDocument(documentId: string): Promise<void> {
+    const response = await fetch(`${this.baseUrl}/documents/${documentId}`, {
+      method: 'DELETE'
+    })
+
+    if (!response.ok) {
+      throw new Error(`Delete failed: ${response.status}`)
+    }
+  }
+}
+
+// Usage Example
+const docClient = new DocumentIntelligenceClient()
+
+// Upload a document
+const uploadResult = await docClient.uploadDocument(pdfFile)
+console.log('Uploaded:', uploadResult)
+
+// Chat with the document
+const chatResponse = await docClient.chatWithDocuments(
+  "What are the main topics covered in this document?",
+  undefined, // auto-generate session ID
+  [uploadResult.id] // target specific document
+)
+
+console.log('Answer:', chatResponse.answer)
+console.log('Citations:', chatResponse.citations)</code></pre>
+                </div>
+
+                <div class="example-group">
+                    <h3>Flashcard Management Integration</h3>
+                    <pre><code class="language-typescript">// Flashcard Management Client
+class FlashcardClient {
+  private baseUrl = 'http://localhost:4001/api/flashcards'
+
+  async createDeck(deckData: CreateDeckRequest): Promise<FlashcardDeck> {
+    const response = await fetch(`${this.baseUrl}/decks`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(deckData)
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to create deck: ${response.status}`)
+    }
+
+    return response.json()
+  }
+
+  async generateAICards(content: string, options: GenerateOptions): Promise<GenerateResponse> {
+    const requestBody = {
+      content,
+      cardCount: options.cardCount || 10,
+      difficulty: options.difficulty || 'medium',
+      subject: options.subject,
+      createDeck: options.createDeck || false,
+      deckName: options.deckName,
+      deckDescription: options.deckDescription
+    }
+
+    const response = await fetch(`${this.baseUrl}/generate/cards`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody)
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || 'Generation failed')
+    }
+
+    return response.json()
+  }
+
+  async getDecks(): Promise<FlashcardDeck[]> {
+    const response = await fetch(`${this.baseUrl}/decks`)
+    return response.json()
+  }
+
+  async getDeckCards(deckId: string): Promise<Flashcard[]> {
+    const response = await fetch(`${this.baseUrl}/decks/${deckId}/cards`)
+    return response.json()
+  }
+
+  async addCard(deckId: string, cardData: CreateCardRequest): Promise<Flashcard> {
+    const response = await fetch(`${this.baseUrl}/decks/${deckId}/cards`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(cardData)
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to add card: ${response.status}`)
+    }
+
+    return response.json()
+  }
+}
+
+// Usage Example
+const flashcardClient = new FlashcardClient()
+
+// Create a new deck
+const newDeck = await flashcardClient.createDeck({
+  name: "Biology Basics",
+  subject: "Biology",
+  description: "Fundamental biology concepts",
+  tags: ["biology", "fundamentals"]
+})
+
+// Generate AI cards from content
+const generationResult = await flashcardClient.generateAICards(
+  "Photosynthesis is the process by which plants convert light energy...",
+  {
+    cardCount: 5,
+    difficulty: 'medium',
+    subject: 'Biology',
+    createDeck: true,
+    deckName: 'Photosynthesis Study Cards',
+    deckDescription: 'AI-generated cards about photosynthesis'
+  }
+)
+
+console.log('Generated cards:', generationResult.cards)
+console.log('Created deck:', generationResult.deck)</code></pre>
+                </div>
+
+                <div class="example-group">
+                    <h3>Error Handling Best Practices</h3>
+                    <pre><code class="language-typescript">// Comprehensive Error Handling
+class APIClient {
+  private async makeRequest<T>(
+    url: string, 
+    options: RequestInit = {}
+  ): Promise<T> {
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          ...options.headers
+        }
+      })
+
+      // Handle different response types
+      if (!response.ok) {
+        const contentType = response.headers.get('content-type')
+        
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json()
+          throw new APIError(
+            errorData.error || 'Request failed',
+            response.status,
+            errorData.details
+          )
+        } else {
+          throw new APIError(
+            `HTTP Error ${response.status}`,
+            response.status
+          )
+        }
+      }
+
+      return response.json()
+    } catch (error) {
+      if (error instanceof APIError) {
+        throw error
+      }
+      
+      // Handle network errors
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new APIError('Network error - check your connection', 0)
+      }
+      
+      throw new APIError('Unknown error occurred', 0, error)
+    }
+  }
+
+  // Retry logic for transient failures
+  private async withRetry<T>(
+    operation: () => Promise<T>,
+    maxRetries = 3,
+    delay = 1000
+  ): Promise<T> {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        return await operation()
+      } catch (error) {
+        if (attempt === maxRetries) throw error
+        
+        if (error instanceof APIError && error.status >= 400 && error.status < 500) {
+          // Don't retry client errors
+          throw error
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, delay * attempt))
+      }
+    }
+    
+    throw new Error('Max retries exceeded')
+  }
+}
+
+class APIError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+    public details?: any
+  ) {
+    super(message)
+    this.name = 'APIError'
+  }
+}
+
+// Usage with error handling
+try {
+  const result = await flashcardClient.generateAICards(content, options)
+  console.log('Success:', result)
+} catch (error) {
+  if (error instanceof APIError) {
+    switch (error.status) {
+      case 400:
+        console.error('Invalid request:', error.message)
+        break
+      case 404:
+        console.error('Resource not found:', error.message)
+        break
+      case 500:
+        console.error('Server error:', error.message)
+        break
+      default:
+        console.error('API error:', error.message)
+    }
+  } else {
+    console.error('Unexpected error:', error)
+  }
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Navigation Footer -->
+            <div class="nav-footer">
+                <a href="backend.html" class="nav-btn">← Backend Services</a>
+                <a href="setup.html" class="nav-btn">Setup & Deployment →</a>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

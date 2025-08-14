@@ -25,12 +25,16 @@ app.register(cors, {
   allowedHeaders: ['Content-Type', 'Authorization'],
 });
 
-// Register multipart
+// Register multipart with better configuration
 app.register(multipart, {
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB limit
-    files: 1
-  }
+    files: 1,
+    fields: 10,
+    parts: 10
+  },
+  throwFileSizeLimit: false,
+  attachFieldsToBody: false
 });
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
@@ -38,6 +42,27 @@ const qdrant = new QdrantClient({ url: QDRANT_URL });
 
 type DocMeta = { id: string; name: string; pages: number };
 type Chunk = { id: string; docId: string; pageStart: number; pageEnd: number; text: string; vector?: number[] };
+
+// Chat session types
+type ChatMessage = {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+  documentIds?: string[];
+  citations?: Array<{ docId: string; chunkId: number }>;
+};
+
+type ChatSession = {
+  id: string;
+  messages: ChatMessage[];
+  createdAt: Date;
+  updatedAt: Date;
+  targetDocuments?: string[]; // null means all documents
+};
+
+// In-memory chat session storage (in production, use Redis or database)
+const chatSessions = new Map<string, ChatSession>();
 
 async function ensureStorage() {
   await fs.mkdir(STORAGE_DIR, { recursive: true });
@@ -63,7 +88,7 @@ async function generateDocumentName(textContent: string): Promise<string> {
 
 Filename:`;
     
-    const result = await model.generateContent({ contents: [{ parts: [{ text: prompt }] }] });
+    const result = await model.generateContent(prompt);
     const generatedName = result.response.text().trim().replace(/[^a-zA-Z0-9\s-]/g, '').replace(/\s+/g, '-');
     
     console.log('Generated smart name:', generatedName);
@@ -116,63 +141,106 @@ async function embedTexts(texts: string[]): Promise<number[][]> {
 }
 
 app.post('/upload', async (req, reply) => {
-  await ensureStorage();
-  const parts = await req.parts();
-  let uploaded: { id: string } | null = null;
-  for await (const part of parts) {
-    if (part.type === 'file') {
-      const id = `${Date.now()}`;
-      const rawPath = path.join(STORAGE_DIR, 'raw', `${id}.pdf`);
-      const bufs: Buffer[] = [];
-      for await (const chunk of part.file) bufs.push(chunk as Buffer);
-      const buffer = Buffer.concat(bufs);
-      await fs.writeFile(rawPath, buffer);
-
-      const { perPage } = await extractPdfText(buffer);
-      const needOcr: number[] = [];
-      perPage.forEach((p, idx) => {
-        if (looksGarbled(p)) needOcr.push(idx + 1);
-      });
-
-      // TODO: OCR specific pages via tesseract.js if needed (omitted for brevity)
-      // In this minimal version, we keep pdf-parse output; you can extend OCR later.
-
-      const md = perPage
-        .map((p, i) => `\n\n<!-- page:${i + 1} -->\n\n${p.trim()}`)
-        .join('\n');
-      
-      // Generate smart document name based on content
-      const smartName = await generateDocumentName(md);
-      
-      const cleanPath = path.join(STORAGE_DIR, 'clean', `${id}.md`);
-      await fs.writeFile(cleanPath, md, 'utf8');
-
-      const splitter = new CharacterTextSplitter({ chunkSize: 1000, chunkOverlap: 150 });
-      const chunks = await splitter.splitText(md);
-      const vectors = await embedTexts(chunks);
-
-      // Ensure collection exists
-      try {
-        await qdrant.getCollection(QDRANT_COLLECTION);
-      } catch {
-        await qdrant.createCollection(QDRANT_COLLECTION, {
-          vectors: { size: vectors[0]?.length || 384, distance: 'Cosine' },
-        } as any);
-      }
-
-      await qdrant.upsert(QDRANT_COLLECTION, {
-        points: chunks.map((text, i) => ({
-          id: Number(`${id}${i}`),
-          vector: vectors[i],
-          payload: { docId: id, chunkId: i, text, documentName: smartName },
-        })),
-      });
-
-      uploaded = { id, name: smartName };
+  try {
+    console.log('[upload] Starting file upload...');
+    await ensureStorage();
+    
+    // Use the single file approach instead of parts iterator
+    const data = await req.file();
+    
+    if (!data) {
+      console.log('[upload] No file found in request');
+      return reply.code(400).send({ error: 'No file provided' });
     }
-  }
+    
+    console.log(`[upload] Processing file: ${data.filename}, mimetype: ${data.mimetype}`);
+    
+    // Accept both application/pdf and other common PDF mimetypes
+    if (!data.mimetype?.includes('pdf') && !data.filename?.toLowerCase().endsWith('.pdf')) {
+      console.log(`[upload] Invalid file type: ${data.mimetype}, filename: ${data.filename}`);
+      return reply.code(400).send({ error: 'Only PDF files are supported' });
+    }
+    
+    const id = `${Date.now()}`;
+    console.log(`[upload] Processing file with ID: ${id}`);
+    
+    const rawPath = path.join(STORAGE_DIR, 'raw', `${id}.pdf`);
+    const buffer = await data.toBuffer();
+    
+    console.log(`[upload] File size: ${buffer.length} bytes`);
+    await fs.writeFile(rawPath, buffer);
 
-  return reply.send(uploaded || { error: 'No file' });
+    const { perPage } = await extractPdfText(buffer);
+    const needOcr: number[] = [];
+    perPage.forEach((p, idx) => {
+      if (looksGarbled(p)) needOcr.push(idx + 1);
+    });
+
+    // TODO: OCR specific pages via tesseract.js if needed (omitted for brevity)
+    // In this minimal version, we keep pdf-parse output; you can extend OCR later.
+
+    const md = perPage
+      .map((p, i) => `\n\n<!-- page:${i + 1} -->\n\n${p.trim()}`)
+      .join('\n');
+    
+    console.log(`[upload] Extracted text: ${md.length} characters`);
+    
+    // Generate smart document name based on content
+    const smartName = await generateDocumentName(md);
+    console.log(`[upload] Generated name: ${smartName}`);
+    
+    const cleanPath = path.join(STORAGE_DIR, 'clean', `${id}.md`);
+    await fs.writeFile(cleanPath, md, 'utf8');
+
+    const splitter = new CharacterTextSplitter({ 
+      chunkSize: 700, // Further reduced to ensure no oversized chunks
+      chunkOverlap: 80, // Reduced overlap proportionally
+      separator: '\n\n', // Use paragraph breaks as primary separator
+      keepSeparator: false
+    });
+    const chunks = await splitter.splitText(md);
+    
+    // Filter out empty chunks and enforce strict max size
+    const validChunks = chunks
+      .filter(chunk => chunk.trim().length > 0)
+      .map(chunk => {
+        if (chunk.length > 750) {
+          // Find a good break point (sentence or paragraph)
+          const breakPoint = chunk.lastIndexOf('.', 750) || chunk.lastIndexOf('\n', 750) || 750;
+          return chunk.substring(0, breakPoint).trim() + '...';
+        }
+        return chunk;
+      });
+    
+    console.log(`[upload] Created ${validChunks.length} chunks (max size: ${Math.max(...validChunks.map(c => c.length))})`);
+    const vectors = await embedTexts(validChunks);
+
+    // Ensure collection exists
+    try {
+      await qdrant.getCollection(QDRANT_COLLECTION);
+      console.log(`[upload] Using existing collection: ${QDRANT_COLLECTION}`);
+    } catch {
+      console.log(`[upload] Creating new collection: ${QDRANT_COLLECTION}`);
+      await qdrant.createCollection(QDRANT_COLLECTION, {
+        vectors: { size: vectors[0]?.length || 384, distance: 'Cosine' },
+      } as any);
+    }
+
+    console.log(`[upload] Upserting ${validChunks.length} vectors to Qdrant...`);
+    await qdrant.upsert(QDRANT_COLLECTION, {
+      points: validChunks.map((text, i) => ({
+        id: Number(`${id}${i.toString().padStart(3, '0')}`), // Better ID format
+        vector: vectors[i],
+        payload: { docId: id, chunkId: i, text, documentName: smartName },
+      })),
+    });
+
+    console.log(`[upload] Successfully uploaded document: ${id}`);
+    return reply.send({ id, name: smartName });
+  } catch (error) {
+    console.error('[upload] Upload error:', error);
+    return reply.code(500).send({ error: 'Upload failed', details: error instanceof Error ? error.message : 'Unknown error' });
+  }
 });
 
 app.get('/documents', async (_req, reply) => {
@@ -191,48 +259,241 @@ app.get('/documents/:id/chunks', async (req, reply) => {
   reply.send({ id, chunks });
 });
 
-app.post('/ask', async (req, reply) => {
-  const body = (req.body || {}) as any;
-  const query = String(body.query || '');
-  const docId = body.docId ? String(body.docId) : undefined;
-  const hard = Boolean(body.hard);
-  if (!query) return reply.code(400).send({ error: 'Missing query' });
+// Enhanced chat endpoint with session support
+app.post('/chat', async (req, reply) => {
+  try {
+    const body = (req.body || {}) as any;
+    const query = String(body.query || '');
+    const sessionId = String(body.sessionId || `session_${Date.now()}`);
+    const targetDocuments = body.targetDocuments || null; // null = all documents, array = specific docs
+    
+    if (!query) return reply.code(400).send({ error: 'Missing query' });
 
-  const [queryVec] = await embedTexts([query]);
-  const search = await qdrant.search(QDRANT_COLLECTION, {
-    vector: queryVec,
-    limit: TOP_K,
-    filter: docId ? { must: [{ key: 'docId', match: { value: docId } }] } : undefined,
-    with_payload: true,
-  } as any);
+    console.log(`[chat] Processing query in session ${sessionId}: "${query}"`);
+    console.log(`[chat] Target documents:`, targetDocuments || 'all');
 
-  const contexts = (search || []).map((r: any) => r.payload?.text).filter(Boolean) as string[];
-  const prompt = `You are a helpful document analysis assistant. Provide comprehensive, detailed answers strictly from the provided context.
+    // Check if API key is available
+    if (!GEMINI_API_KEY) {
+      console.error('[chat] GEMINI_API_KEY not configured');
+      return reply.code(500).send({ error: 'AI service not configured' });
+    }
 
-Context:\n\n${contexts.map((c, i) => `[#${i + 1}] ${c}`).join('\n\n')}\n\nQuestion: ${query}\n\nProvide a detailed, thorough answer with explanations, examples, and analysis where appropriate. Cite sources using [#index] format.
+    // Get or create chat session
+    let session = chatSessions.get(sessionId);
+    if (!session) {
+      session = {
+        id: sessionId,
+        messages: [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        targetDocuments
+      };
+      chatSessions.set(sessionId, session);
+      console.log(`[chat] Created new session: ${sessionId}`);
+    } else {
+      session.updatedAt = new Date();
+      if (targetDocuments) {
+        session.targetDocuments = targetDocuments;
+      }
+      console.log(`[chat] Using existing session: ${sessionId} (${session.messages.length} messages)`);
+    }
+
+    // Generate embeddings for the query
+    console.log('[chat] Generating embeddings...');
+    const [queryVec] = await embedTexts([query]);
+    console.log(`[chat] Generated embedding with ${queryVec.length} dimensions`);
+
+    // Search for relevant documents with optional filtering
+    console.log('[chat] Searching in Qdrant...');
+    let filter = undefined;
+    if (session.targetDocuments && session.targetDocuments.length > 0) {
+      filter = {
+        should: session.targetDocuments.map(docId => ({ key: 'docId', match: { value: docId } }))
+      };
+    }
+
+    const search = await qdrant.search(QDRANT_COLLECTION, {
+      vector: queryVec,
+      limit: TOP_K,
+      filter,
+      with_payload: true,
+    } as any);
+
+    console.log(`[chat] Found ${search.length} relevant chunks`);
+    
+    if (search.length === 0) {
+      const noResultsMsg = session.targetDocuments && session.targetDocuments.length > 0 
+        ? `I couldn't find relevant information in the selected document(s) for your query.`
+        : `I couldn't find any relevant information in the uploaded documents for your query.`;
+      
+      const assistantMessage: ChatMessage = {
+        id: `msg_${Date.now()}`,
+        role: 'assistant',
+        content: noResultsMsg,
+        timestamp: new Date(),
+        citations: []
+      };
+      
+      session.messages.push(
+        {
+          id: `msg_${Date.now() - 1}`,
+          role: 'user',
+          content: query,
+          timestamp: new Date(),
+          documentIds: session.targetDocuments || []
+        },
+        assistantMessage
+      );
+      
+      return reply.send({ 
+        sessionId,
+        answer: noResultsMsg,
+        citations: [],
+        chatHistory: session.messages.slice(-10), // Return last 10 messages
+        usage: {}
+      });
+    }
+
+    const contexts = (search || []).map((r: any) => r.payload?.text).filter(Boolean) as string[];
+    const documentIds = [...new Set((search || []).map((r: any) => r.payload?.docId).filter(Boolean))];
+    console.log(`[chat] Using ${contexts.length} contexts from ${documentIds.length} documents`);
+
+    // Build conversation history for context
+    const conversationHistory = session.messages.slice(-6) // Last 6 messages for context
+      .map(msg => `${msg.role}: ${msg.content}`)
+      .join('\n');
+
+    const hasHistory = session.messages.length > 0;
+    const contextualPrompt = hasHistory 
+      ? `You are a helpful document analysis assistant engaged in an ongoing conversation. Use the conversation history and provided context to give relevant, contextual responses.
+
+Conversation History:
+${conversationHistory}
+
+Current Context from Documents:
+${contexts.map((c, i) => `[#${i + 1}] ${c}`).join('\n\n')}
+
+Current Question: ${query}
+
+Provide a detailed, conversational response that acknowledges the conversation history and answers the current question using the document context. Cite sources using [#index] format.
+
+Answer:`
+      : `You are a helpful document analysis assistant. Provide comprehensive, detailed answers strictly from the provided context.
+
+Context:
+${contexts.map((c, i) => `[#${i + 1}] ${c}`).join('\n\n')}
+
+Question: ${query}
+
+Provide a detailed, thorough answer with explanations, examples, and analysis where appropriate. Cite sources using [#index] format.
 
 Answer:`;
 
-  // Always use Gemini 2.5 Pro for comprehensive responses
-  const model = genAI.getGenerativeModel({ 
-    model: 'gemini-2.5-pro',
-    systemInstruction: 'You are a comprehensive document analysis assistant. Provide detailed, thorough answers with proper analysis and cite sources by [#index].',
-    generationConfig: {
-      maxOutputTokens: 4096,
-      temperature: 0.7,
-      topP: 0.8,
-      topK: 40
+    // Use Gemini 2.5 Flash for compatibility
+    console.log('[chat] Initializing Gemini 2.5 Flash...');
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-2.5-flash',
+      systemInstruction: 'You are a comprehensive document analysis assistant engaged in ongoing conversations. Provide detailed, contextual responses and cite sources accurately.',
+      generationConfig: {
+        maxOutputTokens: 4096,
+        temperature: 0.7,
+        topP: 0.8,
+        topK: 40
+      }
+    });
+    
+    // For Gemini 2.5, use chat session
+    console.log('[chat] Starting chat session...');
+    const chat = model.startChat({});
+    
+    const result = await chat.sendMessage(contextualPrompt);
+    
+    // Extract text with fallback
+    console.log('[chat] Extracting response text...');
+    let answer: string;
+    try {
+      answer = result.response.text();
+      console.log('[chat] Successfully extracted text using response.text()');
+    } catch (error) {
+      console.log('[chat] response.text() failed, trying fallback...');
+      const candidates = result.response.candidates;
+      if (candidates && candidates.length > 0 && candidates[0].content?.parts) {
+        answer = candidates[0].content.parts.map(part => part.text).join('');
+        console.log('[chat] Successfully extracted text using candidates.parts fallback');
+      } else {
+        console.error('[chat] No response text available in any format');
+        throw new Error('No response text available');
+      }
     }
+
+    // Check for empty response
+    if (!answer || answer.trim().length === 0) {
+      answer = "I apologize, but I wasn't able to generate a response. Please try rephrasing your question.";
+    }
+
+    const citations = (search || []).map((r: any, idx: number) => ({
+      docId: r.payload?.docId,
+      chunkId: r.payload?.chunkId,
+    }));
+
+    // Save messages to session
+    const userMessage: ChatMessage = {
+      id: `msg_${Date.now()}`,
+      role: 'user',
+      content: query,
+      timestamp: new Date(),
+      documentIds: documentIds
+    };
+
+    const assistantMessage: ChatMessage = {
+      id: `msg_${Date.now() + 1}`,
+      role: 'assistant',
+      content: answer,
+      timestamp: new Date(),
+      documentIds: documentIds,
+      citations
+    };
+
+    session.messages.push(userMessage, assistantMessage);
+
+    console.log(`[chat] Completed successfully with ${answer.length} characters`);
+    reply.send({ 
+      sessionId,
+      answer, 
+      citations, 
+      chatHistory: session.messages.slice(-10), // Return last 10 messages
+      documentIds: documentIds,
+      usage: {} 
+    });
+    
+  } catch (error) {
+    console.error('[chat] Error processing query:', error);
+    reply.code(500).send({ 
+      error: 'Failed to process query',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Keep the old /ask endpoint for backward compatibility
+app.post('/ask', async (req, reply) => {
+  // Redirect to new chat endpoint
+  const body = req.body as any;
+  const updatedBody = { ...body, sessionId: `legacy_${Date.now()}` };
+  return app.inject({
+    method: 'POST',
+    url: '/chat',
+    payload: updatedBody,
+    headers: req.headers as any
+  }).then(response => {
+    const data = JSON.parse(response.payload);
+    // Return in old format for compatibility
+    reply.send({
+      answer: data.answer,
+      citations: data.citations,
+      usage: data.usage || {}
+    });
   });
-  const result = await model.generateContent({ contents: [{ parts: [{ text: prompt }] }] });
-  const answer = result.response.text();
-
-  const citations = (search || []).map((r: any, idx: number) => ({
-    docId: r.payload?.docId,
-    chunkId: r.payload?.chunkId,
-  }));
-
-  reply.send({ answer, citations, usage: {} });
 });
 
 // Delete a document
@@ -240,33 +501,48 @@ app.delete('/documents/:id', async (req, reply) => {
   const { id } = req.params as { id: string };
   
   try {
-    // Delete from Qdrant
-    await qdrant.delete(QDRANT_COLLECTION, {
-      filter: {
-        must: [{ key: 'docId', match: { value: id } }]
-      }
-    });
+    console.log(`[delete] Deleting document: ${id}`);
+    
+    // Delete from Qdrant with better error handling
+    try {
+      await qdrant.delete(QDRANT_COLLECTION, {
+        filter: {
+          must: [{ key: 'docId', match: { value: id } }]
+        }
+      });
+      console.log(`[delete] Removed vectors from Qdrant for doc: ${id}`);
+    } catch (qdrantError) {
+      console.log(`[delete] Qdrant delete failed (collection might not exist): ${qdrantError instanceof Error ? qdrantError.message : 'Unknown error'}`);
+      // Continue with file deletion even if Qdrant fails
+    }
 
     // Delete files from storage
     const rawPath = path.join(STORAGE_DIR, 'raw', `${id}.pdf`);
     const cleanPath = path.join(STORAGE_DIR, 'clean', `${id}.md`);
     
+    let filesDeleted = 0;
+    
     try {
       await fs.unlink(rawPath);
+      filesDeleted++;
+      console.log(`[delete] Deleted raw file: ${rawPath}`);
     } catch (e) {
-      // File might not exist, that's ok
+      console.log(`[delete] Raw file not found or already deleted: ${rawPath}`);
     }
     
     try {
       await fs.unlink(cleanPath);
+      filesDeleted++;
+      console.log(`[delete] Deleted clean file: ${cleanPath}`);
     } catch (e) {
-      // File might not exist, that's ok
+      console.log(`[delete] Clean file not found or already deleted: ${cleanPath}`);
     }
 
-    reply.send({ success: true, message: 'Document deleted successfully' });
+    console.log(`[delete] Successfully deleted document ${id} (${filesDeleted} files removed)`);
+    reply.send({ success: true, message: 'Document deleted successfully', filesDeleted });
   } catch (error) {
-    app.log.error('Delete error:', error);
-    reply.status(500).send({ error: 'Failed to delete document' });
+    console.error('[delete] Unexpected error:', error);
+    reply.status(500).send({ error: 'Failed to delete document', details: error instanceof Error ? error.message : 'Unknown error' });
   }
 });
 
@@ -278,9 +554,12 @@ app.get('/documents/:id/metadata', async (req, reply) => {
     const rawPath = path.join(STORAGE_DIR, 'raw', `${id}.pdf`);
     const cleanPath = path.join(STORAGE_DIR, 'clean', `${id}.md`);
     
-    // Try to get smart name from Qdrant
+    // Try to get smart name from Qdrant with better error handling
     let smartName = `Document-${id}.pdf`;
     try {
+      // Check if collection exists first
+      await qdrant.getCollection(QDRANT_COLLECTION);
+      
       // Use scroll instead of search to avoid vector issues
       const scrollResult = await qdrant.scroll(QDRANT_COLLECTION, {
         filter: { must: [{ key: 'docId', match: { value: id } }] },
@@ -293,8 +572,8 @@ app.get('/documents/:id/metadata', async (req, reply) => {
         smartName = `${scrollResult.points[0].payload.documentName}.pdf`;
       }
     } catch (e) {
-      // Fallback to generic name
-      console.log('Error getting smart name from Qdrant:', e);
+      // Fallback to generic name - don't log as error since this is expected after collection reset
+      console.log(`[metadata] Using fallback name for doc ${id} (Qdrant unavailable)`);
     }
     
     let metadata: any = {
@@ -340,7 +619,7 @@ app.get('/documents/:id/metadata', async (req, reply) => {
 
     reply.send(metadata);
   } catch (error) {
-    app.log.error('Metadata error:', error);
+    console.error('Metadata error:', error);
     reply.status(500).send({ error: 'Failed to get document metadata' });
   }
 });
@@ -363,8 +642,93 @@ app.get('/documents/:id/download', async (req, reply) => {
     const fileBuffer = await fs.readFile(rawPath);
     reply.send(fileBuffer);
   } catch (error) {
-    app.log.error('Download error:', error);
+    console.error('Download error:', error);
     reply.status(404).send({ error: 'Document not found' });
+  }
+});
+
+// Chat session management endpoints
+app.get('/chat/sessions', async (_req, reply) => {
+  const sessions = Array.from(chatSessions.values()).map(session => ({
+    id: session.id,
+    messageCount: session.messages.length,
+    createdAt: session.createdAt,
+    updatedAt: session.updatedAt,
+    targetDocuments: session.targetDocuments,
+    lastMessage: session.messages[session.messages.length - 1]?.content.substring(0, 100) || null
+  }));
+  reply.send({ sessions });
+});
+
+app.get('/chat/sessions/:sessionId', async (req, reply) => {
+  const { sessionId } = req.params as { sessionId: string };
+  const session = chatSessions.get(sessionId);
+  
+  if (!session) {
+    return reply.code(404).send({ error: 'Session not found' });
+  }
+  
+  reply.send({
+    sessionId,
+    messages: session.messages,
+    targetDocuments: session.targetDocuments,
+    createdAt: session.createdAt,
+    updatedAt: session.updatedAt
+  });
+});
+
+app.delete('/chat/sessions/:sessionId', async (req, reply) => {
+  const { sessionId } = req.params as { sessionId: string };
+  const deleted = chatSessions.delete(sessionId);
+  
+  if (!deleted) {
+    return reply.code(404).send({ error: 'Session not found' });
+  }
+  
+  reply.send({ success: true, message: 'Session deleted' });
+});
+
+app.post('/chat/sessions/:sessionId/target', async (req, reply) => {
+  const { sessionId } = req.params as { sessionId: string };
+  const { targetDocuments } = req.body as { targetDocuments: string[] | null };
+  
+  const session = chatSessions.get(sessionId);
+  if (!session) {
+    return reply.code(404).send({ error: 'Session not found' });
+  }
+  
+  session.targetDocuments = targetDocuments || undefined;
+  session.updatedAt = new Date();
+  
+  reply.send({ 
+    success: true, 
+    sessionId,
+    targetDocuments: session.targetDocuments,
+    message: targetDocuments 
+      ? `Now targeting ${targetDocuments.length} specific document(s)`
+      : 'Now targeting all documents'
+  });
+});
+
+// Test upload endpoint
+app.post('/test-upload', async (req, reply) => {
+  try {
+    console.log('[test-upload] Headers:', req.headers);
+    console.log('[test-upload] Content-Type:', req.headers['content-type']);
+    
+    const data = await req.file();
+    console.log('[test-upload] File data:', data ? 'present' : 'missing');
+    
+    if (data) {
+      console.log('[test-upload] Filename:', data.filename);
+      console.log('[test-upload] Mimetype:', data.mimetype);
+      console.log('[test-upload] Encoding:', data.encoding);
+    }
+    
+    reply.send({ success: true, hasFile: !!data });
+  } catch (error) {
+    console.error('[test-upload] Error:', error);
+    reply.code(500).send({ error: error instanceof Error ? error.message : 'Unknown error' });
   }
 });
 

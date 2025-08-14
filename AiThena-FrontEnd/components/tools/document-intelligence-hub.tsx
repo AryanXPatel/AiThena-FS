@@ -119,7 +119,7 @@ export const DocumentIntelligenceHub = forwardRef<DocumentIntelligenceHubRef>((p
   const [selectedDocumentId, setSelectedDocumentId] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   
-  // Chat interface state
+  // Enhanced chat interface state
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     {
       id: "1",
@@ -131,7 +131,10 @@ export const DocumentIntelligenceHub = forwardRef<DocumentIntelligenceHubRef>((p
   ])
   const [inputValue, setInputValue] = useState("")
   const [isTyping, setIsTyping] = useState(false)
-  const [showChat, setShowChat] = useState(false)
+  const [showChat, setShowChat] = useState(true) // Default to showing chat interface
+  const [currentSessionId, setCurrentSessionId] = useState<string>(() => `session_${Date.now()}`)
+  const [targetDocuments, setTargetDocuments] = useState<string[] | null>(null) // null = all documents
+  const [showDocumentSelector, setShowDocumentSelector] = useState(false)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
 
   // Expose the triggerUpload function to parent components
@@ -339,7 +342,7 @@ export const DocumentIntelligenceHub = forwardRef<DocumentIntelligenceHubRef>((p
     }
   }
 
-  // Chat functionality
+  // Enhanced chat functionality with session support
   const handleSendMessage = async (content: string) => {
     if (!content.trim()) return
 
@@ -356,16 +359,20 @@ export const DocumentIntelligenceHub = forwardRef<DocumentIntelligenceHubRef>((p
     setIsTyping(true)
 
     try {
-      const response = await fetch(`${DOCINTEL_API_BASE}/ask`, {
+      const response = await fetch(`${DOCINTEL_API_BASE}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: content }),
+        body: JSON.stringify({ 
+          query: content,
+          sessionId: currentSessionId,
+          targetDocuments: targetDocuments
+        }),
       })
 
       if (response.ok) {
-        const result: QueryResponse = await response.json()
+        const result = await response.json()
         
         const aiMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
@@ -373,9 +380,14 @@ export const DocumentIntelligenceHub = forwardRef<DocumentIntelligenceHubRef>((p
           sender: "ai",
           timestamp: new Date(),
           type: "text",
-          relatedDocuments: result.citations?.map(c => c.docId) || []
+          relatedDocuments: result.documentIds || []
         }
         setChatMessages((prev) => [...prev, aiMessage])
+        
+        // Update session ID if it was created
+        if (result.sessionId && result.sessionId !== currentSessionId) {
+          setCurrentSessionId(result.sessionId)
+        }
       } else {
         throw new Error('Query failed')
       }
@@ -390,6 +402,50 @@ export const DocumentIntelligenceHub = forwardRef<DocumentIntelligenceHubRef>((p
       setChatMessages((prev) => [...prev, aiMessage])
     } finally {
       setIsTyping(false)
+    }
+  }
+
+  // Function to start a new chat session
+  const startNewChatSession = () => {
+    setCurrentSessionId(`session_${Date.now()}`)
+    setChatMessages([
+      {
+        id: "1",
+        content: "Hello! I'm your Document Intelligence Assistant. I'm ready to help you analyze your documents. What would you like to explore?",
+        sender: "ai",
+        timestamp: new Date(),
+        type: "text",
+      },
+    ])
+    setTargetDocuments(null)
+  }
+
+  // Function to set target documents for focused conversation
+  const setDocumentTarget = async (docIds: string[] | null) => {
+    setTargetDocuments(docIds)
+    
+    try {
+      await fetch(`${DOCINTEL_API_BASE}/chat/sessions/${currentSessionId}/target`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ targetDocuments: docIds }),
+      })
+      
+      // Add a system message to indicate the change
+      const systemMessage: ChatMessage = {
+        id: `system_${Date.now()}`,
+        content: docIds && docIds.length > 0 
+          ? `Now focusing on ${docIds.length} selected document(s). Ask me anything about them!`
+          : "Now focusing on all your uploaded documents. How can I help?",
+        sender: "ai",
+        timestamp: new Date(),
+        type: "text",
+      }
+      setChatMessages((prev) => [...prev, systemMessage])
+    } catch (error) {
+      console.error('Failed to set document target:', error)
     }
   }
 
@@ -528,7 +584,7 @@ export const DocumentIntelligenceHub = forwardRef<DocumentIntelligenceHubRef>((p
       <div className="bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-soft dark:shadow-soft-dark relative overflow-hidden">
         <div className="absolute inset-0 rounded-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" />
         
-        {/* Chat Header */}
+        {/* Enhanced Chat Header */}
         <div className="p-6 border-b border-border/30 relative z-10">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -538,10 +594,37 @@ export const DocumentIntelligenceHub = forwardRef<DocumentIntelligenceHubRef>((p
               <div>
                 <h3 className="font-semibold text-foreground">AI Document Chat</h3>
                 <p className="text-sm text-muted-foreground">
-                  {documents.length} documents loaded • Chat with your PDFs
+                  {documents.length} documents loaded • 
+                  {targetDocuments 
+                    ? ` Focused on ${targetDocuments.length} doc(s)`
+                    : " All documents"
+                  }
                 </p>
               </div>
             </div>
+            <div className="flex items-center space-x-2">
+              {showChat && (
+                <>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowDocumentSelector(!showDocumentSelector)}
+                    className="text-xs"
+                  >
+                    <Filter className="h-3 w-3 mr-1" />
+                    {targetDocuments ? `${targetDocuments.length} Selected` : "All Docs"}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={startNewChatSession}
+                    className="text-xs"
+                  >
+                    <Sparkles className="h-3 w-3 mr-1" />
+                    New Chat
+                  </Button>
+                </>
+              )}
             <Button
               variant={showChat ? "default" : "outline"}
               onClick={() => setShowChat(!showChat)}
@@ -551,6 +634,58 @@ export const DocumentIntelligenceHub = forwardRef<DocumentIntelligenceHubRef>((p
               {showChat ? "Hide Chat" : "Open Chat"}
             </Button>
           </div>
+          </div>
+          
+          {/* Document Selector */}
+          {showChat && showDocumentSelector && (
+            <div className="mt-4 p-4 bg-muted/30 rounded-lg">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-sm font-medium">Chat Focus</h4>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowDocumentSelector(false)}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </div>
+              <div className="space-y-2">
+                <Button
+                  variant={targetDocuments === null ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setDocumentTarget(null)}
+                  className="w-full justify-start"
+                >
+                  <BookOpen className="h-3 w-3 mr-2" />
+                  All Documents ({documents.length})
+                </Button>
+                {documents.map((doc) => (
+                  <Button
+                    key={doc.id}
+                    variant={targetDocuments?.includes(doc.id) ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => {
+                      const isSelected = targetDocuments?.includes(doc.id)
+                      if (isSelected) {
+                        const newTargets = targetDocuments?.filter(id => id !== doc.id) || []
+                        setDocumentTarget(newTargets.length > 0 ? newTargets : null)
+                      } else {
+                        const newTargets = targetDocuments ? [...targetDocuments, doc.id] : [doc.id]
+                        setDocumentTarget(newTargets)
+                      }
+                    }}
+                    className="w-full justify-start text-xs"
+                  >
+                    <FileText className="h-3 w-3 mr-2" />
+                    {doc.name}
+                    {targetDocuments?.includes(doc.id) && (
+                      <CheckCircle className="h-3 w-3 ml-auto" />
+                    )}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Chat Interface */}
@@ -789,32 +924,9 @@ export const DocumentIntelligenceHub = forwardRef<DocumentIntelligenceHubRef>((p
                       </Button>
                     </div>
 
-                    {selectedDocumentId === doc.id && (doc.status === "processed" || doc.status === "processing") && (
-                      <div className="space-y-4">
-                        <div>
-                          <h4 className="font-medium text-foreground mb-2 text-sm">Document Info</h4>
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            {doc.status === "processed" 
-                              ? (doc.summary || "Document ready for analysis and queries")
-                              : "Document is being processed and will be available for analysis soon"
-                            }
-                          </p>
-                        </div>
-
-                        {doc.keyTopics && doc.keyTopics.length > 0 && (
-                          <div>
-                            <h4 className="font-medium text-foreground mb-2 text-sm">Key Topics</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {doc.keyTopics?.map((topic, index) => (
-                                <Badge key={index} variant="outline" className="text-xs">
-                                  {topic}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        <div className="flex items-center space-x-2 pt-2">
+                    {/* Always show action buttons for processed documents */}
+                    {doc.status === "processed" && (
+                      <div className="mt-4 flex items-center space-x-2">
                           <Button 
                             variant="outline" 
                             size="sm" 
@@ -826,16 +938,17 @@ export const DocumentIntelligenceHub = forwardRef<DocumentIntelligenceHubRef>((p
                           </Button>
                           
                           <Button 
-                            variant="outline" 
+                          variant="default" 
                             size="sm" 
-                            className="bg-transparent"
+                          className="bg-primary hover:bg-primary/90"
                             onClick={() => {
                               setShowChat(true)
-                              setInputValue(`Tell me about ${doc.name}`)
+                            setDocumentTarget([doc.id])
+                            setInputValue(`Tell me about this document`)
                             }}
                           >
                             <Brain className="h-4 w-4 mr-2" />
-                            Ask AI
+                          Chat with This Doc
                           </Button>
                           
                           <Button 
@@ -860,7 +973,33 @@ export const DocumentIntelligenceHub = forwardRef<DocumentIntelligenceHubRef>((p
                               <Trash2 className="h-4 w-4" />
                             )}
                           </Button>
+                      </div>
+                    )}
+
+                    {selectedDocumentId === doc.id && (doc.status === "processed" || doc.status === "processing") && (
+                      <div className="space-y-4 mt-4">
+                        <div>
+                          <h4 className="font-medium text-foreground mb-2 text-sm">Document Info</h4>
+                          <p className="text-sm text-muted-foreground leading-relaxed">
+                            {doc.status === "processed" 
+                              ? (doc.summary || "Document ready for analysis and queries")
+                              : "Document is being processed and will be available for analysis soon"
+                            }
+                          </p>
                         </div>
+
+                        {doc.keyTopics && doc.keyTopics.length > 0 && (
+                          <div>
+                            <h4 className="font-medium text-foreground mb-2 text-sm">Key Topics</h4>
+                            <div className="flex flex-wrap gap-2">
+                              {doc.keyTopics?.map((topic, index) => (
+                                <Badge key={index} variant="outline" className="text-xs">
+                                  {topic}
+                                </Badge>
+                              ))}
+                        </div>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

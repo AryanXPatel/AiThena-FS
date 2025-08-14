@@ -1,0 +1,66 @@
+[
+  {
+    "id": "059d0b6c-20ef-4bad-bf5a-f498cb9671d7",
+    "name": "Test Deck",
+    "subject": "Testing",
+    "description": "A test flashcard deck",
+    "cardCount": 0,
+    "studiedCount": 0,
+    "masteredCount": 0,
+    "lastStudied": "",
+    "difficulty": "medium",
+    "progress": 0,
+    "color": "bg-blue-500",
+    "isPublic": false,
+    "tags": [
+      "test",
+      "demo"
+    ],
+    "createdAt": "2025-08-14T06:38:43.267Z",
+    "updatedAt": "2025-08-14T06:38:43.267Z",
+    "createdBy": "user_1"
+  },
+  {
+    "id": "2f3278bb-c4c9-4071-aec7-46b662613448",
+    "name": "Machine Learning Fundamentals",
+    "subject": "Computer Science",
+    "description": "Core concepts and algorithms in machine learning including supervised and unsupervised learning",
+    "cardCount": 0,
+    "studiedCount": 0,
+    "masteredCount": 0,
+    "lastStudied": "",
+    "difficulty": "medium",
+    "progress": 0,
+    "color": "bg-blue-500",
+    "isPublic": false,
+    "tags": [
+      "algorithms"
+    ],
+    "createdAt": "2025-08-14T07:17:23.579Z",
+    "updatedAt": "2025-08-14T07:17:23.579Z",
+    "createdBy": "user_1"
+  },
+  {
+    "id": "d003b9ff-2c3b-46fa-854d-9cb60b0e9183",
+    "name": "WhatEver",
+    "subject": "General Knowledge",
+    "description": "A mixed bag of fascinating facts, quirky trivia, and essential concepts across various subjects. Ideal for curious minds who love to learn something new every day.",
+    "cardCount": 0,
+    "studiedCount": 0,
+    "masteredCount": 0,
+    "lastStudied": "",
+    "difficulty": "medium",
+    "progress": 0,
+    "color": "bg-red-500",
+    "isPublic": false,
+    "tags": [
+      "Trivia",
+      "FunFacts",
+      "StudyBoost",
+      "RandomKnowledge"
+    ],
+    "createdAt": "2025-08-14T07:53:56.745Z",
+    "updatedAt": "2025-08-14T07:53:56.745Z",
+    "createdBy": "user_1"
+  }
+]

@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import { z } from 'zod';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import flashcardRoutes from './flashcard-routes.js';
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 4001;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -177,10 +178,15 @@ app.get('/api/assistant/chat/stream', async (req: Request, res: Response) => {
   }
 });
 
+// Mount flashcard routes
+app.use('/api/flashcards', flashcardRoutes);
+
 app.get('/health', (_req, res) => {
   res.json({ ok: true, model: GEMINI_MODEL });
 });
 
 app.listen(PORT, () => {
   console.log(`AiThena Backend listening on http://localhost:${PORT} (model=${GEMINI_MODEL})`);
+  console.log(`✅ AI Assistant: /api/assistant/*`);
+  console.log(`🎯 FlashcardStudio: /api/flashcards/*`);
 });

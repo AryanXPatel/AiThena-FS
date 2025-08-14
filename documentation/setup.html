@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup & Deployment - AiThena Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>🧠 AiThena</h2>
+                <p>Setup & Deployment</p>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Overview</h3>
+                <ul>
+                    <li><a href="index.html" class="nav-link">← Back to Main</a></li>
+                    <li><a href="#prerequisites" class="nav-link active">Prerequisites</a></li>
+                    <li><a href="#quick-start" class="nav-link">Quick Start</a></li>
+                    <li><a href="#environment" class="nav-link">Environment Setup</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Installation</h3>
+                <ul>
+                    <li><a href="#frontend-setup" class="nav-link">Frontend Setup</a></li>
+                    <li><a href="#backend-setup" class="nav-link">Backend Services</a></li>
+                    <li><a href="#database-setup" class="nav-link">Database Setup</a></li>
+                    <li><a href="#configuration" class="nav-link">Configuration</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Deployment</h3>
+                <ul>
+                    <li><a href="#development" class="nav-link">Development</a></li>
+                    <li><a href="#production" class="nav-link">Production</a></li>
+                    <li><a href="#docker" class="nav-link">Docker Setup</a></li>
+                    <li><a href="#monitoring" class="nav-link">Monitoring</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Troubleshooting</h3>
+                <ul>
+                    <li><a href="#common-issues" class="nav-link">Common Issues</a></li>
+                    <li><a href="#debugging" class="nav-link">Debugging</a></li>
+                    <li><a href="#performance" class="nav-link">Performance</a></li>
+                    <li><a href="#security" class="nav-link">Security</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header class="header">
+                <h1>Setup & Deployment Guide</h1>
+                <div class="header-meta">
+                    <span class="version">Complete Installation</span>
+                    <span class="updated">Development & Production</span>
+                </div>
+            </header>
+
+            <!-- Prerequisites -->
+            <section id="prerequisites" class="section">
+                <h2>📋 Prerequisites</h2>
+                
+                <div class="prerequisites-overview">
+                    <p>Before setting up AiThena, ensure you have the following tools and accounts configured.</p>
+                </div>
+
+                <div class="requirements-grid">
+                    <div class="requirement-card essential">
+                        <h3>Essential Requirements</h3>
+                        <ul>
+                            <li><strong>Node.js</strong> v18.0.0 or higher</li>
+                            <li><strong>pnpm</strong> package manager</li>
+                            <li><strong>Docker</strong> v20.0.0 or higher</li>
+                            <li><strong>Docker Compose</strong> v2.0.0 or higher</li>
+                            <li><strong>Git</strong> for version control</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="requirement-card api">
+                        <h3>API Requirements</h3>
+                        <ul>
+                            <li><strong>Google AI Studio</strong> account</li>
+                            <li><strong>Gemini API Key</strong> (Free tier available)</li>
+                            <li>Internet connection for AI services</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="requirement-card optional">
+                        <h3>Optional Tools</h3>
+                        <ul>
+                            <li><strong>VS Code</strong> with TypeScript support</li>
+                            <li><strong>Postman</strong> for API testing</li>
+                            <li><strong>MongoDB Compass</strong> for database viewing</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="version-check">
+                    <h3>Version Verification</h3>
+                    <p>Run these commands to verify your environment:</p>
+                    <pre><code class="language-bash"># Check Node.js version
+node --version
+
+# Check pnpm version
+pnpm --version
+
+# Check Docker version
+docker --version
+
+# Check Docker Compose version
+docker compose version</code></pre>
+                </div>
+
+                <div class="api-setup">
+                    <h3>🔑 Google Gemini API Setup</h3>
+                    <div class="setup-steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <strong>Create Google AI Studio Account</strong>
+                                <p>Visit <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a> and create an account</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <strong>Generate API Key</strong>
+                                <p>Click "Create API Key" and copy the generated key</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <strong>Secure API Key</strong>
+                                <p>Store the key securely - you'll need it for environment configuration</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Start -->
+            <section id="quick-start" class="section">
+                <h2>⚡ Quick Start</h2>
+                
+                <div class="quick-start-overview">
+                    <p>Get AiThena running in development mode in under 10 minutes.</p>
+                </div>
+
+                <div class="quick-steps">
+                    <h3>One-Command Setup</h3>
+                    <pre><code class="language-bash"># Clone the repository
+git clone https://github.com/AryanXPatel/AiThena-FS.git
+cd AiThena-FS
+
+# Run the automated setup script
+./setup.sh</code></pre>
+                </div>
+
+                <div class="manual-setup">
+                    <h3>Manual Setup (Step by Step)</h3>
+                    
+                    <div class="setup-step">
+                        <h4>1. Clone and Navigate</h4>
+                        <pre><code class="language-bash">git clone https://github.com/AryanXPatel/AiThena-FS.git
+cd AiThena-FS</code></pre>
+                    </div>
+
+                    <div class="setup-step">
+                        <h4>2. Environment Configuration</h4>
+                        <pre><code class="language-bash"># Copy environment templates
+cp AiThena-Backend/.env.example AiThena-Backend/.env
+cp DocIntel-Backend/.env.example DocIntel-Backend/.env
+cp FlashcardStudio-Backend/.env.example FlashcardStudio-Backend/.env
+
+# Edit .env files with your API keys
+nano AiThena-Backend/.env</code></pre>
+                    </div>
+
+                    <div class="setup-step">
+                        <h4>3. Start Vector Database</h4>
+                        <pre><code class="language-bash">cd DocIntel-Backend
+docker compose up -d qdrant
+cd ..</code></pre>
+                    </div>
+
+                    <div class="setup-step">
+                        <h4>4. Install Dependencies & Start Services</h4>
+                        <pre><code class="language-bash"># Frontend (uses pnpm)
+cd AiThena-FrontEnd
+pnpm install
+pnpm dev &
+
+# AiThena Backend (uses npm)
+cd ../AiThena-Backend
+npm install
+npm run dev &
+
+# DocIntel Backend (uses npm)
+cd ../DocIntel-Backend
+npm install
+npm run dev &
+
+# FlashcardStudio Backend (uses npm)
+cd ../FlashcardStudio-Backend
+npm install
+npm run dev &</code></pre>
+                    </div>
+
+                    <div class="setup-step">
+                        <h4>5. Verify Installation</h4>
+                        <pre><code class="language-bash"># Check all services are running
+curl http://localhost:3000    # Frontend
+curl http://localhost:4001/health   # AiThena API
+curl http://localhost:4101/health   # DocIntel API
+curl http://localhost:4201/health   # FlashcardStudio API</code></pre>
+                    </div>
+                </div>
+
+                <div class="service-urls">
+                    <h3>🌐 Service URLs</h3>
+                    <div class="urls-grid">
+                        <div class="url-card frontend">
+                            <h4>Frontend Application</h4>
+                            <a href="http://localhost:3000" target="_blank">http://localhost:3000</a>
+                        </div>
+                        <div class="url-card api">
+                            <h4>AiThena API</h4>
+                            <a href="http://localhost:4001" target="_blank">http://localhost:4001</a>
+                        </div>
+                        <div class="url-card api">
+                            <h4>DocIntel API</h4>
+                            <a href="http://localhost:4101" target="_blank">http://localhost:4101</a>
+                        </div>
+                        <div class="url-card api">
+                            <h4>FlashcardStudio API</h4>
+                            <a href="http://localhost:4201" target="_blank">http://localhost:4201</a>
+                        </div>
+                        <div class="url-card database">
+                            <h4>Qdrant Dashboard</h4>
+                            <a href="http://localhost:6333/dashboard" target="_blank">http://localhost:6333/dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Environment Setup -->
+            <section id="environment" class="section">
+                <h2>🔧 Environment Configuration</h2>
+                
+                <div class="env-overview">
+                    <p>Proper environment configuration is crucial for secure and reliable operation of AiThena services.</p>
+                </div>
+
+                <div class="env-files">
+                    <h3>Environment Files Overview</h3>
+                    
+                    <div class="env-file">
+                        <h4>AiThena-Backend/.env</h4>
+                        <pre><code class="language-bash"># Core API Configuration
+PORT=4001
+NODE_ENV=development
+
+# Google Gemini AI Configuration
+GOOGLE_AI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-2.5-flash
+
+# CORS Configuration
+ALLOWED_ORIGINS=http://localhost:3000
+
+# Logging Configuration
+LOG_LEVEL=info
+LOG_FILE=server.log
+
+# File Upload Configuration
+MAX_FILE_SIZE=10485760  # 10MB in bytes
+UPLOAD_DIRECTORY=./uploads
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000  # 15 minutes
+RATE_LIMIT_MAX_REQUESTS=100</code></pre>
+                    </div>
+
+                    <div class="env-file">
+                        <h4>DocIntel-Backend/.env</h4>
+                        <pre><code class="language-bash"># Core API Configuration
+PORT=4101
+NODE_ENV=development
+
+# Google Gemini AI Configuration
+GOOGLE_AI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-2.5-flash
+
+# Qdrant Vector Database Configuration
+QDRANT_URL=http://localhost:6333
+QDRANT_COLLECTION_NAME=documents
+
+# PDF Processing Configuration
+MAX_FILE_SIZE=10485760  # 10MB
+CHUNK_SIZE=1000
+CHUNK_OVERLAP=150
+
+# Document Storage
+UPLOAD_DIRECTORY=./uploads
+DATA_DIRECTORY=./data
+
+# CORS Configuration
+ALLOWED_ORIGINS=http://localhost:3000
+
+# Logging
+LOG_LEVEL=info
+LOG_FILE=server.log</code></pre>
+                    </div>
+
+                    <div class="env-file">
+                        <h4>FlashcardStudio-Backend/.env</h4>
+                        <pre><code class="language-bash"># Core API Configuration
+PORT=4201
+NODE_ENV=development
+
+# Google Gemini AI Configuration (for advanced features)
+GOOGLE_AI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-2.5-flash
+
+# Database Configuration
+DATA_DIRECTORY=./data
+BACKUP_DIRECTORY=./backups
+
+# Study Algorithm Configuration
+DEFAULT_EASE_FACTOR=2.5
+MIN_EASE_FACTOR=1.3
+MAX_EASE_FACTOR=3.0
+
+# CORS Configuration
+ALLOWED_ORIGINS=http://localhost:3000
+
+# Analytics Configuration
+ANALYTICS_RETENTION_DAYS=365
+
+# Logging
+LOG_LEVEL=info
+LOG_FILE=server.log</code></pre>
+                    </div>
+                </div>
+
+                <div class="env-security">
+                    <h3>🔐 Security Best Practices</h3>
+                    
+                    <div class="security-checklist">
+                        <div class="security-item">
+                            <h4>✅ API Key Protection</h4>
+                            <ul>
+                                <li>Never commit .env files to version control</li>
+                                <li>Use different API keys for different environments</li>
+                                <li>Rotate API keys regularly</li>
+                                <li>Monitor API key usage in Google AI Studio</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="security-item">
+                            <h4>✅ File Permissions</h4>
+                            <pre><code class="language-bash"># Set secure permissions for .env files
+chmod 600 */.env
+
+# Verify permissions
+ls -la */.env</code></pre>
+                        </div>
+                        
+                        <div class="security-item">
+                            <h4>✅ Git Security</h4>
+                            <pre><code class="language-bash"># Ensure .env files are in .gitignore
+echo "*.env" >> .gitignore
+echo ".env.*" >> .gitignore
+echo "!.env.example" >> .gitignore
+
+# Check for accidentally committed secrets
+git log --oneline --grep="API" --grep="key" --grep="secret" -i</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="env-validation">
+                    <h3>Environment Validation</h3>
+                    <p>Use this script to validate your environment configuration:</p>
+                    <pre><code class="language-bash">#!/bin/bash
+# validate-env.sh
+
+echo "🔍 Validating AiThena Environment Configuration..."
+
+# Check if required files exist
+required_files=(
+    "AiThena-Backend/.env"
+    "DocIntel-Backend/.env" 
+    "FlashcardStudio-Backend/.env"
+)
+
+for file in "${required_files[@]}"; do
+    if [[ -f "$file" ]]; then
+        echo "✅ Found $file"
+    else
+        echo "❌ Missing $file"
+        exit 1
+    fi
+done
+
+# Check if API keys are configured
+check_api_key() {
+    local file=$1
+    if grep -q "GOOGLE_AI_API_KEY=your_gemini_api_key_here" "$file"; then
+        echo "❌ $file: API key not configured"
+        return 1
+    elif grep -q "GOOGLE_AI_API_KEY=" "$file"; then
+        echo "✅ $file: API key configured"
+        return 0
+    else
+        echo "❌ $file: API key variable missing"
+        return 1
+    fi
+}
+
+for file in "${required_files[@]}"; do
+    check_api_key "$file"
+done
+
+echo "🎉 Environment validation complete!"</code></pre>
+                </div>
+            </section>
+
+            <!-- Frontend Setup -->
+            <section id="frontend-setup" class="section">
+                <h2>🎨 Frontend Setup</h2>
+                
+                <div class="frontend-overview">
+                    <p>The AiThena frontend is built with Next.js 14, TypeScript, and Tailwind CSS, providing a modern and responsive user interface.</p>
+                </div>
+
+                <div class="frontend-installation">
+                    <h3>Installation Steps</h3>
+                    
+                    <div class="install-step">
+                        <h4>1. Navigate to Frontend Directory</h4>
+                        <pre><code class="language-bash">cd AiThena-FrontEnd</code></pre>
+                    </div>
+
+                    <div class="install-step">
+                        <h4>2. Install Dependencies</h4>
+                        <pre><code class="language-bash"># Install all dependencies
+pnpm install
+
+# Alternative: use npm or yarn
+npm install
+# or
+yarn install</code></pre>
+                    </div>
+
+                    <div class="install-step">
+                        <h4>3. Configure Environment (Optional)</h4>
+                        <pre><code class="language-bash"># Create environment file for custom configuration
+cp .env.example .env.local
+
+# Edit with your custom settings
+nano .env.local</code></pre>
+                        
+                        <h5>Frontend Environment Variables</h5>
+                        <pre><code class="language-bash"># .env.local
+NEXT_PUBLIC_API_BASE_URL=http://localhost:4001
+NEXT_PUBLIC_DOCINTEL_API_URL=http://localhost:4101
+NEXT_PUBLIC_FLASHCARD_API_URL=http://localhost:4201
+
+# Optional: Analytics and monitoring
+NEXT_PUBLIC_ANALYTICS_ID=your_analytics_id
+NEXT_PUBLIC_ENVIRONMENT=development</code></pre>
+                    </div>
+
+                    <div class="install-step">
+                        <h4>4. Start Development Server</h4>
+                        <pre><code class="language-bash"># Start in development mode
+pnpm dev
+
+# Start with custom port
+pnpm dev -- --port 3001
+
+# Start with turbo mode for faster builds
+pnpm dev --turbo</code></pre>
+                    </div>
+                </div>
+
+                <div class="frontend-scripts">
+                    <h3>Available Scripts</h3>
+                    <div class="scripts-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Command</th>
+                                    <th>Description</th>
+                                    <th>Usage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>pnpm dev</code></td>
+                                    <td>Start development server</td>
+                                    <td>Development with hot reload</td>
+                                </tr>
+                                <tr>
+                                    <td><code>pnpm build</code></td>
+                                    <td>Build for production</td>
+                                    <td>Optimized production build</td>
+                                </tr>
+                                <tr>
+                                    <td><code>pnpm start</code></td>
+                                    <td>Start production server</td>
+                                    <td>Serve production build</td>
+                                </tr>
+                                <tr>
+                                    <td><code>pnpm lint</code></td>
+                                    <td>Run ESLint</td>
+                                    <td>Code quality checks</td>
+                                </tr>
+                                <tr>
+                                    <td><code>pnpm type-check</code></td>
+                                    <td>TypeScript type checking</td>
+                                    <td>Validate TypeScript types</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="frontend-dependencies">
+                    <h3>Key Dependencies</h3>
+                    <div class="deps-grid">
+                        <div class="dep-category">
+                            <h4>Core Framework</h4>
+                            <ul>
+                                <li>Next.js 14.2.13</li>
+                                <li>React 18</li>
+                                <li>TypeScript 5</li>
+                            </ul>
+                        </div>
+                        <div class="dep-category">
+                            <h4>UI Components</h4>
+                            <ul>
+                                <li>Radix UI</li>
+                                <li>Tailwind CSS</li>
+                                <li>Lucide React</li>
+                            </ul>
+                        </div>
+                        <div class="dep-category">
+                            <h4>Utilities</h4>
+                            <ul>
+                                <li>class-variance-authority</li>
+                                <li>clsx</li>
+                                <li>tailwind-merge</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="frontend-troubleshooting">
+                    <h3>Common Frontend Issues</h3>
+                    
+                    <div class="issue-item">
+                        <h4>Port Already in Use</h4>
+                        <pre><code class="language-bash"># Kill process using port 3000
+npx kill-port 3000
+
+# Or use a different port
+pnpm dev -- --port 3001</code></pre>
+                    </div>
+
+                    <div class="issue-item">
+                        <h4>API Connection Errors</h4>
+                        <pre><code class="language-bash"># Verify backend services are running
+curl http://localhost:4001/health
+curl http://localhost:4101/health
+curl http://localhost:4201/health
+
+# Check CORS configuration in backend .env files</code></pre>
+                    </div>
+
+                    <div class="issue-item">
+                        <h4>TypeScript Errors</h4>
+                        <pre><code class="language-bash"># Clear Next.js cache
+rm -rf .next
+
+# Reinstall dependencies
+rm -rf node_modules pnpm-lock.yaml
+pnpm install
+
+# Run type checking
+pnpm type-check</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Backend Setup -->
+            <section id="backend-setup" class="section">
+                <h2>⚙️ Backend Services Setup</h2>
+                
+                <div class="backend-overview">
+                    <p>AiThena consists of three specialized backend services, each handling specific functionality with optimized performance and clear separation of concerns.</p>
+                </div>
+
+                <div class="backend-services">
+                    <h3>Service Architecture</h3>
+                    <div class="services-grid">
+                        <div class="service-card aithena">
+                            <h4>🧠 AiThena Backend</h4>
+                            <div class="service-details">
+                                <p><strong>Port:</strong> 4001</p>
+                                <p><strong>Framework:</strong> Express.js</p>
+                                <p><strong>Purpose:</strong> AI Assistant & Basic Flashcards</p>
+                            </div>
+                        </div>
+                        <div class="service-card docintel">
+                            <h4>📄 DocIntel Backend</h4>
+                            <div class="service-details">
+                                <p><strong>Port:</strong> 4101</p>
+                                <p><strong>Framework:</strong> Fastify</p>
+                                <p><strong>Purpose:</strong> Document Intelligence & RAG</p>
+                            </div>
+                        </div>
+                        <div class="service-card flashcard">
+                            <h4>🎯 FlashcardStudio Backend</h4>
+                            <div class="service-details">
+                                <p><strong>Port:</strong> 4201</p>
+                                <p><strong>Framework:</strong> Fastify</p>
+                                <p><strong>Purpose:</strong> Advanced Flashcard Features</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="backend-installation">
+                    <h3>Individual Service Setup</h3>
+                    
+                    <div class="service-setup">
+                        <h4>AiThena Backend (Port 4001)</h4>
+                        <pre><code class="language-bash"># Navigate to AiThena Backend
+cd AiThena-Backend
+
+# Install dependencies
+npm install
+
+# Configure environment
+cp .env.example .env
+nano .env  # Add your GOOGLE_AI_API_KEY
+
+# Start in development mode
+npm run dev
+
+# Alternative: Start in production mode
+npm run build
+npm start</code></pre>
+                    </div>
+
+                    <div class="service-setup">
+                        <h4>DocIntel Backend (Port 4101)</h4>
+                        <pre><code class="language-bash"># Navigate to DocIntel Backend
+cd DocIntel-Backend
+
+# Start Qdrant vector database first
+docker compose up -d qdrant
+
+# Install dependencies
+npm install
+
+# Configure environment
+cp .env.example .env
+nano .env  # Add your GOOGLE_AI_API_KEY
+
+# Start the service
+npm run dev
+
+# Verify Qdrant connection
+curl http://localhost:6333/collections</code></pre>
+                    </div>
+
+                    <div class="service-setup">
+                        <h4>FlashcardStudio Backend (Port 4201)</h4>
+                        <pre><code class="language-bash"># Navigate to FlashcardStudio Backend
+cd FlashcardStudio-Backend
+
+# Install dependencies
+npm install
+
+# Configure environment
+cp .env.example .env
+nano .env  # Add your GOOGLE_AI_API_KEY
+
+# Start the service
+npm run dev</code></pre>
+                    </div>
+                </div>
+
+                <div class="backend-scripts">
+                    <h3>Available Backend Scripts</h3>
+                    <div class="scripts-overview">
+                        <p>Each backend service includes the following npm scripts:</p>
+                        <pre><code class="language-json">{
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts",
+    "type-check": "tsc --noEmit"
+  }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="backend-monitoring">
+                    <h3>Service Health Monitoring</h3>
+                    
+                    <div class="health-check">
+                        <h4>Health Check Endpoints</h4>
+                        <pre><code class="language-bash"># Check all services
+curl http://localhost:4001/health  # AiThena
+curl http://localhost:4101/health  # DocIntel  
+curl http://localhost:4201/health  # FlashcardStudio
+
+# Expected response format
+{
+  "ok": true,
+  "model": "gemini-2.5-flash",
+  "timestamp": "2025-01-14T10:30:00.000Z"
+}</code></pre>
+                    </div>
+
+                    <div class="monitoring-script">
+                        <h4>Automated Health Check Script</h4>
+                        <pre><code class="language-bash">#!/bin/bash
+# health-check.sh
+
+services=(
+    "AiThena:4001"
+    "DocIntel:4101" 
+    "FlashcardStudio:4201"
+)
+
+echo "🏥 Checking AiThena Services Health..."
+
+for service in "${services[@]}"; do
+    name=$(echo $service | cut -d':' -f1)
+    port=$(echo $service | cut -d':' -f2)
+    
+    response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:$port/health)
+    
+    if [ "$response" = "200" ]; then
+        echo "✅ $name (Port $port): Healthy"
+    else
+        echo "❌ $name (Port $port): Unhealthy (HTTP $response)"
+    fi
+done
+
+# Check Qdrant database
+response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:6333/collections)
+if [ "$response" = "200" ]; then
+    echo "✅ Qdrant Database: Healthy"
+else
+    echo "❌ Qdrant Database: Unhealthy (HTTP $response)"
+fi</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Database Setup -->
+            <section id="database-setup" class="section">
+                <h2>🗄️ Database Setup</h2>
+                
+                <div class="database-overview">
+                    <p>AiThena uses Qdrant as its primary vector database for document storage and semantic search capabilities.</p>
+                </div>
+
+                <div class="qdrant-setup">
+                    <h3>Qdrant Vector Database</h3>
+                    
+                    <div class="qdrant-installation">
+                        <h4>Docker Installation (Recommended)</h4>
+                        <pre><code class="language-bash"># Navigate to DocIntel Backend
+cd DocIntel-Backend
+
+# Start Qdrant using Docker Compose
+docker compose up -d qdrant
+
+# View logs
+docker compose logs qdrant
+
+# Check status
+docker compose ps</code></pre>
+                    </div>
+
+                    <div class="qdrant-config">
+                        <h4>Docker Compose Configuration</h4>
+                        <pre><code class="language-yaml"># docker-compose.yml
+version: '3.8'
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - ./qdrant_storage:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    restart: unless-stopped</code></pre>
+                    </div>
+
+                    <div class="qdrant-verification">
+                        <h4>Verify Qdrant Installation</h4>
+                        <pre><code class="language-bash"># Check Qdrant is running
+curl http://localhost:6333/health
+
+# List collections
+curl http://localhost:6333/collections
+
+# Access Qdrant dashboard
+open http://localhost:6333/dashboard</code></pre>
+                    </div>
+                </div>
+
+                <div class="collection-management">
+                    <h3>Collection Management</h3>
+                    
+                    <div class="collection-creation">
+                        <h4>Automatic Collection Creation</h4>
+                        <p>Collections are automatically created when documents are uploaded. The default configuration:</p>
+                        <pre><code class="language-json">{
+  "collection_name": "documents",
+  "vector_config": {
+    "size": 768,
+    "distance": "Cosine"
+  },
+  "optimizers_config": {
+    "default_segment_number": 2,
+    "max_segment_size": 100000
+  }
+}</code></pre>
+                    </div>
+
+                    <div class="collection-operations">
+                        <h4>Manual Collection Operations</h4>
+                        <pre><code class="language-bash"># Create collection manually
+curl -X PUT http://localhost:6333/collections/documents \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vectors": {
+      "size": 768,
+      "distance": "Cosine"
+    }
+  }'
+
+# Get collection info
+curl http://localhost:6333/collections/documents
+
+# Delete collection
+curl -X DELETE http://localhost:6333/collections/documents</code></pre>
+                    </div>
+                </div>
+
+                <div name="data-persistence">
+                    <h3>Data Persistence & Backup</h3>
+                    
+                    <div class="backup-strategy">
+                        <h4>Backup Strategy</h4>
+                        <pre><code class="language-bash"># Create backup directory
+mkdir -p ./backups/$(date +%Y%m%d)
+
+# Backup Qdrant data
+docker compose exec qdrant tar -czf /tmp/qdrant-backup.tar.gz /qdrant/storage
+docker compose cp qdrant:/tmp/qdrant-backup.tar.gz ./backups/$(date +%Y%m%d)/
+
+# Backup uploaded documents
+cp -r ./uploads ./backups/$(date +%Y%m%d)/</code></pre>
+                    </div>
+
+                    <div class="restore-procedure">
+                        <h4>Restore Procedure</h4>
+                        <pre><code class="language-bash"># Stop Qdrant
+docker compose down qdrant
+
+# Restore data
+tar -xzf ./backups/20250114/qdrant-backup.tar.gz -C ./qdrant_storage/
+
+# Restart Qdrant
+docker compose up -d qdrant
+
+# Verify restoration
+curl http://localhost:6333/collections/documents</code></pre>
+                    </div>
+                </div>
+
+                <div class="database-troubleshooting">
+                    <h3>Database Troubleshooting</h3>
+                    
+                    <div class="common-db-issues">
+                        <h4>Common Issues & Solutions</h4>
+                        
+                        <div class="issue-item">
+                            <h5>Qdrant Won't Start</h5>
+                            <pre><code class="language-bash"># Check port conflicts
+netstat -tulpn | grep 6333
+
+# Check Docker status
+docker ps -a
+
+# View Qdrant logs
+docker compose logs qdrant
+
+# Reset Qdrant data
+docker compose down
+sudo rm -rf ./qdrant_storage/*
+docker compose up -d qdrant</code></pre>
+                        </div>
+
+                        <div class="issue-item">
+                            <h5>Collection Creation Fails</h5>
+                            <pre><code class="language-bash"># Check Qdrant health
+curl http://localhost:6333/health
+
+# Verify collection doesn't exist
+curl http://localhost:6333/collections
+
+# Manual collection creation
+curl -X PUT http://localhost:6333/collections/documents \
+  -H "Content-Type: application/json" \
+  -d '{"vectors": {"size": 768, "distance": "Cosine"}}'</code></pre>
+                        </div>
+
+                        <div class="issue-item">
+                            <h5>Vector Search Issues</h5>
+                            <pre><code class="language-bash"># Check collection status
+curl http://localhost:6333/collections/documents
+
+# Verify vector dimensions
+# Ensure all vectors have size 768
+
+# Restart DocIntel backend if search fails
+cd DocIntel-Backend
+pnpm dev</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation Footer -->
+            <div class="nav-footer">
+                <a href="api.html" class="nav-btn">← API Reference</a>
+                <a href="development.html" class="nav-btn">Development Guide →</a>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

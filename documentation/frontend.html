@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Architecture - AiThena Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <h2>🧠 AiThena</h2>
+                <p>Frontend Architecture</p>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Overview</h3>
+                <ul>
+                    <li><a href="index.html" class="nav-link">← Back to Main</a></li>
+                    <li><a href="#architecture" class="nav-link active">Frontend Architecture</a></li>
+                    <li><a href="#structure" class="nav-link">Project Structure</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Components</h3>
+                <ul>
+                    <li><a href="#components" class="nav-link">Component System</a></li>
+                    <li><a href="#ui-components" class="nav-link">UI Components</a></li>
+                    <li><a href="#dashboard" class="nav-link">Dashboard Layout</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Features & Tools</h3>
+                <ul>
+                    <li><a href="#features" class="nav-link">Feature Overview</a></li>
+                    <li><a href="#ai-assistant" class="nav-link">AI Assistant</a></li>
+                    <li><a href="#document-intel" class="nav-link">Document Intelligence</a></li>
+                    <li><a href="#flashcard-studio" class="nav-link">Flashcard Studio</a></li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Styling & Design</h3>
+                <ul>
+                    <li><a href="#styling" class="nav-link">Design System</a></li>
+                    <li><a href="#themes" class="nav-link">Theming</a></li>
+                    <li><a href="#responsive" class="nav-link">Responsive Design</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header class="header">
+                <h1>Frontend Architecture</h1>
+                <div class="header-meta">
+                    <span class="version">Next.js 14</span>
+                    <span class="updated">TypeScript + Tailwind</span>
+                </div>
+            </header>
+
+            <!-- Frontend Architecture Overview -->
+            <section id="architecture" class="section">
+                <h2>🎨 Frontend Architecture Overview</h2>
+                
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <h3>⚡ Next.js 14 App Router</h3>
+                        <p>Modern React framework with server components, streaming, and enhanced developer experience using the latest app directory structure.</p>
+                    </div>
+                    <div class="overview-card">
+                        <h3>🎯 TypeScript Integration</h3>
+                        <p>Full TypeScript support with strict type checking, enhanced IntelliSense, and compile-time error detection.</p>
+                    </div>
+                    <div class="overview-card">
+                        <h3>💨 Tailwind CSS</h3>
+                        <p>Utility-first CSS framework for rapid UI development with consistent design tokens and responsive utilities.</p>
+                    </div>
+                    <div class="overview-card">
+                        <h3>🧩 Radix UI Components</h3>
+                        <p>Headless, accessible UI primitives with full customization and keyboard navigation support.</p>
+                    </div>
+                </div>
+
+                <div class="tech-stack">
+                    <h3>Technology Stack</h3>
+                    <div class="stack-grid">
+                        <div class="stack-item">
+                            <strong>Framework:</strong> Next.js 14.2.13
+                        </div>
+                        <div class="stack-item">
+                            <strong>Language:</strong> TypeScript 5+
+                        </div>
+                        <div class="stack-item">
+                            <strong>Styling:</strong> Tailwind CSS 3+
+                        </div>
+                        <div class="stack-item">
+                            <strong>UI Library:</strong> Radix UI
+                        </div>
+                        <div class="stack-item">
+                            <strong>State Management:</strong> React Hooks
+                        </div>
+                        <div class="stack-item">
+                            <strong>Routing:</strong> App Router (Next.js)
+                        </div>
+                        <div class="stack-item">
+                            <strong>Icons:</strong> Lucide React
+                        </div>
+                        <div class="stack-item">
+                            <strong>Markdown:</strong> ReactMarkdown + Remark
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Project Structure -->
+            <section id="structure" class="section">
+                <h2>📁 Project Structure</h2>
+                
+                <div class="structure-diagram">
+                    <pre><code class="language-bash">AiThena-FrontEnd/
+├── app/                          # Next.js App Router
+│   ├── globals.css              # Global styles and CSS variables
+│   ├── layout.tsx               # Root layout component
+│   ├── page.tsx                 # Homepage/landing page
+│   ├── auth/                    # Authentication pages
+│   └── dashboard/               # Dashboard routes
+│       ├── layout.tsx           # Dashboard layout
+│       ├── page.tsx             # Dashboard home
+│       ├── ai-assistant/        # AI Assistant tool
+│       ├── document-intelligence/ # Document processing
+│       ├── flashcard-studio/    # Flashcard management
+│       ├── quiz-builder/        # Quiz creation tool
+│       ├── study-planner/       # Study planning
+│       ├── progress-tracker/    # Progress analytics
+│       ├── collaboration/       # Collaborative features
+│       ├── note-taker/         # Note-taking tool
+│       ├── citation-manager/    # Citation management
+│       ├── research-assistant/  # Research tools
+│       ├── mind-mapper/        # Mind mapping
+│       ├── presentation-builder/ # Presentation creator
+│       ├── writing-assistant/   # Writing tools
+│       ├── math-solver/        # Math problem solver
+│       ├── language-tutor/     # Language learning
+│       ├── exam-simulator/     # Exam practice
+│       └── profile/            # User profile
+├── components/                  # Reusable React components
+│   ├── auth/                   # Authentication components
+│   ├── dashboard/              # Dashboard-specific components
+│   │   ├── dashboard-layout.tsx # Main dashboard wrapper
+│   │   ├── sidebar.tsx         # Navigation sidebar
+│   │   ├── tool-layout.tsx     # Tool page wrapper
+│   │   └── tool-card.tsx       # Tool preview cards
+│   ├── tools/                  # Individual tool components
+│   │   ├── ai-assistant-interface.tsx
+│   │   ├── document-intelligence-hub.tsx
+│   │   ├── flashcard-studio.tsx
+│   │   └── [other-tools].tsx
+│   └── ui/                     # Base UI components (Radix UI)
+│       ├── button.tsx          # Button component
+│       ├── input.tsx           # Input component
+│       ├── card.tsx            # Card component
+│       ├── dialog.tsx          # Modal dialog
+│       ├── tabs.tsx            # Tab component
+│       ├── badge.tsx           # Badge component
+│       ├── avatar.tsx          # Avatar component
+│       ├── progress.tsx        # Progress bar
+│       ├── textarea.tsx        # Textarea component
+│       ├── scroll-area.tsx     # Scroll area
+│       └── [other-ui].tsx      # Additional UI primitives
+├── hooks/                      # Custom React hooks
+│   ├── use-mobile.tsx          # Mobile detection hook
+│   └── use-toast.ts            # Toast notification hook
+├── lib/                        # Utility libraries
+│   └── utils.ts                # Utility functions and helpers
+├── public/                     # Static assets
+│   ├── placeholder-logo.png
+│   ├── placeholder-logo.svg
+│   └── placeholder-user.jpg
+├── styles/                     # Styling files
+│   └── globals.css             # Global CSS and Tailwind imports
+├── components.json             # Radix UI configuration
+├── next.config.mjs             # Next.js configuration
+├── package.json                # Dependencies and scripts
+├── postcss.config.mjs          # PostCSS configuration
+├── tailwind.config.ts          # Tailwind CSS configuration
+└── tsconfig.json               # TypeScript configuration</code></pre>
+                </div>
+
+                <div class="structure-notes">
+                    <h3>Key Structure Notes</h3>
+                    <div class="notes-grid">
+                        <div class="note-item">
+                            <strong>App Router:</strong> Using Next.js 14's new app directory for enhanced routing, layouts, and server components.
+                        </div>
+                        <div class="note-item">
+                            <strong>Component Organization:</strong> Clear separation between UI primitives, dashboard components, and tool-specific components.
+                        </div>
+                        <div class="note-item">
+                            <strong>Feature-Based Routing:</strong> Each AI tool has its own route and dedicated components for modularity.
+                        </div>
+                        <div class="note-item">
+                            <strong>Shared UI System:</strong> Consistent design system using Radix UI primitives with Tailwind styling.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Component System -->
+            <section id="components" class="section">
+                <h2>🧩 Component System</h2>
+                
+                <div class="component-hierarchy">
+                    <h3>Component Hierarchy</h3>
+                    <div class="hierarchy-diagram">
+                        <div class="hierarchy-level">
+                            <div class="level-title">Application Level</div>
+                            <div class="level-components">
+                                <div class="component-box app">app/layout.tsx</div>
+                            </div>
+                        </div>
+                        
+                        <div class="hierarchy-level">
+                            <div class="level-title">Dashboard Level</div>
+                            <div class="level-components">
+                                <div class="component-box dashboard">DashboardLayout</div>
+                                <div class="component-box dashboard">Sidebar</div>
+                                <div class="component-box dashboard">ToolLayout</div>
+                            </div>
+                        </div>
+                        
+                        <div class="hierarchy-level">
+                            <div class="level-title">Feature Level</div>
+                            <div class="level-components">
+                                <div class="component-box feature">AIAssistantInterface</div>
+                                <div class="component-box feature">DocumentIntelligenceHub</div>
+                                <div class="component-box feature">FlashcardStudio</div>
+                            </div>
+                        </div>
+                        
+                        <div class="hierarchy-level">
+                            <div class="level-title">UI Primitives</div>
+                            <div class="level-components">
+                                <div class="component-box ui">Button</div>
+                                <div class="component-box ui">Input</div>
+                                <div class="component-box ui">Card</div>
+                                <div class="component-box ui">Dialog</div>
+                                <div class="component-box ui">Tabs</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="component-examples">
+                    <h3>Key Component Examples</h3>
+                    
+                    <div class="example-component">
+                        <h4>Dashboard Layout Component</h4>
+                        <pre><code class="language-typescript">// components/dashboard/dashboard-layout.tsx
+"use client"
+
+import { useState } from "react"
+import { Sidebar } from "./sidebar"
+import { Button } from "@/components/ui/button"
+import { Menu } from "lucide-react"
+
+interface DashboardLayoutProps {
+  children: React.ReactNode
+}
+
+export function DashboardLayout({ children }: DashboardLayoutProps) {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  return (
+    &lt;div className="min-h-screen bg-background"&gt;
+      {/* Mobile sidebar toggle */}
+      &lt;Button
+        variant="ghost"
+        size="icon"
+        className="fixed top-4 left-4 z-50 md:hidden"
+        onClick={() =&gt; setSidebarOpen(!sidebarOpen)}
+      &gt;
+        &lt;Menu className="h-6 w-6" /&gt;
+      &lt;/Button&gt;
+
+      {/* Sidebar */}
+      &lt;Sidebar isOpen={sidebarOpen} onClose={() =&gt; setSidebarOpen(false)} /&gt;
+
+      {/* Main content */}
+      &lt;div className="md:pl-64"&gt;
+        &lt;main className="p-6"&gt;
+          {children}
+        &lt;/main&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}</code></pre>
+                    </div>
+                    
+                    <div class="example-component">
+                        <h4>Tool Layout Wrapper</h4>
+                        <pre><code class="language-typescript">// components/dashboard/tool-layout.tsx
+import { Badge } from "@/components/ui/badge"
+import { LucideIcon } from "lucide-react"
+
+interface ToolLayoutProps {
+  title: string
+  description: string
+  icon: LucideIcon
+  badge?: string
+  actions?: React.ReactNode
+  children: React.ReactNode
+}
+
+export function ToolLayout({
+  title,
+  description,
+  icon: Icon,
+  badge,
+  actions,
+  children
+}: ToolLayoutProps) {
+  return (
+    &lt;div className="space-y-6"&gt;
+      {/* Tool Header */}
+      &lt;div className="flex items-center justify-between"&gt;
+        &lt;div className="flex items-center space-x-4"&gt;
+          &lt;div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center"&gt;
+            &lt;Icon className="h-6 w-6 text-primary" /&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;div className="flex items-center space-x-2"&gt;
+              &lt;h1 className="text-2xl font-bold"&gt;{title}&lt;/h1&gt;
+              {badge && &lt;Badge variant="secondary"&gt;{badge}&lt;/Badge&gt;}
+            &lt;/div&gt;
+            &lt;p className="text-muted-foreground"&gt;{description}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        {actions}
+      &lt;/div&gt;
+
+      {/* Tool Content */}
+      &lt;div&gt;{children}&lt;/div&gt;
+    &lt;/div&gt;
+  )
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- UI Components -->
+            <section id="ui-components" class="section">
+                <h2>🎨 UI Component Library</h2>
+                
+                <div class="ui-overview">
+                    <p>The frontend uses a comprehensive UI component library built on top of Radix UI primitives, providing accessible, customizable, and consistent interface elements.</p>
+                </div>
+
+                <div class="ui-categories">
+                    <div class="ui-category">
+                        <h3>Form Components</h3>
+                        <div class="component-list">
+                            <div class="component-item">
+                                <strong>Button:</strong> Primary, secondary, outline, ghost, and destructive variants
+                            </div>
+                            <div class="component-item">
+                                <strong>Input:</strong> Text inputs with validation states and icons
+                            </div>
+                            <div class="component-item">
+                                <strong>Textarea:</strong> Multi-line text input with auto-resize
+                            </div>
+                            <div class="component-item">
+                                <strong>Select:</strong> Dropdown selection with search and multi-select
+                            </div>
+                            <div class="component-item">
+                                <strong>Checkbox:</strong> Binary selection with indeterminate state
+                            </div>
+                            <div class="component-item">
+                                <strong>Radio Group:</strong> Single selection from multiple options
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui-category">
+                        <h3>Layout Components</h3>
+                        <div class="component-list">
+                            <div class="component-item">
+                                <strong>Card:</strong> Container with header, content, and footer sections
+                            </div>
+                            <div class="component-item">
+                                <strong>Tabs:</strong> Horizontal and vertical tab navigation
+                            </div>
+                            <div class="component-item">
+                                <strong>Accordion:</strong> Collapsible content sections
+                            </div>
+                            <div class="component-item">
+                                <strong>Separator:</strong> Visual dividers for content sections
+                            </div>
+                            <div class="component-item">
+                                <strong>ScrollArea:</strong> Custom scrollable containers
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui-category">
+                        <h3>Feedback Components</h3>
+                        <div class="component-list">
+                            <div class="component-item">
+                                <strong>Dialog:</strong> Modal dialogs with backdrop and focus management
+                            </div>
+                            <div class="component-item">
+                                <strong>Toast:</strong> Temporary notification messages
+                            </div>
+                            <div class="component-item">
+                                <strong>Progress:</strong> Linear and circular progress indicators
+                            </div>
+                            <div class="component-item">
+                                <strong>Badge:</strong> Status indicators and labels
+                            </div>
+                            <div class="component-item">
+                                <strong>Avatar:</strong> User profile images with fallbacks
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ui-category">
+                        <h3>Navigation Components</h3>
+                        <div class="component-list">
+                            <div class="component-item">
+                                <strong>Breadcrumb:</strong> Hierarchical navigation trail
+                            </div>
+                            <div class="component-item">
+                                <strong>Pagination:</strong> Page navigation controls
+                            </div>
+                            <div class="component-item">
+                                <strong>Command:</strong> Command palette for quick actions
+                            </div>
+                            <div class="component-item">
+                                <strong>Navigation Menu:</strong> Dropdown navigation menus
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui-example">
+                    <h3>Component Usage Example</h3>
+                    <pre><code class="language-typescript">// Example: Using UI components in a feature
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+
+function ExampleComponent() {
+  return (
+    &lt;Card&gt;
+      &lt;CardHeader&gt;
+        &lt;CardTitle className="flex items-center gap-2"&gt;
+          Example Feature
+          &lt;Badge variant="secondary"&gt;New&lt;/Badge&gt;
+        &lt;/CardTitle&gt;
+      &lt;/CardHeader&gt;
+      &lt;CardContent&gt;
+        &lt;div className="space-y-4"&gt;
+          &lt;Input placeholder="Enter your text..." /&gt;
+          &lt;Button className="w-full"&gt;
+            Submit
+          &lt;/Button&gt;
+        &lt;/div&gt;
+      &lt;/CardContent&gt;
+    &lt;/Card&gt;
+  )
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Dashboard Layout -->
+            <section id="dashboard" class="section">
+                <h2>🏠 Dashboard Layout System</h2>
+                
+                <div class="dashboard-overview">
+                    <p>The dashboard provides a unified interface for accessing all AI-powered learning tools with consistent navigation and responsive design.</p>
+                </div>
+
+                <div class="dashboard-features">
+                    <h3>Dashboard Features</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>🧭 Sidebar Navigation</h4>
+                            <p>Collapsible sidebar with tool categories, quick access, and user profile management.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>📱 Responsive Design</h4>
+                            <p>Mobile-first approach with adaptive layouts for tablets and mobile devices.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🎯 Tool Integration</h4>
+                            <p>Seamless integration of 17+ AI tools with consistent interfaces and shared state.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>⚡ Quick Actions</h4>
+                            <p>Command palette and keyboard shortcuts for rapid tool access and navigation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-structure">
+                    <h3>Sidebar Structure</h3>
+                    <div class="sidebar-demo">
+                        <div class="sidebar-section">
+                            <strong>🏠 Dashboard Home</strong>
+                            <p>Overview and quick access to recent activities</p>
+                        </div>
+                        <div class="sidebar-section">
+                            <strong>🧠 Core AI Tools</strong>
+                            <ul>
+                                <li>AI Study Assistant</li>
+                                <li>Document Intelligence</li>
+                                <li>Flashcard Studio</li>
+                            </ul>
+                        </div>
+                        <div class="sidebar-section">
+                            <strong>📚 Study Tools</strong>
+                            <ul>
+                                <li>Quiz Builder</li>
+                                <li>Study Planner</li>
+                                <li>Progress Tracker</li>
+                                <li>Note Taker</li>
+                            </ul>
+                        </div>
+                        <div class="sidebar-section">
+                            <strong>🔬 Research Tools</strong>
+                            <ul>
+                                <li>Research Assistant</li>
+                                <li>Citation Manager</li>
+                                <li>Writing Assistant</li>
+                            </ul>
+                        </div>
+                        <div class="sidebar-section">
+                            <strong>🎓 Specialized Tools</strong>
+                            <ul>
+                                <li>Math Solver</li>
+                                <li>Language Tutor</li>
+                                <li>Exam Simulator</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Overview -->
+            <section id="features" class="section">
+                <h2>🚀 Feature Overview</h2>
+                
+                <div class="features-intro">
+                    <p>AiThena provides a comprehensive suite of 17+ AI-powered learning tools, each designed to enhance different aspects of the educational experience.</p>
+                </div>
+
+                <div class="tool-categories">
+                    <div class="tool-category">
+                        <h3>🧠 Core AI Tools</h3>
+                        <div class="tools-grid">
+                            <div class="tool-item">
+                                <strong>AI Study Assistant</strong>
+                                <p>Intelligent tutoring with context-aware responses and personalized learning recommendations.</p>
+                            </div>
+                            <div class="tool-item">
+                                <strong>Document Intelligence</strong>
+                                <p>RAG-powered document analysis with multi-document chat and intelligent content extraction.</p>
+                            </div>
+                            <div class="tool-item">
+                                <strong>Flashcard Studio</strong>
+                                <p>AI-generated flashcards with spaced repetition algorithms and collaborative features.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tool-category">
+                        <h3>📚 Study & Planning Tools</h3>
+                        <div class="tools-grid">
+                            <div class="tool-item">
+                                <strong>Quiz Builder</strong>
+                                <p>Create custom quizzes with AI-generated questions and automated grading.</p>
+                            </div>
+                            <div class="tool-item">
+                                <strong>Study Planner</strong>
+                                <p>Intelligent study scheduling with progress tracking and adaptive recommendations.</p>
+                            </div>
+                            <div class="tool-item">
+                                <strong>Progress Tracker</strong>
+                                <p>Comprehensive analytics and insights into learning progress and performance.</p>
+                            </div>
+                            <div class="tool-item">
+                                <strong>Note Taker</strong>
+                                <p>Smart note-taking with AI-powered organization and cross-referencing.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tool-category">
+                        <h3>🔬 Research & Writing Tools</h3>
+                        <div class="tools-grid">
+                            <div class="tool-item">
+                                <strong>Research Assistant</strong>
+                                <p>AI-powered research with source validation and citation suggestions.</p>
+                            </div>
+                            <div class="tool-item">
+                                <strong>Citation Manager</strong>
+                                <p>Automated citation generation and bibliography management.</p>
+                            </div>
+                            <div class="tool-item">
+                                <strong>Writing Assistant</strong>
+                                <p>AI-enhanced writing with grammar checking and style improvements.</p>
+                            </div>
+                            <div class="tool-item">
+                                <strong>Presentation Builder</strong>
+                                <p>Create engaging presentations with AI-generated content and layouts.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tool-category">
+                        <h3>🎓 Specialized Learning Tools</h3>
+                        <div class="tools-grid">
+                            <div class="tool-item">
+                                <strong>Math Solver</strong>
+                                <p>Step-by-step math problem solving with detailed explanations.</p>
+                            </div>
+                            <div class="tool-item">
+                                <strong>Language Tutor</strong>
+                                <p>Interactive language learning with conversation practice and feedback.</p>
+                            </div>
+                            <div class="tool-item">
+                                <strong>Exam Simulator</strong>
+                                <p>Practice exams with realistic conditions and performance analysis.</p>
+                            </div>
+                            <div class="tool-item">
+                                <strong>Mind Mapper</strong>
+                                <p>Visual knowledge mapping with AI-suggested connections and structures.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tool-category">
+                        <h3>🤝 Collaboration Tools</h3>
+                        <div class="tools-grid">
+                            <div class="tool-item">
+                                <strong>Collaboration Hub</strong>
+                                <p>Real-time collaboration on study materials and group projects.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Assistant Details -->
+            <section id="ai-assistant" class="section">
+                <h2>🧠 AI Study Assistant</h2>
+                
+                <div class="feature-detail">
+                    <div class="feature-header">
+                        <h3>Intelligent Learning Companion</h3>
+                        <p>The AI Study Assistant serves as your personal tutor, providing contextual help, explanations, and study guidance powered by Google Gemini 2.5 Pro.</p>
+                    </div>
+
+                    <div class="feature-capabilities">
+                        <h4>Key Capabilities</h4>
+                        <div class="capability-grid">
+                            <div class="capability-item">
+                                <strong>📚 Concept Explanation</strong>
+                                <p>Break down complex topics into understandable explanations</p>
+                            </div>
+                            <div class="capability-item">
+                                <strong>🎯 Quiz Generation</strong>
+                                <p>Create custom quizzes on any topic for practice</p>
+                            </div>
+                            <div class="capability-item">
+                                <strong>💡 Study Tips</strong>
+                                <p>Personalized study strategies and learning techniques</p>
+                            </div>
+                            <div class="capability-item">
+                                <strong>⏰ Study Planning</strong>
+                                <p>Intelligent scheduling and progress tracking</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="implementation-example">
+                        <h4>Implementation Example</h4>
+                        <pre><code class="language-typescript">// components/tools/ai-assistant-interface.tsx
+"use client"
+
+import { useState, useRef, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import ReactMarkdown from "react-markdown"
+import { Send, Sparkles } from "lucide-react"
+
+interface Message {
+  id: string
+  role: "user" | "assistant"
+  content: string
+  timestamp: Date
+}
+
+const quickActions = [
+  { icon: BookOpen, label: "Explain Concept", prompt: "Can you explain this concept in simple terms?" },
+  { icon: Target, label: "Create Quiz", prompt: "Generate a quiz on this topic" },
+  { icon: Brain, label: "Study Tips", prompt: "Give me study tips for this subject" },
+  { icon: Clock, label: "Study Plan", prompt: "Create a study plan for this topic" },
+]
+
+export function AIAssistantInterface() {
+  const [messages, setMessages] = useState&lt;Message[]&gt;([])
+  const [input, setInput] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const sendMessage = async (content: string) =&gt; {
+    if (!content.trim()) return
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: "user",
+      content,
+      timestamp: new Date()
+    }
+
+    setMessages(prev =&gt; [...prev, userMessage])
+    setIsLoading(true)
+
+    try {
+      const response = await fetch('/api/assistant/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: content,
+          history: messages.map(m =&gt; ({ role: m.role, text: m.content }))
+        })
+      })
+
+      const data = await response.json()
+      
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: data.response,
+        timestamp: new Date()
+      }
+
+      setMessages(prev =&gt; [...prev, assistantMessage])
+    } catch (error) {
+      console.error('Error sending message:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    &lt;div className="flex flex-col h-[600px] bg-card rounded-lg border"&gt;
+      {/* Quick Actions */}
+      &lt;div className="p-4 border-b"&gt;
+        &lt;div className="flex flex-wrap gap-2"&gt;
+          {quickActions.map((action, index) =&gt; (
+            &lt;Button
+              key={index}
+              variant="outline"
+              size="sm"
+              onClick={() =&gt; sendMessage(action.prompt)}
+            &gt;
+              &lt;action.icon className="h-4 w-4 mr-2" /&gt;
+              {action.label}
+            &lt;/Button&gt;
+          ))}
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      {/* Messages */}
+      &lt;ScrollArea className="flex-1 p-4"&gt;
+        &lt;div className="space-y-4"&gt;
+          {messages.map((message) =&gt; (
+            &lt;div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}&gt;
+              &lt;div className={`max-w-[80%] p-3 rounded-lg ${
+                message.role === 'user' 
+                  ? 'bg-primary text-primary-foreground' 
+                  : 'bg-muted'
+              }`}&gt;
+                &lt;ReactMarkdown&gt;{message.content}&lt;/ReactMarkdown&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          ))}
+        &lt;/div&gt;
+      &lt;/ScrollArea&gt;
+
+      {/* Input */}
+      &lt;div className="p-4 border-t"&gt;
+        &lt;div className="flex space-x-2"&gt;
+          &lt;Input
+            value={input}
+            onChange={(e) =&gt; setInput(e.target.value)}
+            placeholder="Ask me anything about your studies..."
+            onKeyPress={(e) =&gt; e.key === 'Enter' && sendMessage(input)}
+          /&gt;
+          &lt;Button onClick={() =&gt; sendMessage(input)} disabled={isLoading}&gt;
+            &lt;Send className="h-4 w-4" /&gt;
+          &lt;/Button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Document Intelligence Details -->
+            <section id="document-intel" class="section">
+                <h2>📄 Document Intelligence Hub</h2>
+                
+                <div class="feature-detail">
+                    <div class="feature-header">
+                        <h3>Advanced Document Processing & RAG System</h3>
+                        <p>The Document Intelligence Hub provides sophisticated document analysis, multi-document chat, and intelligent content extraction using RAG (Retrieval-Augmented Generation) technology.</p>
+                    </div>
+
+                    <div class="feature-workflow">
+                        <h4>Document Processing Workflow</h4>
+                        <div class="workflow-steps">
+                            <div class="workflow-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h5>Document Upload</h5>
+                                    <p>PDF files are uploaded and validated for content and structure</p>
+                                </div>
+                            </div>
+                            <div class="workflow-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h5>Text Extraction</h5>
+                                    <p>Content is extracted using PDF parsing and OCR when necessary</p>
+                                </div>
+                            </div>
+                            <div class="workflow-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h5>Chunking & Embedding</h5>
+                                    <p>Text is split into chunks and converted to vector embeddings</p>
+                                </div>
+                            </div>
+                            <div class="workflow-step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h5>Vector Storage</h5>
+                                    <p>Embeddings are stored in Qdrant for fast similarity search</p>
+                                </div>
+                            </div>
+                            <div class="workflow-step">
+                                <div class="step-number">5</div>
+                                <div class="step-content">
+                                    <h5>Intelligent Querying</h5>
+                                    <p>Users can chat with documents using natural language</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-capabilities">
+                        <h4>Key Features</h4>
+                        <div class="capability-grid">
+                            <div class="capability-item">
+                                <strong>📁 Multi-Document Upload</strong>
+                                <p>Upload and process multiple PDF documents simultaneously</p>
+                            </div>
+                            <div class="capability-item">
+                                <strong>💬 Document Chat</strong>
+                                <p>Ask questions about document content with contextual responses</p>
+                            </div>
+                            <div class="capability-item">
+                                <strong>🔍 Smart Search</strong>
+                                <p>Vector-based semantic search across all documents</p>
+                            </div>
+                            <div class="capability-item">
+                                <strong>📊 Content Analysis</strong>
+                                <p>Automatic summarization and key point extraction</p>
+                            </div>
+                            <div class="capability-item">
+                                <strong>🎯 Targeted Queries</strong>
+                                <p>Filter searches to specific documents or document sets</p>
+                            </div>
+                            <div class="capability-item">
+                                <strong>📑 Citation Support</strong>
+                                <p>Automatic citations and source references for responses</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Flashcard Studio Details -->
+            <section id="flashcard-studio" class="section">
+                <h2>🎯 Flashcard Studio</h2>
+                
+                <div class="feature-detail">
+                    <div class="feature-header">
+                        <h3>AI-Powered Flashcard Learning System</h3>
+                        <p>Flashcard Studio combines artificial intelligence with proven spaced repetition algorithms to create an optimal flashcard learning experience.</p>
+                    </div>
+
+                    <div class="feature-modes">
+                        <h4>Creation Modes</h4>
+                        <div class="modes-grid">
+                            <div class="mode-card ai">
+                                <h5>🧠 AI Generation Mode</h5>
+                                <p>Automatically generate flashcards from uploaded documents using advanced NLP and content analysis.</p>
+                                <ul>
+                                    <li>Select documents from Document Intelligence</li>
+                                    <li>AI extracts key concepts and definitions</li>
+                                    <li>Generates balanced question-answer pairs</li>
+                                    <li>Smart deck naming and organization</li>
+                                </ul>
+                            </div>
+                            <div class="mode-card manual">
+                                <h5>✋ Manual Creation Mode</h5>
+                                <p>Create custom flashcard decks with full control over content, structure, and difficulty.</p>
+                                <ul>
+                                    <li>Custom deck metadata and organization</li>
+                                    <li>Manual card creation and editing</li>
+                                    <li>Difficulty level assignment</li>
+                                    <li>Tag-based categorization</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="study-features">
+                        <h4>Advanced Study Features</h4>
+                        <div class="study-grid">
+                            <div class="study-feature">
+                                <strong>🔄 Spaced Repetition</strong>
+                                <p>Intelligent scheduling based on your performance and memory retention patterns</p>
+                            </div>
+                            <div class="study-feature">
+                                <strong>📈 Progress Tracking</strong>
+                                <p>Detailed analytics on study sessions, mastery levels, and learning velocity</p>
+                            </div>
+                            <div class="study-feature">
+                                <strong>🎨 Visual Learning</strong>
+                                <p>Rich card designs with markdown support and visual elements</p>
+                            </div>
+                            <div class="study-feature">
+                                <strong>🌐 Deck Sharing</strong>
+                                <p>Public deck marketplace for discovering and sharing study materials</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flashcard-example">
+                        <h4>Component Architecture</h4>
+                        <pre><code class="language-typescript">// Flashcard Studio Core Structure
+interface FlashcardDeck {
+  id: string
+  name: string
+  subject: string
+  description: string
+  cardCount: number
+  studiedCount: number
+  masteredCount: number
+  progress: number
+  difficulty: 'easy' | 'medium' | 'hard'
+  color: string
+  isPublic: boolean
+  tags: string[]
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+}
+
+interface Flashcard {
+  id: string
+  front: string
+  back: string
+  difficulty: 'easy' | 'medium' | 'hard'
+  mastered: boolean
+  lastReviewed: string
+  reviewCount: number
+  easeFactor: number
+  interval: number
+  nextReview: string
+  createdAt: string
+  updatedAt: string
+}
+
+// AI Generation API Call
+const generateAIFlashcards = async (documents: string[]) =&gt; {
+  const response = await fetch('/api/flashcards/generate/cards', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      content: combinedDocumentContent,
+      cardCount: documents.length * 10,
+      difficulty: 'medium',
+      subject: deckSubject,
+      createDeck: true,
+      deckName: `AI Generated from ${documents.length} Document(s)`,
+      deckDescription: `Auto-generated flashcards`
+    })
+  })
+  
+  return response.json()
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Styling System -->
+            <section id="styling" class="section">
+                <h2>🎨 Design System & Styling</h2>
+                
+                <div class="design-overview">
+                    <p>AiThena uses a comprehensive design system built with Tailwind CSS, providing consistent styling, theming, and responsive design across all components.</p>
+                </div>
+
+                <div class="design-principles">
+                    <h3>Design Principles</h3>
+                    <div class="principles-grid">
+                        <div class="principle-item">
+                            <strong>🎯 Consistency</strong>
+                            <p>Unified design tokens and component patterns across all tools and interfaces</p>
+                        </div>
+                        <div class="principle-item">
+                            <strong>♿ Accessibility</strong>
+                            <p>WCAG 2.1 AA compliance with keyboard navigation and screen reader support</p>
+                        </div>
+                        <div class="principle-item">
+                            <strong>📱 Responsiveness</strong>
+                            <p>Mobile-first approach with adaptive layouts for all device sizes</p>
+                        </div>
+                        <div class="principle-item">
+                            <strong>🚀 Performance</strong>
+                            <p>Optimized CSS delivery with utility-first approach and minimal runtime overhead</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="color-system">
+                    <h3>Color System</h3>
+                    <div class="color-categories">
+                        <div class="color-category">
+                            <h4>Primary Colors</h4>
+                            <div class="color-swatches">
+                                <div class="color-swatch primary">
+                                    <div class="swatch-color" style="background: #3b82f6;"></div>
+                                    <div class="swatch-info">
+                                        <strong>Primary</strong>
+                                        <code>#3b82f6</code>
+                                    </div>
+                                </div>
+                                <div class="color-swatch">
+                                    <div class="swatch-color" style="background: #1e40af;"></div>
+                                    <div class="swatch-info">
+                                        <strong>Primary Dark</strong>
+                                        <code>#1e40af</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-category">
+                            <h4>Semantic Colors</h4>
+                            <div class="color-swatches">
+                                <div class="color-swatch">
+                                    <div class="swatch-color" style="background: #10b981;"></div>
+                                    <div class="swatch-info">
+                                        <strong>Success</strong>
+                                        <code>#10b981</code>
+                                    </div>
+                                </div>
+                                <div class="color-swatch">
+                                    <div class="swatch-color" style="background: #f59e0b;"></div>
+                                    <div class="swatch-info">
+                                        <strong>Warning</strong>
+                                        <code>#f59e0b</code>
+                                    </div>
+                                </div>
+                                <div class="color-swatch">
+                                    <div class="swatch-color" style="background: #ef4444;"></div>
+                                    <div class="swatch-info">
+                                        <strong>Error</strong>
+                                        <code>#ef4444</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="typography-system">
+                    <h3>Typography System</h3>
+                    <div class="type-scale">
+                        <div class="type-example">
+                            <h1 style="font-size: 2.25rem; font-weight: 700;">Heading 1 - 2.25rem/36px</h1>
+                            <code>text-4xl font-bold</code>
+                        </div>
+                        <div class="type-example">
+                            <h2 style="font-size: 1.875rem; font-weight: 600;">Heading 2 - 1.875rem/30px</h2>
+                            <code>text-3xl font-semibold</code>
+                        </div>
+                        <div class="type-example">
+                            <h3 style="font-size: 1.5rem; font-weight: 600;">Heading 3 - 1.5rem/24px</h3>
+                            <code>text-2xl font-semibold</code>
+                        </div>
+                        <div class="type-example">
+                            <p style="font-size: 1rem; line-height: 1.6;">Body Text - 1rem/16px with 1.6 line height</p>
+                            <code>text-base leading-relaxed</code>
+                        </div>
+                        <div class="type-example">
+                            <small style="font-size: 0.875rem; color: #64748b;">Small Text - 0.875rem/14px</small>
+                            <code>text-sm text-muted-foreground</code>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Navigation Footer -->
+            <div class="nav-footer">
+                <a href="index.html" class="nav-btn">← Platform Overview</a>
+                <a href="backend.html" class="nav-btn">Backend Services →</a>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
